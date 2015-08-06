@@ -35,31 +35,55 @@ namespace aXon
 	class MainClass
 	{
 		private static MessageQueue<TaskMessage> _TaskQueue;
-        private static MessageQueue<TaskLogMessage> _LogQueue;
-        private static MessageQueue<TaskProgressMessage> _ProgressQueue;
-	    private static IConnection _Connection;
+		private static MessageQueue<TaskLogMessage> _LogQueue;
+		private static MessageQueue<TaskProgressMessage> _ProgressQueue;
+		private static IConnection _Connection;
 
-	    public static void Main (string[] args)
-	    {
-	        InitConnection();
-			_TaskQueue = new MessageQueue<TaskMessage>(true,_Connection);
-            _LogQueue= new MessageQueue<TaskLogMessage>(false,_Connection);
-            _ProgressQueue = new MessageQueue<TaskProgressMessage>(false,_Connection);
-            _TaskQueue.OnReceivedMessage+=_TaskQueue_OnReceivedMessage;
-	        while (true)
-	        {
-	        }
-	    }
-        private static void InitConnection()
-        {
-            var factory = new ConnectionFactory() { HostName = "Dev-Svr2.systest.sc2services.com" };
-            factory.AutomaticRecoveryEnabled = true;
-            factory.NetworkRecoveryInterval = TimeSpan.FromSeconds(10);
-            _Connection = factory.CreateConnection();
-        }
-        static void _TaskQueue_OnReceivedMessage(object sender, TaskMessage args)
-        {
-            
-        }
+		public static void Main (string[] args)
+		{
+			InitConnection ();
+			_TaskQueue = new MessageQueue<TaskMessage> (true, _Connection);
+			_LogQueue = new MessageQueue<TaskLogMessage> (false, _Connection);
+			_ProgressQueue = new MessageQueue<TaskProgressMessage> (false, _Connection);
+			_TaskQueue.OnReceivedMessage += _TaskQueue_OnReceivedMessage;
+			_LogQueue.Publish (new TaskLogMessage () {
+				MessageId = Guid.NewGuid (),
+				TransmisionDateTime = DateTime.Now,
+				TaskId = Guid.Empty,
+				LogLevel = LogLevel.Info,
+				LogMessage = "Node UP"
+			});
+			while (true) {
+			}
+		}
+
+		private static void InitConnection ()
+		{
+			var factory = new ConnectionFactory () { HostName = "Dev-Svr2.systest.sc2services.com" };
+			factory.AutomaticRecoveryEnabled = true;
+			factory.NetworkRecoveryInterval = TimeSpan.FromSeconds (10);
+			_Connection = factory.CreateConnection ();
+		}
+
+		static void _TaskQueue_OnReceivedMessage (object sender, TaskMessage args)
+		{
+			_ProgressQueue.Publish (new TaskProgressMessage () {
+				CurrentTime = DateTime.Now,
+				PercentComplete = 0,
+				StartTime = DateTime.Now,
+				Status = TaskStatus.Arrived,
+				TaskId = args.TaskId,
+				MessageId = Guid.NewGuid (),
+				TransmisionDateTime = DateTime.Now
+			});
+			switch (args.ScriptType) {
+			case TaskScriptType.CSharp:
+				break;
+			case TaskScriptType.Python:
+				break;
+			case TaskScriptType.Shell:
+				break;
+			}
+		}
 	}
 }
