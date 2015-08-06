@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon", "aXon\aXon.csproj", "{B58E5B14-86E2-4AF0-9358-3FFDCBDC634A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.TaskTransport", "aXon.TaskTransport\aXon.TaskTransport.csproj", "{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.TaskData", "aXon.TaskData\aXon.TaskData.csproj", "{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}.Debug|x86.Build.0 = Debug|Any CPU
+		{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}.Release|x86.ActiveCfg = Release|Any CPU
+		{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}.Release|x86.Build.0 = Release|Any CPU
+		{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}.Debug|x86.Build.0 = Debug|Any CPU
+		{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}.Release|x86.ActiveCfg = Release|Any CPU
+		{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}.Release|x86.Build.0 = Release|Any CPU
+		{B58E5B14-86E2-4AF0-9358-3FFDCBDC634A}.Debug|x86.ActiveCfg = Debug|x86
+		{B58E5B14-86E2-4AF0-9358-3FFDCBDC634A}.Debug|x86.Build.0 = Debug|x86
+		{B58E5B14-86E2-4AF0-9358-3FFDCBDC634A}.Release|x86.ActiveCfg = Release|x86
+		{B58E5B14-86E2-4AF0-9358-3FFDCBDC634A}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal
