@@ -7,12 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.TaskTransport", "aXon.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.TaskData", "aXon.TaskData\aXon.TaskData.csproj", "{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{2C176754-3B18-42EC-A2C8-EE81AA7A6488}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C176754-3B18-42EC-A2C8-EE81AA7A6488}.Debug|x86.ActiveCfg = Debug|x86
+		{2C176754-3B18-42EC-A2C8-EE81AA7A6488}.Debug|x86.Build.0 = Debug|x86
+		{2C176754-3B18-42EC-A2C8-EE81AA7A6488}.Release|x86.ActiveCfg = Release|x86
+		{2C176754-3B18-42EC-A2C8-EE81AA7A6488}.Release|x86.Build.0 = Release|x86
 		{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}.Debug|x86.Build.0 = Debug|Any CPU
 		{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}.Release|x86.ActiveCfg = Release|Any CPU
