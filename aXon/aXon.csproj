@@ -97,9 +97,9 @@
       <Project>{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}</Project>
       <Name>aXon.TaskTransport</Name>
     </ProjectReference>
-    <ProjectReference Include="..\aXon.TaskData\aXon.TaskData.csproj">
-      <Project>{4BF37E48-98EE-44C8-A91C-D2BAD1EF6E18}</Project>
-      <Name>aXon.TaskData</Name>
+    <ProjectReference Include="..\aXon.Worker\aXon.Worker.csproj">
+      <Project>{11267F83-8BA8-4157-B347-7BFDB28860F0}</Project>
+      <Name>aXon.Worker</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

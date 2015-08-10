@@ -26,9 +26,13 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 using System;
+using MongoDB.Driver;
 using RabbitMQ.Client;
 using aXon.TaskTransport;
 using aXon.TaskTransport.Messages;
+using System.Net;
+using aXon.Worker;
+using aXon.Worker.Interfaces;
 
 namespace aXon
 {
@@ -38,7 +42,7 @@ namespace aXon
 		private static MessageQueue<TaskLogMessage> _LogQueue;
 		private static MessageQueue<TaskProgressMessage> _ProgressQueue;
 		private static IConnection _Connection;
-
+        private static MongoClient _client = new MongoClient("mongodb://host:27017");
 		public static void Main (string[] args)
 		{
 			InitConnection ();
@@ -51,7 +55,7 @@ namespace aXon
 				TransmisionDateTime = DateTime.Now,
 				TaskId = Guid.Empty,
 				LogLevel = LogLevel.Info,
-				LogMessage = "Node UP"
+				LogMessage = "Node UP: " + Dns.GetHostName ()
 			});
 			while (true) {
 			}
@@ -59,7 +63,7 @@ namespace aXon
 
 		private static void InitConnection ()
 		{
-			var factory = new ConnectionFactory () { HostName = "Dev-Svr2.systest.sc2services.com" };
+			var factory = new ConnectionFactory () { HostName = "192.168.1.140" };
 			factory.AutomaticRecoveryEnabled = true;
 			factory.NetworkRecoveryInterval = TimeSpan.FromSeconds (10);
 			_Connection = factory.CreateConnection ();
@@ -76,14 +80,50 @@ namespace aXon
 				MessageId = Guid.NewGuid (),
 				TransmisionDateTime = DateTime.Now
 			});
-			switch (args.ScriptType) {
-			case TaskScriptType.CSharp:
-				break;
-			case TaskScriptType.Python:
-				break;
-			case TaskScriptType.Shell:
-				break;
-			}
+            ITaskWorker test = new BenchmarkWorker();
+                test.Progress += TaskProgress;
+                test.ErrorOccured += TaskErrorOccured;
+            test.Complete += TaskComplete;
+            test.Execute(args.TaskId);
+            //switch (args.ScriptType) {
+            //case TaskScriptType.CSharp:
+            //    break;
+            //case TaskScriptType.Python:
+            //    break;
+            //case TaskScriptType.Shell:
+            //    break;
+            //}
 		}
+
+        static void TaskComplete(object sender, Worker.EventArgs.OnCompletionArgs args)
+        {
+            
+        }
+
+        static void TaskErrorOccured(object sender, Worker.EventArgs.OnErrorArgs args)
+        {
+            _LogQueue.Publish(new TaskLogMessage()
+            {
+                MessageId = Guid.NewGuid(),
+                TransmisionDateTime = DateTime.Now,
+                TaskId = args.TaskId,
+                LogLevel = LogLevel.Error,
+                LogMessage = args.Error
+            });
+        }
+
+        static void TaskProgress(object sender, Worker.EventArgs.OnProgressArgs args)
+        {
+            _ProgressQueue.Publish(new TaskProgressMessage()
+            {
+                CurrentTime = args.CurrentTime,
+                PercentComplete = args.PercentComplete,
+                StartTime = args.StartTime,
+                Status = args.Status,
+                TaskId = args.TaskId,
+                MessageId = Guid.NewGuid(),
+                TransmisionDateTime = DateTime.Now
+            });
+        }
 	}
 }
