@@ -1,5 +1,6 @@
 ﻿using System;
 using Gtk;
+using aXon.Models.JobModels;
 using aXon.TaskTransport;
 using aXon.TaskTransport.Messages;
 using RabbitMQ.Client;
@@ -67,7 +68,7 @@ public partial class MainWindow: Gtk.Window
 	protected void RunTasks (object sender, EventArgs e)
 	{
 		for (int x = 0; x != 1000; x++) {
-			TaskMessage t = new TaskMessage ();
+            TaskMessage t = new TaskMessage ();
 			t.LogReportingLevel = LogLevel.Verbatium;
 			t.MessageId = Guid.NewGuid ();
 			t.TaskId = Guid.NewGuid ();

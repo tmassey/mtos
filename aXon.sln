@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.Worker", "aXon.Worker\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.Workbench", "aXon.Workbench\aXon.Workbench.csproj", "{A6806C10-0C2C-4781-AD3B-BBE8323074FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.Models", "aXon.Models\aXon.Models.csproj", "{1F1E12F9-9482-4CDD-8299-CDFD48209182}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,6 +21,10 @@ Global
 		{11267F83-8BA8-4157-B347-7BFDB28860F0}.Debug|x86.Build.0 = Debug|Any CPU
 		{11267F83-8BA8-4157-B347-7BFDB28860F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{11267F83-8BA8-4157-B347-7BFDB28860F0}.Release|x86.Build.0 = Release|Any CPU
+		{1F1E12F9-9482-4CDD-8299-CDFD48209182}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F1E12F9-9482-4CDD-8299-CDFD48209182}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F1E12F9-9482-4CDD-8299-CDFD48209182}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F1E12F9-9482-4CDD-8299-CDFD48209182}.Release|x86.Build.0 = Release|Any CPU
 		{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}.Debug|x86.Build.0 = Debug|Any CPU
 		{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}.Release|x86.ActiveCfg = Release|Any CPU

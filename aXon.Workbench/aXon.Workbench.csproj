@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -68,6 +68,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\aXon.Models\aXon.Models.csproj">
+      <Project>{1f1e12f9-9482-4cdd-8299-cdfd48209182}</Project>
+      <Name>aXon.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\aXon.Worker\aXon.Worker.csproj">
       <Project>{11267F83-8BA8-4157-B347-7BFDB28860F0}</Project>
       <Name>aXon.Worker</Name>

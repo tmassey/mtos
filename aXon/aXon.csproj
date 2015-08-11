@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -93,6 +93,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\aXon.Models\aXon.Models.csproj">
+      <Project>{1f1e12f9-9482-4cdd-8299-cdfd48209182}</Project>
+      <Name>aXon.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\aXon.TaskTransport\aXon.TaskTransport.csproj">
       <Project>{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}</Project>
       <Name>aXon.TaskTransport</Name>
