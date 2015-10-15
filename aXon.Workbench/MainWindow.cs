@@ -1,10 +1,9 @@
 ﻿using System;
 using Gtk;
-using aXon.Models.JobModels;
 using aXon.TaskTransport;
 using aXon.TaskTransport.Messages;
 using RabbitMQ.Client;
-using GLib;
+using aXon.Workbench;
 
 public partial class MainWindow: Gtk.Window
 {
@@ -18,6 +17,7 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+
 		InitConnection ();
 		_TaskQueue = new MessageQueue<TaskMessage> (false, _Connection);
 		_LogQueue = new MessageQueue<TaskLogMessage> (true, _Connection);
@@ -28,18 +28,32 @@ public partial class MainWindow: Gtk.Window
 
 	void _ProgressQueue_OnReceivedMessage (object sender, TaskProgressMessage args)
 	{
-		txtProgress.Buffer.Text = "% Complete: " + args.PercentComplete + "\n" + txtProgress.Buffer.Text;
+		try {
+			var text = "Task: " + args.TaskId.ToString () + " % Complete: " + args.PercentComplete + "\n";// + txtProgress.Buffer.ToString ();
+			//txtProgress.Buffer.Clear ();
+			txtProgress.Buffer.Insert (txtProgress.Buffer.GetIterAtLine (0), text);
+			//txtProgress.ShowAll ();
+		} catch {
+		}
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
+		_TaskQueue.Dispose ();
+		_LogQueue.Dispose ();
+		_ProgressQueue.Dispose (); 
 		Application.Quit ();
 		a.RetVal = true;
 	}
 
 	private void _Log_OnReceivedMessage (object sender, TaskLogMessage args)
 	{
-		txtLog.Buffer.Text = args.LogMessage + "\n" + txtLog.Buffer.Text;
+		try {
+			txtLog.Buffer.Insert (txtLog.Buffer.GetIterAtLine (0), args.LogMessage + "\n");
+//			txtLog.Buffer.Text = args.LogMessage + "\n" + txtLog.Buffer.Text;
+//			txtLog.ShowAll ();
+		} catch {
+		}
 	}
 
 	private void InitConnection ()
@@ -53,6 +67,9 @@ public partial class MainWindow: Gtk.Window
 
 	protected void StopApp (object sender, EventArgs e)
 	{
+		_TaskQueue.Dispose ();
+		_LogQueue.Dispose ();
+		_ProgressQueue.Dispose (); 
 		Application.Quit ();
 	}
 
@@ -61,22 +78,29 @@ public partial class MainWindow: Gtk.Window
 	
 	protected void AddNewJob (object sender, EventArgs e)
 	{
-		notebook.AppendPageMenu (new Button (), new Label ("New Job"), new Label ("New Job"));
+		notebook.AppendPageMenu (new Results (), new Label ("New Job"), new Label ("New Job"));
 		notebook.ShowAll ();
 	}
 
 	protected void RunTasks (object sender, EventArgs e)
 	{
-		for (int x = 0; x != 1000; x++) {
-            TaskMessage t = new TaskMessage ();
-			t.LogReportingLevel = LogLevel.Verbatium;
-			t.MessageId = Guid.NewGuid ();
-			t.TaskId = Guid.NewGuid ();
-			t.TransmisionDateTime = DateTime.Now;
-			t.ScriptType = TaskScriptType.CSharp;
-			_TaskQueue.Publish (t);
-			System.Threading.Thread.Sleep (10000);
-		}
+		//for (int x = 0; x != 1000; x++) {
+		TaskMessage t = new TaskMessage ();
+		t.LogReportingLevel = LogLevel.Verbatium;
+		t.MessageId = Guid.NewGuid ();
+		t.TaskId = Guid.NewGuid ();
+		t.TransmisionDateTime = DateTime.Now;
+		t.ScriptType = TaskScriptType.CSharp;
+		_TaskQueue.Publish (t);
+		//System.Threading.Thread.Sleep (10000);
+		//}
 	}
 
+	protected void OnDestroy (object o, DestroyEventArgs args)
+	{
+		_TaskQueue.Dispose ();
+		_LogQueue.Dispose ();
+		_ProgressQueue.Dispose (); 
+		Application.Quit ();
+	}
 }

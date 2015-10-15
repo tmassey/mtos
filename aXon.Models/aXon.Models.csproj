@@ -40,7 +40,11 @@
     <Compile Include="Enumerations\TaskStatus.cs" />
     <Compile Include="Enumerations\TaskType.cs" />
     <Compile Include="JobModels\Trigger.cs" />
+    <Compile Include="Networks\NetworkConfiguration.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Networks\" />
+  </ItemGroup>
 </Project>

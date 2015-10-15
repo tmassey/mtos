@@ -19,8 +19,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
-    <ConsolePause>false</ConsolePause>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\aXon.Models\aXon.Models.csproj">
-      <Project>{1f1e12f9-9482-4cdd-8299-cdfd48209182}</Project>
+      <Project>{1F1E12F9-9482-4CDD-8299-CDFD48209182}</Project>
       <Name>aXon.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\aXon.TaskTransport\aXon.TaskTransport.csproj">
