@@ -43,7 +43,7 @@ namespace aXon
 		private static MessageQueue<TaskLogMessage> _LogQueue;
 		private static MessageQueue<TaskProgressMessage> _ProgressQueue;
 		private static IConnection _Connection;
-		private static MongoClient _client = new MongoClient ("mongodb://Dev-Svr2.systest.sc2services.com");
+        private static MongoClient _client = new MongoClient("mongodb://192.169.164.138");
 		private static ITaskWorker test = new TickTackToeTrainWorker ();
 
 		public static void Main (string[] args)
@@ -87,15 +87,16 @@ namespace aXon
 				TransmisionDateTime = DateTime.Now
 			});
 
-			test.Execute (args.TaskId, _client);
-			test.Progress -= TaskProgress;
-			test.ErrorOccured -= TaskErrorOccured;
-			test.Complete -= TaskComplete;
-			test = null;
-			test = new BenchmarkWorker ();
+            //test.Execute (args.TaskId, _client);
+            //test.Progress -= TaskProgress;
+            //test.ErrorOccured -= TaskErrorOccured;
+            //test.Complete -= TaskComplete;
+            //test = null;
+			test = new RoverWorker ();
 			test.Progress += TaskProgress;
 			test.ErrorOccured += TaskErrorOccured;
 			test.Complete += TaskComplete;
+            test.Execute(args.TaskId,_client);
 			//switch (args.ScriptType) {
 			//case TaskScriptType.CSharp:
 			//    break;

@@ -17,7 +17,8 @@ namespace aXon.Worker
 		{
 		    try
 		    {
-
+		        var db = client.GetDatabase("aXon");
+                var col = db.GetCollection<>()
 		    }
 		    catch (Exception err)
 		    {
