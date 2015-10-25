@@ -34,6 +34,12 @@
       <HintPath>..\packages\encog-dotnet-core.3.3.0\lib\net35\encog-core-cs.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>D:\Development\Sc2\lib\mongo-csharp-driver\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>D:\Development\Sc2\lib\mongo-csharp-driver\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Warehouse.cs" />
+    <Compile Include="MongoDataService.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utilities\AngleConverter.cs" />
     <Compile Include="Utilities\DistanceConverter.cs" />
     <Compile Include="Constants\DistanceUnit.cs" />

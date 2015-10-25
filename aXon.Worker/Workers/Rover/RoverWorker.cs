@@ -1,4 +1,5 @@
 ﻿using System;
+using aXon.Rover.Models;
 using aXon.Worker.Interfaces;
 using MongoDB.Driver;
 using aXon.Worker.Delegates;
@@ -18,7 +19,7 @@ namespace aXon.Worker
 		    try
 		    {
 		        var db = client.GetDatabase("aXon");
-                var col = db.GetCollection<>()
+		        var col = db.GetCollection<Warehouse>("Warehouse");
 		    }
 		    catch (Exception err)
 		    {

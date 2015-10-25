@@ -103,7 +103,7 @@ namespace aXon.Rover
 			Console.WriteLine (@"\nHow the winning network got to its destination:");
             network = (BasicNetwork)train.Method;
             var pilot = new NeuralRobot(network, true);
-            Console.WriteLine(pilot.ScorePilot());
+            //Console.WriteLine(pilot.ScorePilot());
             EncogDirectoryPersistence.SaveObject(File.Create(@"c:\robot.net"), network);
 			EncogFramework.Instance.Shutdown ();
 		}
