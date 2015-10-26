@@ -4,7 +4,8 @@
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar" x:Class="TestCanvas.MainWindow"
     xmlns:dxga="clr-namespace:DevExpress.Xpf.Gauges;assembly=DevExpress.Xpf.Gauges.v14.2"
-    xmlns:testCanvas="clr-namespace:TestCanvas"
+    xmlns:testCanvas="clr-namespace:TestCanvas" xmlns:testCanvas2="clr-namespace:TestCanvas;assembly=aXon.Rover"
+    xmlns:enumerations="clr-namespace:aXon.Rover.Enumerations;assembly=aXon.Rover"
 
     Title="MainWindow">
     <Window.Resources>
@@ -150,37 +151,37 @@
                                     <UniformGrid x:Name="ModeGrid" Columns="3" Height="50" VerticalAlignment="Top">
                                         <RadioButton GroupName="mode" Foreground="Blue"
                                                      IsChecked="{Binding Path=ModeMap,                                Converter={StaticResource EnumConverter},
-                                 ConverterParameter={x:Static testCanvas:MapMode.PathMode}}"
+                                 ConverterParameter={x:Static enumerations:MapMode.PathMode}}"
                                                      Content="Path Location" />
                                         <RadioButton GroupName="mode" Foreground="BlueViolet"
                                                      IsChecked="{Binding Path=ModeMap, 
                                  Converter={StaticResource EnumConverter},
-                                 ConverterParameter={x:Static testCanvas:MapMode.PickupMode}}"
+                                 ConverterParameter={x:Static enumerations:MapMode.PickupMode}}"
                                                      Content="Pick Up Location" />
                                         <RadioButton GroupName="mode" Foreground="Brown"
                                                      IsChecked="{Binding Path=ModeMap, 
                                  Converter={StaticResource EnumConverter},
-                                 ConverterParameter={x:Static testCanvas:MapMode.StorageMode}}"
+                                 ConverterParameter={x:Static enumerations:MapMode.StorageMode}}"
                                                      Content="Storage Location" />
                                         <RadioButton GroupName="mode" Foreground="Chartreuse"
                                                      IsChecked="{Binding Path=ModeMap, 
                                  Converter={StaticResource EnumConverter},
-                                 ConverterParameter={x:Static testCanvas:MapMode.ShipMode}}"
+                                 ConverterParameter={x:Static enumerations:MapMode.ShipMode}}"
                                                      Content="Ship Location" />
                                         <RadioButton GroupName="mode" Foreground="Crimson"
                                                      IsChecked="{Binding Path=ModeMap, 
                                  Converter={StaticResource EnumConverter},
-                                 ConverterParameter={x:Static testCanvas:MapMode.ChargeMode}}"
+                                 ConverterParameter={x:Static enumerations:MapMode.ChargeMode}}"
                                                      Content="Charging Location" />
                                         <RadioButton GroupName="mode" Foreground="Orange"
                                                      IsChecked="{Binding Path=ModeMap, 
                                  Converter={StaticResource EnumConverter},
-                                 ConverterParameter={x:Static testCanvas:MapMode.PersonMode}}"
+                                 ConverterParameter={x:Static enumerations:MapMode.PersonMode}}"
                                                      Content="Person Path Location" />
                                         <RadioButton GroupName="mode" Foreground="Black"
                                                      IsChecked="{Binding Path=ModeMap, 
                                  Converter={StaticResource EnumConverter},
-                                 ConverterParameter={x:Static testCanvas:MapMode.ObstructionMode}}"
+                                 ConverterParameter={x:Static enumerations:MapMode.ObstructionMode}}"
                                                      Content="Obstruction Location" />
 
                                     </UniformGrid>

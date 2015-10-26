@@ -78,7 +78,6 @@
     <Compile Include="DataSource.cs" />
     <Compile Include="EnumMatchToBooleanConverter.cs" />
     <Compile Include="EnumToBooleanConverter.cs" />
-    <Compile Include="MapMode.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RobotContol.cs" />
     <Compile Include="RobotDirection.cs" />

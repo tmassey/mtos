@@ -24,9 +24,9 @@ namespace aXon.Rover.Utilities
 
         public double CalculateBearing(IPosition pos1, IPosition pos2)
         {
-            var lat1 = _angleConverter.ConvertDegreesToRadians(pos1.Latitude);
-            var lat2 = _angleConverter.ConvertDegreesToRadians(pos2.Latitude);
-            var dLon = _angleConverter.ConvertDegreesToRadians(pos2.Longitude) - _angleConverter.ConvertDegreesToRadians(pos1.Longitude);
+            var lat1 = _angleConverter.ConvertDegreesToRadians(pos1.X);
+            var lat2 = _angleConverter.ConvertDegreesToRadians(pos2.X);
+            var dLon = _angleConverter.ConvertDegreesToRadians(pos2.Y) - _angleConverter.ConvertDegreesToRadians(pos1.Y);
 
             var y = Math.Sin(dLon) * Math.Cos(lat2);
             var x = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(dLon);
@@ -37,9 +37,9 @@ namespace aXon.Rover.Utilities
 
         public double CalculateRhumbBearing(IPosition pos1, IPosition pos2)
         {
-            var lat1 = _angleConverter.ConvertDegreesToRadians(pos1.Latitude);
-            var lat2 = _angleConverter.ConvertDegreesToRadians(pos2.Latitude);
-            var dLon = _angleConverter.ConvertDegreesToRadians(pos2.Longitude - pos1.Longitude);
+            var lat1 = _angleConverter.ConvertDegreesToRadians(pos1.X);
+            var lat2 = _angleConverter.ConvertDegreesToRadians(pos2.X);
+            var dLon = _angleConverter.ConvertDegreesToRadians(pos2.Y - pos1.Y);
 
             var dPhi = Math.Log(Math.Tan(lat2 / 2 + Math.PI / 4) / Math.Tan(lat1 / 2 + Math.PI / 4));
             if (Math.Abs(dLon) > Math.PI) dLon = (dLon > 0) ? -(2 * Math.PI - dLon) : (2 * Math.PI + dLon);

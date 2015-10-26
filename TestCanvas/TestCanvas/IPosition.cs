@@ -1,4 +1,6 @@
-﻿namespace TestCanvas
+﻿using System;
+
+namespace TestCanvas
 {
     /// <summary>
     ///     This interface can be implemented by classes that
@@ -10,7 +12,8 @@
     /// </remarks>
     public interface IPosition
     {
-        double Latitude { get; }
-        double Longitude { get; }
+       
+        double X { get; }
+        double Y { get; }
     }
 }

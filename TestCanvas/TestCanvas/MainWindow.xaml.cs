@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -12,6 +13,7 @@ using Encog.Neural.Networks;
 using Encog.Persist;
 using MongoDB.Driver;
 using aXon.Rover;
+using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
 
 namespace TestCanvas
@@ -69,10 +71,24 @@ namespace TestCanvas
                     p.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 255));
                     break;
             }
-
+            if(SourceData.Warehouse.Positions==null)
+                SourceData.Warehouse.Positions= new ObservableCollection<aXon.Rover.Models.Position>();
+            var l = (from loc in SourceData.Warehouse.Positions where loc.X == x && loc.Y == y select loc).FirstOrDefault();
+            if (l != null)
+            {
+                l.MapMode = SourceData.ModeMap;
+            }
+            else
+            {
+                l = new aXon.Rover.Models.Position(x,y){MapMode=SourceData.ModeMap};
+                SourceData.Warehouse.Positions.Add(l);
+            }
+            MongoCollection<Warehouse> col = Mds.DataBase.GetCollection<Warehouse>("Warehouse");
+            SafeModeResult safeModeResult = col.Save(SourceData.Warehouse);
             Canvas.SetLeft(p, x*((int) (Canvas.ActualHeight/SourceData.Warehouse.GridWidth) - 1));
             Canvas.SetTop(p, y*((int) (Canvas.ActualWidth/SourceData.Warehouse.GridLength) - 1));
             Canvas.Children.Add(p);
+
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -91,33 +107,33 @@ namespace TestCanvas
             pos.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 255));
             switch (e.Key)
             {
-                case Key.NumPad7: //fowardLeft
-                    SourceData.Simulation.Turn(RobotDirection.FowardLeft);
-                    break;
+                //case Key.NumPad7: //fowardLeft
+                //    SourceData.Simulation.Turn(RobotDirection.FowardLeft);
+                //    break;
                 case Key.NumPad8: //foward
                     SourceData.Simulation.Turn(RobotDirection.Forward);
                     break;
-                case Key.NumPad9: //fowardRight
-                    SourceData.Simulation.Turn(RobotDirection.FowardRight);
-                    break;
+                //case Key.NumPad9: //fowardRight
+                //    SourceData.Simulation.Turn(RobotDirection.FowardRight);
+                //    break;
                 case Key.NumPad4: //Left
                     SourceData.Simulation.Turn(RobotDirection.Left);
                     break;
-                case Key.NumPad5: //Rest
-                    SourceData.Simulation.Turn(RobotDirection.Rest);
-                    break;
+                //case Key.NumPad5: //Rest
+                //    SourceData.Simulation.Turn(RobotDirection.Rest);
+                //    break;
                 case Key.NumPad6: //Right
                     SourceData.Simulation.Turn(RobotDirection.Right);
                     break;
-                case Key.NumPad1: // backLeft
-                    SourceData.Simulation.Turn(RobotDirection.BackLeft);
-                    break;
+                //case Key.NumPad1: // backLeft
+                //    SourceData.Simulation.Turn(RobotDirection.BackLeft);
+                //    break;
                 case Key.NumPad2: //Back
                     SourceData.Simulation.Turn(RobotDirection.Reverse);
                     break;
-                case Key.NumPad3: //backRight
-                    SourceData.Simulation.Turn(RobotDirection.BackRight);
-                    break;
+                //case Key.NumPad3: //backRight
+                //    SourceData.Simulation.Turn(RobotDirection.BackRight);
+                //    break;
             }
             Canvas.SetLeft(pos, SourceData.Simulation.Position[1]*10);
             Canvas.SetTop(pos, SourceData.Simulation.Position[0]*10);
@@ -133,7 +149,7 @@ namespace TestCanvas
             SourceData.Simulation = new RobotSimulator(new Position(0, 0), new Position(40, 60));
             SourceData.Warehouse = Mds.GetCollectionQueryModel<Warehouse>().FirstOrDefault();
             if (SourceData.Warehouse == null)
-                SourceData.Warehouse = new Warehouse {Id = Guid.NewGuid()};
+                SourceData.Warehouse = new Warehouse {Id = Guid.NewGuid(),Positions=new ObservableCollection<aXon.Rover.Models.Position>()};
             else
                 DrawMap();
             DataContext = SourceData;
@@ -185,8 +201,8 @@ namespace TestCanvas
         {
             Rectangle pos = AddLocation(false);
             pos.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 255));
-            Canvas.SetLeft(pos, args.Longitude*10);
-            Canvas.SetTop(pos, args.Latitude*10);
+            Canvas.SetLeft(pos, args.Y*10);
+            Canvas.SetTop(pos, args.X*10);
             Canvas.Children.Add(pos);
             Canvas.UpdateLayout();
             DoEvents();
@@ -202,9 +218,41 @@ namespace TestCanvas
                     bool isDest = SourceData.Simulation.Destination[1] == slon &&
                                   SourceData.Simulation.Destination[0] == slat;
                     Rectangle location = AddLocation(isDest);
+
                     location.Tag = slon + "," + slat;
-                    int x = ((int) (Canvas.ActualHeight/SourceData.Warehouse.GridWidth) - 1);
-                    int y = ((int) (Canvas.ActualWidth/SourceData.Warehouse.GridLength) - 1);
+                    double x = ((int) (Canvas.ActualHeight/SourceData.Warehouse.GridWidth) - 1);
+                    double y = ((int) (Canvas.ActualWidth/SourceData.Warehouse.GridLength) - 1);
+                    
+                        var pos =  (from loc in SourceData.Warehouse.Positions where loc.X == slon && loc.Y == slat select loc).FirstOrDefault();
+
+                        if (pos != null)
+                        {
+                            switch (pos.MapMode)
+                            {
+                                case MapMode.ChargeMode:
+                                    location.Fill = new SolidColorBrush(Color.FromRgb(220, 20, 60));
+                                    break;
+                                case MapMode.ObstructionMode:
+                                    location.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                                    break;
+                                case MapMode.PersonMode:
+                                    location.Fill = new SolidColorBrush(Color.FromRgb(255, 165, 0));
+                                    break;
+                                case MapMode.PickupMode:
+                                    location.Fill = new SolidColorBrush(Color.FromRgb(138, 43, 226));
+                                    break;
+                                case MapMode.ShipMode:
+                                    location.Fill = new SolidColorBrush(Color.FromRgb(127, 255, 0));
+                                    break;
+                                case MapMode.StorageMode:
+                                    location.Fill = new SolidColorBrush(Color.FromRgb(165, 42, 42));
+                                    break;
+                                case MapMode.PathMode:
+                                    location.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 255));
+                                    break;
+                            }
+                        }
+                    
                     Canvas.SetLeft(location, slon*x);
                     Canvas.SetTop(location, slat*y);
                     Canvas.Children.Add(location);

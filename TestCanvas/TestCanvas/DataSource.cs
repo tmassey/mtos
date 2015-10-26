@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using aXon.Rover.Annotations;
+using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
 
 namespace TestCanvas

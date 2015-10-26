@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\MapMode.cs" />
     <Compile Include="Models\Warehouse.cs" />
     <Compile Include="MongoDataService.cs" />
     <Compile Include="Properties\Annotations.cs" />

@@ -71,12 +71,8 @@ namespace TestCanvas
                         {RobotDirection.Forward, f},
                         {RobotDirection.Left, l},
                         {RobotDirection.Right, r},
-                        {RobotDirection.Reverse, rev},
-                        {RobotDirection.Rest, rest},
-                        {RobotDirection.FowardLeft, fl},
-                        {RobotDirection.FowardRight, fr},
-                        {RobotDirection.BackLeft, bl},
-                        {RobotDirection.BackRight, br},
+                        {RobotDirection.Reverse, rev}
+                    
                     };
                 KeyValuePair<RobotDirection, double> d = dirs.First(v => v.Value == 1.0);
 
@@ -128,9 +124,9 @@ namespace TestCanvas
                     {
                         switch (thrust)
                         {
-                            case RobotDirection.Rest:
-                                Thread.Sleep(100);
-                                break;
+                            //case RobotDirection.Rest:
+                            //    Thread.Sleep(100);
+                            //    break;
                             default:
                                 Thread.Sleep(50);
                                 break;

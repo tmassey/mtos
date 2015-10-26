@@ -36,14 +36,14 @@ namespace TestCanvas
         public RobotSimulator(Position source, Position destination)
         {
             Success = -10000;
-            Fuel = 200;
+            Fuel = 9000;
             Seconds = 0;
             Altitude = 100000;
             Rests = 0;
             Turns = 0;
-            Position = new double[2] {source.Latitude, source.Longitude};
-            Destination = new double[2] {destination.Latitude, destination.Longitude};
-            StartPosition = new double[2] {source.Latitude, source.Longitude};
+            Position = new double[2] {source.X, source.Y};
+            Destination = new double[2] {destination.X, destination.Y};
+            StartPosition = new double[2] {source.X, source.Y};
             CurrentDirection = RobotDirection.Forward;
             DistanceToDestination = CalculateDistance();
             LastDistance = DistanceToDestination;
@@ -376,15 +376,15 @@ namespace TestCanvas
         {
             CurrentDirection = newDirection;
             Seconds++;
-            if (newDirection == RobotDirection.Rest)
-            {
-                Rests++;
-                Fuel = 200;
-                return;
-            }
+            //if (newDirection == RobotDirection.Rest)
+            //{
+            //    Rests++;
+            //    Fuel = 200;
+            //    return;
+            //}
             if (Fuel > 0)
             {
-                Fuel -= 5;
+                Fuel -= 1;
             }
 
 
@@ -418,34 +418,34 @@ namespace TestCanvas
                 case RobotDirection.Reverse:
                     Position[0] = Position[0] + 1;
                     break;
-                case RobotDirection.FowardLeft:
-                    if (Position[0] - 1 >= 0 && Position[1] - 1 >= 0)
-                    {
-                        Position[0] = Position[0] - 1;
-                        Position[1] = Position[1] - 1;
-                    }
-                    break;
-                case RobotDirection.FowardRight:
-                    if (Position[0] - 1 >= 0 && Position[1] + 1 >= 0)
-                    {
-                        Position[0] = Position[0] - 1;
-                        Position[1] = Position[1] + 1;
-                    }
-                    break;
-                case RobotDirection.BackLeft:
-                    if (Position[0] + 1 >= 0 && Position[1] - 1 >= 0)
-                    {
-                        Position[0] = Position[0] + 1;
-                        Position[1] = Position[1] - 1;
-                    }
-                    break;
-                case RobotDirection.BackRight:
-                    if (Position[0] + 1 >= 0 && Position[1] + 1 >= 0)
-                    {
-                        Position[0] = Position[0] + 1;
-                        Position[1] = Position[1] + 1;
-                    }
-                    break;
+                //case RobotDirection.FowardLeft:
+                //    if (Position[0] - 1 >= 0 && Position[1] - 1 >= 0)
+                //    {
+                //        Position[0] = Position[0] - 1;
+                //        Position[1] = Position[1] - 1;
+                //    }
+                //    break;
+                //case RobotDirection.FowardRight:
+                //    if (Position[0] - 1 >= 0 && Position[1] + 1 >= 0)
+                //    {
+                //        Position[0] = Position[0] - 1;
+                //        Position[1] = Position[1] + 1;
+                //    }
+                //    break;
+                //case RobotDirection.BackLeft:
+                //    if (Position[0] + 1 >= 0 && Position[1] - 1 >= 0)
+                //    {
+                //        Position[0] = Position[0] + 1;
+                //        Position[1] = Position[1] - 1;
+                //    }
+                //    break;
+                //case RobotDirection.BackRight:
+                //    if (Position[0] + 1 >= 0 && Position[1] + 1 >= 0)
+                //    {
+                //        Position[0] = Position[0] + 1;
+                //        Position[1] = Position[1] + 1;
+                //    }
+                //    break;
             }
             if (Position[0] < 0)
                 Position[0] = 0;

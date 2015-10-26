@@ -1,3 +1,8 @@
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using aXon.Rover.Annotations;
+using aXon.Rover.Enumerations;
 using aXon.Rover.Interfaces;
 
 namespace aXon.Rover.Models
@@ -10,17 +15,60 @@ namespace aXon.Rover.Models
     /// Author:     Daniel Saidi [daniel.saidi@gmail.com]
     /// Link:       http://danielsaidi.github.com/nextra
     /// </remarks>
-    public class Position : IPosition
+    public class Position : IPosition, INotifyPropertyChanged
     {
-        public Position(double latitude, double longitude)
+        private double _latitude;
+        private double _longitude;
+        private Guid _id;
+        private MapMode _mapMode;
+
+        public MapMode MapMode
         {
-            Latitude = latitude;
-            Longitude = longitude;
+            get { return _mapMode; }
+            set
+            {
+                if (value == _mapMode) return;
+                _mapMode = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Position(double x, double y)
+        {
+            X = x;
+            Y = y;
         }
 
 
-        public double Latitude { get; private set; }
+        public double X
+        {
+            get { return _latitude; }
+            set
+            {
+                if (value.Equals(_latitude)) return;
+                _latitude = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public double Longitude { get; private set; }
+        public double Y
+        {
+            get { return _longitude; }
+            set
+            {
+                if (value.Equals(_longitude)) return;
+                _longitude = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

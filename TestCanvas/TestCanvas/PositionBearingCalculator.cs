@@ -23,10 +23,10 @@ namespace TestCanvas
 
         public double CalculateBearing(IPosition pos1, IPosition pos2)
         {
-            double lat1 = _angleConverter.ConvertDegreesToRadians(pos1.Latitude);
-            double lat2 = _angleConverter.ConvertDegreesToRadians(pos2.Latitude);
-            double dLon = _angleConverter.ConvertDegreesToRadians(pos2.Longitude) -
-                          _angleConverter.ConvertDegreesToRadians(pos1.Longitude);
+            double lat1 = _angleConverter.ConvertDegreesToRadians(pos1.X);
+            double lat2 = _angleConverter.ConvertDegreesToRadians(pos2.X);
+            double dLon = _angleConverter.ConvertDegreesToRadians(pos2.Y) -
+                          _angleConverter.ConvertDegreesToRadians(pos1.Y);
 
             double y = Math.Sin(dLon)*Math.Cos(lat2);
             double x = Math.Cos(lat1)*Math.Sin(lat2) - Math.Sin(lat1)*Math.Cos(lat2)*Math.Cos(dLon);
@@ -37,9 +37,9 @@ namespace TestCanvas
 
         public double CalculateRhumbBearing(IPosition pos1, IPosition pos2)
         {
-            double lat1 = _angleConverter.ConvertDegreesToRadians(pos1.Latitude);
-            double lat2 = _angleConverter.ConvertDegreesToRadians(pos2.Latitude);
-            double dLon = _angleConverter.ConvertDegreesToRadians(pos2.Longitude - pos1.Longitude);
+            double lat1 = _angleConverter.ConvertDegreesToRadians(pos1.X);
+            double lat2 = _angleConverter.ConvertDegreesToRadians(pos2.X);
+            double dLon = _angleConverter.ConvertDegreesToRadians(pos2.Y - pos1.Y);
 
             double dPhi = Math.Log(Math.Tan(lat2/2 + Math.PI/4)/Math.Tan(lat1/2 + Math.PI/4));
             if (Math.Abs(dLon) > Math.PI) dLon = (dLon > 0) ? -(2*Math.PI - dLon) : (2*Math.PI + dLon);

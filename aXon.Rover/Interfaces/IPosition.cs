@@ -10,7 +10,8 @@
     /// </remarks>
     public interface IPosition
     {
-        double Latitude { get; }
-        double Longitude { get; }
+
+        double X { get; }
+        double Y { get; }
     }
 }

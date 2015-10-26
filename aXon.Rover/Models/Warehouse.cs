@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using aXon.Rover.Annotations;
@@ -13,6 +14,7 @@ namespace aXon.Rover.Models
         private int _gridWidth;
         private int _width;
         private int _length;
+        private ObservableCollection<Position> _positions;
         public event PropertyChangedEventHandler PropertyChanged;
         public Guid Id
         {
@@ -21,6 +23,16 @@ namespace aXon.Rover.Models
             {
                 if (value.Equals(_id)) return;
                 _id = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<Position> Positions
+        {
+            get { return _positions; }
+            set
+            {
+                if (Equals(value, _positions)) return;
+                _positions = value;
                 OnPropertyChanged();
             }
         }

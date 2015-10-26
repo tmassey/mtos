@@ -58,9 +58,9 @@ namespace aXon.Rover
             Altitude = 100000;
             Rests = 0;
             Turns = 0;
-            Position = new double[2] { source.Latitude, source.Longitude };
-            Destination = new double[2] { destination.Latitude, destination.Longitude };
-            StartPosition = new double[2] { source.Latitude, source.Longitude };
+            Position = new double[2] { source.X, source.Y };
+            Destination = new double[2] { destination.X, destination.Y };
+            StartPosition = new double[2] { source.X, source.Y };
             CurrentDirection = RobotDirection.Forward;
             DistanceToDestination = CalculateDistance();
             LastDistance = DistanceToDestination;

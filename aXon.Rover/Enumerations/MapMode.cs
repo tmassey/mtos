@@ -1,4 +1,4 @@
-namespace TestCanvas
+namespace aXon.Rover.Enumerations
 {
     public enum MapMode
     {
