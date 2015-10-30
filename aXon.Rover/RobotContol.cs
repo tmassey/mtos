@@ -22,6 +22,7 @@ namespace aXon.Rover
     public class RobotContol 
     {
         public MongoDataService Mds { get; set; }
+        public static Warehouse Warehouse { get; set; }
         public static Object ConsoleLock;
         public static Object NetworkLock;
         public static Position SourceLocation { get; set; }
@@ -40,6 +41,7 @@ namespace aXon.Rover
             InitConnection();
             Mds = new MongoDataService();
             _ProgressQueue = new MessageQueue<TaskProgressMessage>(false, _Connection);
+            Warehouse=Mds.GetCollectionQueryModel<Warehouse>().FirstOrDefault();
         }
         private static void InitConnection()
         {

@@ -19,7 +19,7 @@ namespace aXon.Worker
 
         public MongoDataService Mds { get; set; }
 	    private DateTime _starttime;
-		public void Execute (Guid taskId, MongoClient client)
+		public void Execute (Guid taskId)
 		{
 		    _starttime = DateTime.Now;
 		    try
@@ -33,8 +33,9 @@ namespace aXon.Worker
 		                    break;
 		                case RoverTaskType.Train:
 		                    RoverTrainProperties trainprops = task.TrainingProperties;
-                            RobotContol c = new RobotContol();
-                            c.BuildNetwork(trainprops.StartPosition.X,trainprops.StartPosition.Y,trainprops.DestinationPosition.X,trainprops.DestinationPosition.Y);		                    
+                            RobotContol c = new RobotContol(_starttime,taskId);
+                            c.BuildNetwork(trainprops.StartPosition.X,trainprops.StartPosition.Y,trainprops.DestinationPosition.X,trainprops.DestinationPosition.Y);
+		                    break;
 		            }
 		        else
 		        {

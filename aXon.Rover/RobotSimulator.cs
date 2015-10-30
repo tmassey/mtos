@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Encog.Util;
 using aXon.Rover.Annotations;
@@ -186,7 +187,7 @@ namespace aXon.Rover
                 double perctraverced = (startdist/traveled);
                 if (Success > 0)
                     perctraverced = 10;
-                return (int) ((Fuel*10) + Success + perctraverced + (Rests*-100) + (Seconds*-1));
+                return (int) ( Success + perctraverced + (Seconds*-1));
             }
         }
 
@@ -201,7 +202,7 @@ namespace aXon.Rover
             {
                 if (DistanceToDestination == 0)
                 {                   
-                    Success = 1000;
+                    Success = 1000000;
                     return false;
                 }
                 double startdist = CalculateDistance(StartPosition, Destination);
@@ -371,10 +372,10 @@ namespace aXon.Rover
             //    Fuel = 200;
             //    return;
             //}
-            if (Fuel > 0)
-            {
-                Fuel -= 1;
-            }
+            //if (Fuel > 0)
+            //{
+            //    Fuel -= 1;
+            //}
 
 
             if (!CanGoInDirection(newDirection))
@@ -415,6 +416,9 @@ namespace aXon.Rover
                 Position[1] = 0;
 
             Position = new double[2]{Position[0],Position[1]};
+            Console.SetCursorPosition((int)Position[0],(int)Position[1]);
+            Console.Write('#');
+
             UpdateHeading();
         }
 
@@ -430,8 +434,58 @@ namespace aXon.Rover
 
         public bool CanGoInDirection(CommandDirection newDirection)
         {
-            if (Fuel == 0) return false;
-            return true;
+            var pos = Position;
+            switch (newDirection)
+            {
+                case CommandDirection.MoveForward:
+                    pos[0] = pos[0] - 1;
+                    break;
+                case CommandDirection.TurnLeft:
+                    pos[1] = pos[1] - 1;
+
+                    break;
+                case CommandDirection.TurnRight:
+                    pos[1] = pos[1] + 1;
+                    break;
+                case CommandDirection.MoveInReverse:
+                    pos[0] = pos[0] + 1;
+                    break;
+            }
+            if (pos[0] < 0)
+                pos[0] = 0;
+            if (pos[1] < 0)
+                pos[1] = 0;
+
+            var warpos =(from p in RobotContol.Warehouse.Positions where p.X == pos[0] && p.Y == pos[1] select p).FirstOrDefault();
+            if (warpos == null)
+                return false;
+            switch (warpos.MapMode)
+            {
+                case MapMode.ObstructionMode:
+                    return false;                    
+                case MapMode.PersonMode:
+                    return false;      
+                case MapMode.StorageMode:
+                    if (Destination[0] == pos[0] && Destination[1] == pos[1])
+                        return true;
+                    if (StartPosition[0] == pos[0] && StartPosition[1] == pos[1])
+                        return true;
+                    return false;
+                case MapMode.PickupMode:
+                    if (Destination[0] == pos[0] && Destination[1] == pos[1])
+                        return true;
+                    if (StartPosition[0] == pos[0] && StartPosition[1] == pos[1])
+                        return true;
+                    return false;
+                case MapMode.ShipMode:
+                    if (Destination[0] == pos[0] && Destination[1] == pos[1])
+                        return true;
+                    if (StartPosition[0] == pos[0] && StartPosition[1] == pos[1])
+                        return true;
+                    return false;
+                default:
+                    return true;                  
+            }            
         }
 
         public String Telemetry()

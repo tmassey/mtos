@@ -150,7 +150,7 @@ namespace aXon.Warehouse.Desktop
             SetWindowTitle();
             Mds = new MongoDataService();
             InitConnection();
-            RC = new RobotContol();
+            RC = new RobotContol(DateTime.Now,Guid.Empty);
             SourceData = new DataSource();
             SourceData.ModeMap = MapMode.ShipMode;
             SourceData.Simulation = new RobotSimulator(new Position(0, 0), new Position(40, 60));
@@ -177,11 +177,7 @@ namespace aXon.Warehouse.Desktop
         private void BuildNetwork(double slat, double slon, double lat, double lon)
         {
             BasicNetwork network = null;
-            NeuralNetwork nn = Mds.GetCollectionQueryModel<NeuralNetwork>(Query.And(Query.EQ("StartPosition.X", slat),
-                                                                                    Query.EQ("StartPosition.Y", slon),
-                                                                                    Query.EQ("EndPosition.X", lat),
-                                                                                    Query.EQ("EndPosition.Y", lon)))
-                                  .FirstOrDefault();
+            NeuralNetwork nn = Mds.GetCollectionQueryModel<NeuralNetwork>(Query.And(Query.EQ("StartPosition.X", slat),Query.EQ("StartPosition.Y", slon),Query.EQ("EndPosition.X", lat),Query.EQ("EndPosition.Y", lon))).FirstOrDefault();
             if (nn == null)
             {
                 var t = new TaskMessage
@@ -192,11 +188,24 @@ namespace aXon.Warehouse.Desktop
                         TaskScript = new aXon.Worker.RoverWorker().GetType().ToString(),
                         TransmisionDateTime = DateTime.Now,
                         TaskId = Guid.NewGuid()
-                    };
-                //TODO: Add Code to save details for the Task and what the network needs to build. 
+                    };                
                 var col = Mds.DataBase.GetCollection<RoverTask>("RoverTask");
+                var task = new RoverTask
+                    {
+                        Status=TaskTransport.TaskStatus.Pending,
+                        TaskType = RoverTaskType.Train,
+                        Id = t.TaskId,
+                        TrainingProperties =
+                            new RoverTrainProperties
+                                {
+                                    Id = Guid.NewGuid(),
+                                    StartPosition = new Position(slat, slon),
+                                    DestinationPosition = new Position(lat, lon)
+                                }
+                    };
+                col.Save(task);
                 var q = new MessageQueue<TaskMessage>(false, _Connection);
-                q.Publish(t);
+                q.Publish(t);                
                 DoEvents();
             }
             else
@@ -330,21 +339,58 @@ namespace aXon.Warehouse.Desktop
 
         private void RunNetworks(object sender, RoutedEventArgs e)
         {
-            for (double slat = 0; slat <= 90; slat += 20)
+            var reclocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.PickupMode select p);
+            var shiplocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.ShipMode select p);
+            var storelocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.StorageMode select p);
+            var chrlocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.ChargeMode select p);
+            foreach (var cl in chrlocs)
             {
-                for (double slon = 0; slon <= 90; slon += 20)
+                SourceLocation = new Position(cl.X, cl.Y);
+                foreach (var l in reclocs.ToArray())
+                {                   
+                    DestLocation = new Position(l.X, l.Y);
+                    BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                }
+                foreach (var l in shiplocs.ToArray())
                 {
-                    for (double lat = 0; lat <= 90; lat += 20)
-                    {
-                        for (double lon = 0; lon <= 90; lon += 20)
-                        {
-                            SourceLocation = new Position(slat, slon);
-                            DestLocation = new Position(lat, lon);
-                            BuildNetwork(slat, slon, lat, lon);
-                        }
-                    }
+                    DestLocation = new Position(l.X, l.Y);
+                    BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                }
+                foreach (var l in storelocs.ToArray())
+                {
+                    DestLocation = new Position(l.X, l.Y);
+                    BuildNetwork(cl.X, cl.Y, l.X, l.Y);
                 }
             }
+            foreach (var cl in reclocs)
+            {
+                SourceLocation = new Position(cl.X, cl.Y);
+                foreach (var l in chrlocs.ToArray())
+                {
+                    DestLocation = new Position(l.X, l.Y);
+                    BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                }                
+                foreach (var l in storelocs.ToArray())
+                {
+                    DestLocation = new Position(l.X, l.Y);
+                    BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                }
+            }
+            foreach (var cl in storelocs)
+            {
+                SourceLocation = new Position(cl.X, cl.Y);
+                foreach (var l in chrlocs.ToArray())
+                {
+                    DestLocation = new Position(l.X, l.Y);
+                    BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                }
+                foreach (var l in shiplocs.ToArray())
+                {
+                    DestLocation = new Position(l.X, l.Y);
+                    BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                }
+            }
+            
         }
 
         private void CommitWarehouse(object sender, RoutedEventArgs e)

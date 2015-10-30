@@ -49,7 +49,7 @@ namespace aXon.Rover
             {
                 var input = new BasicMLData(2);
                 
-                input[0] = _CanGoStats.Normalize(sim.ShoudRest);
+                input[0] = sim.DistanceToDestination;
                 input[1] = _hStats.Normalize(sim.Heading);
               
 

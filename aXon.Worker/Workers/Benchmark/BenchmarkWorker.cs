@@ -36,7 +36,7 @@ namespace aXon.Worker
 
 		#region ITaskWorker implementation
 
-		public void Execute (Guid taskId, MongoClient client)
+		public void Execute (Guid taskId)
 		{
 			try {
 				double[][] input = Generate (ROW_COUNT, INPUT_COUNT);
@@ -60,9 +60,9 @@ namespace aXon.Worker
 				sw.Stop ();
 				avg = avg / 10;
 				RaiseOnComplete (new OnCompletionArgs (){ TaskId = taskId, Totaltime = sw.ElapsedMilliseconds, Average = avg });
-				var db = client.GetDatabase ("Results");
-				var collection = db.GetCollection<BenchmarkResult> ("Benchmark");
-				collection.InsertOneAsync (new BenchmarkResult () { Id = taskId, Average = avg, Totaltime = sw.ElapsedMilliseconds });
+                //var db = client.GetDatabase ("Results");
+                //var collection = db.GetCollection<BenchmarkResult> ("Benchmark");
+                //collection.InsertOneAsync (new BenchmarkResult () { Id = taskId, Average = avg, Totaltime = sw.ElapsedMilliseconds });
 
 			} catch (SystemException e) {
 				RaiseOnErrorOccured (new OnErrorArgs (){ TaskId = taskId, Error = e.Message });

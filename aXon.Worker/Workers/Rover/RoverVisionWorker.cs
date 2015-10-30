@@ -11,7 +11,7 @@ namespace aXon.Worker
 	{
 		#region ITaskWorker implementation
 
-		public void Execute (Guid taskId, MongoClient client)
+		public void Execute (Guid taskId)
 		{
 			//			try {
 			//				double[][] input = Generate (ROW_COUNT, INPUT_COUNT);
