@@ -56,7 +56,7 @@ namespace aXon.TaskTransport.Messages
 		public decimal PercentComplete { get; set; }
 
 		public TaskStatus Status { get; set; }
-
+        public string Details { get; set; }
 	}
 	
 }

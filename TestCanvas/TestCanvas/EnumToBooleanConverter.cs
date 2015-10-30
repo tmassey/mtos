@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Data;
 
-namespace TestCanvas
+namespace aXon.Warehouse.Desktop
 {
     public class EnumToBooleanConverter : IValueConverter
     {

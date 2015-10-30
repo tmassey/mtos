@@ -9,8 +9,8 @@ namespace aXon.TaskTransport
 		Starting,
 		InProcess,
 		SavingResults,
-		Complete
-
+		Complete,
+        Failed
 	}
 	
 }

@@ -8,19 +8,11 @@ namespace aXon.Rover
     {
         public double CalculateScore(IMLMethod network)
         {
-            NeuralRobot pilot = new NeuralRobot((BasicNetwork)network, false);
-
-            var score = pilot.ScorePilot(RobotContol.SourceLocation, RobotContol.DestLocation);
+            var pilot = new NeuralRobot((BasicNetwork)network, false, RobotContol.SourceLocation, RobotContol.DestLocation);
+            int score = pilot.ScorePilot();
             RobotContol.Scores.Add(score);
-            var average = RobotContol.GetitterationAverage();
-
-            //lock (RobotContol.ConsoleLock)
-            //{
-            //    // Console.Clear();
-            //    Console.SetCursorPosition(60, 0);
-            //    Console.ForegroundColor = ConsoleColor.White;
-            //    Console.WriteLine(@" Itteration Best: " + average);
-            //}
+            double best = RobotContol.GetitterationBest();
+            double average = RobotContol.GetitterationAverage();            
             return score;
         }
 
@@ -31,7 +23,7 @@ namespace aXon.Rover
         }
 
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool RequireSingleThreaded
         {
             get { return false; }

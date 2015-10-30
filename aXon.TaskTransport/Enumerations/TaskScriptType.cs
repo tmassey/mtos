@@ -6,7 +6,8 @@ namespace aXon.TaskTransport
 	{
 		CSharp,
 		Shell,
-		Python
+		Python,
+        LoadWorker
 	}
 }
 

@@ -1,231 +1,198 @@
-// Encog(tm) Core v3.2 - .Net Version
-// http://www.heatonresearch.com/encog/
-//
-// Copyright 2008-2014 Heaton Research, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//   
-// For more information on Heaton Research copyrights, licenses 
-// and trademarks visit:
-// http://www.heatonresearch.com/copyright
-//
-
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Encog.Util;
+using aXon.Rover.Annotations;
 using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
 using aXon.Rover.Utilities;
 
 namespace aXon.Rover
 {
-    public class RobotSimulator
+    public class RobotSimulator : INotifyPropertyChanged
     {
-        //public const double Gravity = 1.62;
-        //public const double Thrust = 3;
-        //public const double TerminalVelocity = 100;
-        private static Random _random = new Random();
-        public double[] Position { get; set; }
-        public double[] Destination { get; set; }
-        public double[] StartPosition { get; set; }
-        public double StartDistance { get; set; }
-        public ConsoleColor Color = GetRandomConsoleColor();
+        private static readonly Random _random = new Random();
+        private double[] _position;
+        private double[] _destination;
+        private double[] _startPosition;
+        private double _startDistance;
+        private double _fuel;
+        private int _seconds;
+        private double _altitude;
+        private double _turns;
+        private double _rests;
+        private double _success;
+        private double _lastDistance;
+        private double _previousDistance;
+        private double _distanceToDestination;
+        private double _heading;
+        private CommandDirection _currentDirection;
+        public event OnPositionChanged PositionChanged;
 
-
-        private static ConsoleColor GetRandomConsoleColor()
+        protected virtual void OnPositionChanged1(Position args)
         {
-            var consoleColors = Enum.GetValues(typeof(ConsoleColor));
-            var clr = (ConsoleColor)consoleColors.GetValue(_random.Next(consoleColors.Length));
-            if (clr == ConsoleColor.Black)
-                clr = GetRandomConsoleColor();
-            return clr;
+            OnPositionChanged handler = PositionChanged;
+            if (handler != null) handler(this, args);
         }
 
         public RobotSimulator(Position source, Position destination)
         {
             Success = -10000;
-            Fuel = 200;
+            Fuel = 9000;
             Seconds = 0;
             Altitude = 100000;
             Rests = 0;
             Turns = 0;
-            Position = new double[2] { source.X, source.Y };
-            Destination = new double[2] { destination.X, destination.Y };
-            StartPosition = new double[2] { source.X, source.Y };
-            CurrentDirection = RobotDirection.Forward;
+            Position = new double[2] {source.X, source.Y};
+            Destination = new double[2] {destination.X, destination.Y};
+            StartPosition = new double[2] {source.X, source.Y};
+            CurrentDirection = CommandDirection.MoveForward;
             DistanceToDestination = CalculateDistance();
             LastDistance = DistanceToDestination;
             PreviousDistance = LastDistance;
             StartDistance = DistanceToDestination;
             UpdateHeading();
-            lock (RobotContol.ConsoleLock)
+            
+        }
+
+        public double[] Position
+        {
+            get { return _position; }
+            set
             {
-                Console.ForegroundColor = Color;
-                Console.SetCursorPosition((int)Destination[1], (int)Destination[0]);
-                Console.Write("X");
+                if (Equals(value, _position)) return;
+                _position = value;
+                OnPropertyChanged();
+                OnPropertyChanged("LeftDistance");
+                OnPropertyChanged("FrontDistance");
+                OnPropertyChanged("RightDistance");
+                OnPropertyChanged("BackDistance");
             }
-
-
         }
 
-        private double CalculateDistance()
+        public double[] Destination
         {
-            var xdist = Position[0] - Destination[0];
-            var ydist = Position[1] - Destination[1];
-            if (xdist < 0)
-                xdist = xdist * -1;
-            if (ydist < 0)
-                ydist = ydist * -1;
-
-            return xdist + ydist;
-
-
+            get { return _destination; }
+            set
+            {
+                if (Equals(value, _destination)) return;
+                _destination = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+                OnPropertyChanged("Traveling");
+            }
         }
-        private double CalculateDistance(double[] source, double[] dest)
+
+        public double[] StartPosition
         {
-            var xdist = source[0] - dest[0];
-            var ydist = source[1] - dest[1];
-            if (xdist < 0)
-                xdist = xdist * -1;
-            if (ydist < 0)
-                ydist = ydist * -1;
-
-            return xdist + ydist;
-
-
+            get { return _startPosition; }
+            set
+            {
+                if (Equals(value, _startPosition)) return;
+                _startPosition = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+                OnPropertyChanged("Traveling");
+            }
         }
 
-        public double Fuel { get; set; }
-        public int Seconds { get; set; }
-        public double Altitude { get; set; }
-        public double Turns { get; set; }
-        public double Rests { get; set; }
-        public RobotDirection CurrentDirection { get; set; }
+        public double StartDistance
+        {
+            get { return _startDistance; }
+            set { _startDistance = value; }
+        }
+
+        public double Fuel
+        {
+            get { return _fuel; }
+            set
+            {
+                if (value.Equals(_fuel)) return;
+                _fuel = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+                OnPropertyChanged("ShoudRest");
+                OnPropertyChanged("Traveling");
+            }
+        }
+
+        public int Seconds
+        {
+            get { return _seconds; }
+            set
+            {
+                if (value == _seconds) return;
+                _seconds = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+                OnPropertyChanged("Traveling");
+            }
+        }
+
+        public double Altitude
+        {
+            get { return _altitude; }
+            set
+            {
+                if (value.Equals(_altitude)) return;
+                _altitude = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Turns
+        {
+            get { return _turns; }
+            set
+            {
+                if (value.Equals(_turns)) return;
+                _turns = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Rests
+        {
+            get { return _rests; }
+            set
+            {
+                if (value.Equals(_rests)) return;
+                _rests = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+            }
+        }
+
+        public CommandDirection CurrentDirection
+        {
+            get { return _currentDirection; }
+            set
+            {
+                if (value == _currentDirection) return;
+                _currentDirection = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int Score
         {
             get
             {
-                var startdist = CalculateDistance(StartPosition, Destination);
-                var lastdist = CalculateDistance();
-                var closeness = startdist - lastdist;
-                var traveled = startdist - closeness;
+                double startdist = CalculateDistance(StartPosition, Destination);
+                double lastdist = CalculateDistance();
+                double closeness = startdist - lastdist;
+                double traveled = startdist - closeness;
 
-                var perctraverced = (startdist / traveled);
+                double perctraverced = (startdist/traveled);
                 if (Success > 0)
                     perctraverced = 10;
-                return (int)((Fuel * 10) + Success + perctraverced + (Rests * -1) + (Seconds * -1));
+                return (int) ((Fuel*10) + Success + perctraverced + (Rests*-100) + (Seconds*-1));
             }
         }
+
         public double ShoudRest
         {
-            get { return Fuel / 200; }
-        }
-        public void Turn(RobotDirection newDirection)
-        {
-            //Thread.Sleep(250);
-            CurrentDirection = newDirection;
-            Seconds++;
-            if (newDirection == RobotDirection.Rest)
-            {
-                Rests++;
-                Fuel += 10;
-                if (Fuel >= 200)
-                    Fuel = 200;
-                return;
-            }
-            if (Fuel > 0)
-            {
-                Fuel -= 5;
-            }
-
-
-            if (!CanGoInDirection(newDirection))
-            {
-                //Console.Write(@"#");
-                return;
-            }
-            //Console.Write(@".");
-            MoveToNewPostion(newDirection);
-
-            DistanceToDestination = CalculateDistance();
-
-
-            if (Altitude < 0)
-                Altitude = 0;
-            // Console.WriteLine(Telemetry());
-        }
-
-        private void MoveToNewPostion(RobotDirection newDirection)
-        {
-            switch (newDirection)
-            {
-                case RobotDirection.Forward:
-                    Position[0] = Position[0] - 1;
-                    break;
-                case RobotDirection.Left:
-                    Position[1] = Position[1] - 1;
-
-                    break;
-                case RobotDirection.Right:
-                    Position[1] = Position[1] + 1;
-                    break;
-                case RobotDirection.Reverse:
-                    Position[0] = Position[0] + 1;
-                    break;
-            }
-            if (Position[0] < 0)
-                Position[0] = 0;
-            if (Position[1] < 0)
-                Position[1] = 0;
-
-            //if (Position[0] > 90)
-            //    Position[0] = 90;
-            //if (Position[1] > 60)
-            //    Position[1] = 60;
-            UpdateHeading();
-        }
-
-        private void UpdateHeading()
-        {
-            var src = new Position(Position[0], Position[1]);
-            var dest = new Position(Destination[0], Destination[1]);
-            PositionBearingCalculator calc = new PositionBearingCalculator(new AngleConverter());
-            Heading = calc.CalculateBearing(dest, src);
-        }
-
-        public void setdestlose()
-        {
-            //lock (RobotContol.ConsoleLock)
-            //{
-            //    Console.ForegroundColor = ConsoleColor.Black;
-            //    Console.SetCursorPosition((int)Destination[1], (int)Destination[0]);
-            //    Console.Write("X");
-            //}
-        }
-
-        public bool CanGoInDirection(RobotDirection newDirection)
-        {
-            if (Fuel == 0) return false;
-            return true;
-        }
-
-        public String Telemetry()
-        {
-            return string
-                .Format("time: {0} s, Fuel: {1} l, dist: {2} ft,  dir: {3}, x: {4}, y: {5}, Score: {6}, Should Rest: {7}",
-                Seconds,
-                Fuel,
-                Format.FormatDouble(DistanceToDestination, 4),
-                CurrentDirection.ToString(), Position[0], Position[1], Score, ShoudRest);
+            get { return Fuel/200; }
         }
 
         public bool Traveling
@@ -233,28 +200,19 @@ namespace aXon.Rover
             get
             {
                 if (DistanceToDestination == 0)
-                {
-                    lock (RobotContol.ConsoleLock)
-                    {
-                        Console.ForegroundColor = Color;
-                        Console.SetCursorPosition((int)Destination[1], (int)Destination[0]);
-                        Console.Write("W");
-                    }
+                {                   
                     Success = 1000;
                     return false;
                 }
-                var startdist = CalculateDistance(StartPosition, Destination);
-                var lastdist = CalculateDistance();
-                var perdist = 100000 / startdist;
-                var closeness = lastdist * perdist;
-                //double traveled = closeness;
-                //if(closeness<0)
-                //    traveled = closeness * -1;
+                double startdist = CalculateDistance(StartPosition, Destination);
+                double lastdist = CalculateDistance();
+                double perdist = 100000/startdist;
+                double closeness = lastdist*perdist;
+                
                 if (PreviousDistance < DistanceToDestination)
                 {
                     Seconds *= 100;
-                    Success = closeness * -1;
-                    setdestlose();
+                    Success = closeness*-1;                    
                     return false;
                 }
                 else
@@ -262,40 +220,76 @@ namespace aXon.Rover
                     PreviousDistance = LastDistance;
                     LastDistance = DistanceToDestination;
                 }
-                //if (StartDistance + 2 < DistanceToDestination)
-                //    return false;
+               
                 if (Seconds >= 2000)
                 {
                     Seconds *= 100;
-
-
-                    Success = closeness * -1;
-
-                    setdestlose();
+                    Success = closeness*-1;                
                     return false;
                 }
                 if (Fuel == 0 && Seconds >= 2000 && DistanceToDestination > 0)
                 {
                     Seconds *= 100;
-                    Success = closeness * -1;
-                    setdestlose();
+                    Success = closeness*-1;                    
                     return false;
                 }
                 return true;
-
             }
         }
-        public double Success { get; set; }
-        public double LastDistance { get; set; }
-        public double PreviousDistance { get; set; }
-        public double DistanceToDestination { get; set; }
+
+        public double Success
+        {
+            get { return _success; }
+            set
+            {
+                if (value.Equals(_success)) return;
+                _success = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+            }
+        }
+
+        public double LastDistance
+        {
+            get { return _lastDistance; }
+            set
+            {
+                if (value.Equals(_lastDistance)) return;
+                _lastDistance = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Traveling");
+            }
+        }
+
+        public double PreviousDistance
+        {
+            get { return _previousDistance; }
+            set
+            {
+                if (value.Equals(_previousDistance)) return;
+                _previousDistance = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Traveling");
+            }
+        }
+
+        public double DistanceToDestination
+        {
+            get { return _distanceToDestination; }
+            set
+            {
+                if (value.Equals(_distanceToDestination)) return;
+                _distanceToDestination = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Traveling");
+            }
+        }
 
         public double LeftDistance
         {
             get
             {
-
-                var col = Position[1];
+                double col = Position[1];
 
                 return col;
             }
@@ -305,8 +299,8 @@ namespace aXon.Rover
         {
             get
             {
-                var row = Position[0];
-                var col = Position[1];
+                double row = Position[0];
+                double col = Position[1];
                 return row;
             }
         }
@@ -315,8 +309,8 @@ namespace aXon.Rover
         {
             get
             {
-                var row = Position[0];
-                var col = Position[1];
+                double row = Position[0];
+                double col = Position[1];
                 return col;
             }
         }
@@ -325,11 +319,141 @@ namespace aXon.Rover
         {
             get
             {
-                var row = Position[0];
+                double row = Position[0];
                 return -row;
             }
         }
 
-        public double Heading { get; set; }
+        public double Heading
+        {
+            get { return _heading; }
+            set
+            {
+                if (value.Equals(_heading)) return;
+                _heading = value;
+                OnPropertyChanged();
+            }
+        }
+
+       
+
+        private double CalculateDistance()
+        {
+            double xdist = Position[0] - Destination[0];
+            double ydist = Position[1] - Destination[1];
+            if (xdist < 0)
+                xdist = xdist*-1;
+            if (ydist < 0)
+                ydist = ydist*-1;
+
+            return xdist + ydist;
+        }
+
+        private double CalculateDistance(double[] source, double[] dest)
+        {
+            double xdist = source[0] - dest[0];
+            double ydist = source[1] - dest[1];
+            if (xdist < 0)
+                xdist = xdist*-1;
+            if (ydist < 0)
+                ydist = ydist*-1;
+
+            return xdist + ydist;
+        }
+
+        public void Turn(CommandDirection newDirection)
+        {
+            CurrentDirection = newDirection;
+            Seconds++;
+            //if (newDirection == RobotDirection.Rest)
+            //{
+            //    Rests++;
+            //    Fuel = 200;
+            //    return;
+            //}
+            if (Fuel > 0)
+            {
+                Fuel -= 1;
+            }
+
+
+            if (!CanGoInDirection(newDirection))
+            {                
+                return;
+            }            
+            MoveToNewPostion(newDirection);
+            OnPositionChanged1(new Position(Position[0],Position[1]));
+            DistanceToDestination = CalculateDistance();
+
+            if (Altitude < 0)
+                Altitude = 0;
+         
+        }
+
+        private void MoveToNewPostion(CommandDirection newDirection)
+        {
+            switch (newDirection)
+            {
+                case CommandDirection.MoveForward:
+                    Position[0] = Position[0] - 1;
+                    break;
+                case CommandDirection.TurnLeft:
+                    Position[1] = Position[1] - 1;
+
+                    break;
+                case CommandDirection.TurnRight:
+                    Position[1] = Position[1] + 1;
+                    break;
+                case CommandDirection.MoveInReverse:
+                    Position[0] = Position[0] + 1;
+                    break;
+               
+            }
+            if (Position[0] < 0)
+                Position[0] = 0;
+            if (Position[1] < 0)
+                Position[1] = 0;
+
+            Position = new double[2]{Position[0],Position[1]};
+            UpdateHeading();
+        }
+
+        private void UpdateHeading()
+        {
+            var src = new Position(Position[0], Position[1]);
+            var dest = new Position(Destination[0], Destination[1]);
+            var calc = new PositionBearingCalculator(new AngleConverter());
+            Heading = calc.CalculateBearing(src, dest);
+        }
+
+
+
+        public bool CanGoInDirection(CommandDirection newDirection)
+        {
+            if (Fuel == 0) return false;
+            return true;
+        }
+
+        public String Telemetry()
+        {            
+            return string
+                .Format(
+                    "time: {0} s, Fuel: {1} l, dist: {2} ft,  dir: {3}, x: {4}, y: {5}, Score: {6}, Should Rest: {7}",
+                    Seconds,
+                    Fuel,
+                    Format.FormatDouble(DistanceToDestination, 4),
+                    CurrentDirection.ToString(), Position[0], Position[1], Score, ShoudRest);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
+
+    public delegate void OnPositionChanged(object sender, Position args);
 }

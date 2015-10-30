@@ -53,7 +53,6 @@
     <Compile Include="Interfaces\ITaskWorker.cs" />
     <Compile Include="Workers\Benchmark\BenchmarkResult.cs" />
     <Compile Include="Workers\Benchmark\BenchmarkWorker.cs" />
-    <Compile Include="Workers\TickTakToe\TickTackToeTrainWorker.cs" />
     <Compile Include="Workers\Rover\RoverWorker.cs" />
     <Compile Include="Workers\Rover\Models\RoverSensorReadings.cs" />
     <Compile Include="Workers\Rover\Models\RoverResults.cs" />
@@ -72,10 +71,6 @@
     <ProjectReference Include="..\aXon.TaskTransport\aXon.TaskTransport.csproj">
       <Project>{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}</Project>
       <Name>aXon.TaskTransport</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\aXon.TicTacToe\aXon.TicTacToe.csproj">
-      <Project>{50053934-BD18-4185-9A81-E70D77D442B4}</Project>
-      <Name>aXon.TicTacToe</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

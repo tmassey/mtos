@@ -15,9 +15,8 @@
  */
 
 using System;
-using System.ComponentModel;
 
-namespace TestCanvas.Annotations
+namespace aXon.Warehouse.Desktop.Properties
 {
   /// <summary>
   /// Indicates that marked element should be localized or not.

@@ -1,15 +1,15 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using aXon.Rover;
 using aXon.Rover.Annotations;
 using aXon.Rover.Enumerations;
-using aXon.Rover.Models;
 
-namespace TestCanvas
+namespace aXon.Warehouse.Desktop
 {
     public class DataSource: INotifyPropertyChanged
     {
         private RobotSimulator _simulation;
-        private Warehouse _warehouse;
+        private Rover.Models.Warehouse _warehouse;
        
         private MapMode _mapMode;
      
@@ -25,7 +25,7 @@ namespace TestCanvas
             }
         }
 
-        public Warehouse Warehouse
+        public Rover.Models.Warehouse Warehouse
         {
             get { return _warehouse; }
             set

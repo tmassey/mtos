@@ -42,9 +42,12 @@
     <Compile Include="JobModels\Trigger.cs" />
     <Compile Include="Networks\NetworkConfiguration.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Networks\" />
+    <ProjectReference Include="..\aXon.TaskTransport\aXon.TaskTransport.csproj">
+      <Project>{8cb651b0-1ce1-41ab-a1ea-b1b490fca135}</Project>
+      <Name>aXon.TaskTransport</Name>
+    </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup />
 </Project>

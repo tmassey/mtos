@@ -55,7 +55,7 @@ namespace aXon.Worker
 						TaskId = taskId
 					});
 					avg += time;
-					Console.WriteLine ("Regular: {0}ms", time);
+					
 				}
 				sw.Stop ();
 				avg = avg / 10;

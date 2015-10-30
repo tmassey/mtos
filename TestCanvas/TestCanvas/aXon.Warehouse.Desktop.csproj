@@ -7,8 +7,8 @@
     <ProjectGuid>{F253B786-FAAE-47B3-92F2-74810386668B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestCanvas</RootNamespace>
-    <AssemblyName>TestCanvas</AssemblyName>
+    <RootNamespace>aXon.Warehouse.Desktop</RootNamespace>
+    <AssemblyName>aXon.Warehouse.Desktop</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -44,13 +44,22 @@
     <Reference Include="DevExpress.Xpf.Gauges.v14.2, Version=14.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Layout.v14.2.Core, Version=14.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpf.NavBar.v14.2, Version=14.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="encog-core-cs">
-      <HintPath>..\..\..\Tmassey Profile\Desktop\encog-dotnet-core-3.3\encog-core-cs\bin\Debug\encog-core-cs.dll</HintPath>
+    <Reference Include="encog-core-cs, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e882172b12155d4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\encog-dotnet-core.3.3.0\lib\net35\encog-core-cs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=1.4.1.24072, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\aXon.Rover\bin\Debug\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver">
       <HintPath>D:\Development\Sc2\lib\mongo-csharp-driver\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="RabbitMQ.Client, Version=3.5.4.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\aXon\bin\Debug\RabbitMQ.Client.dll</HintPath>
+    </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -76,40 +85,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataSource.cs" />
-    <Compile Include="EnumMatchToBooleanConverter.cs" />
     <Compile Include="EnumToBooleanConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="RobotContol.cs" />
-    <Compile Include="RobotDirection.cs" />
-    <Compile Include="RobotScore.cs" />
-    <Compile Include="RobotSimulator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AngleConverter.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DistanceConverter.cs" />
-    <Compile Include="DistanceUnit.cs" />
-    <Compile Include="GeoConstants.cs" />
-    <Compile Include="IAngleConverter.cs" />
-    <Compile Include="IDistanceConverter.cs" />
-    <Compile Include="IPosition.cs" />
-    <Compile Include="IPositionBearingCalculator.cs" />
-    <Compile Include="IPositionDistanceCalculator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NeuralRobot.cs" />
-    <Compile Include="Position.cs" />
-    <Compile Include="PositionBearingCalculator.cs" />
-    <Compile Include="PositionDistanceCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -128,6 +119,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -149,6 +141,10 @@
     <ProjectReference Include="..\..\aXon.TaskTransport\aXon.TaskTransport.csproj">
       <Project>{8cb651b0-1ce1-41ab-a1ea-b1b490fca135}</Project>
       <Name>aXon.TaskTransport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\aXon.Worker\aXon.Worker.csproj">
+      <Project>{11267f83-8ba8-4157-b347-7bfdb28860f0}</Project>
+      <Name>aXon.Worker</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

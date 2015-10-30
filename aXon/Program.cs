@@ -26,6 +26,8 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Driver;
 using RabbitMQ.Client;
 using aXon.TaskTransport;
@@ -44,7 +46,7 @@ namespace aXon
 		private static MessageQueue<TaskProgressMessage> _ProgressQueue;
 		private static IConnection _Connection;
         private static MongoClient _client = new MongoClient("mongodb://192.169.164.138");
-		private static ITaskWorker test = new TickTackToeTrainWorker ();
+		private static ITaskWorker test = new RoverWorker();
 
 		public static void Main (string[] args)
 		{
@@ -69,7 +71,7 @@ namespace aXon
 
 		private static void InitConnection ()
 		{
-			var factory = new ConnectionFactory () { HostName = "dev-svr2.systest.sc2services.com" };//{ HostName = "192.168.1.140" };
+            var factory = new ConnectionFactory() { HostName = "192.169.164.138" };
 			factory.AutomaticRecoveryEnabled = true;
 			factory.NetworkRecoveryInterval = TimeSpan.FromSeconds (10);
 			_Connection = factory.CreateConnection ();
@@ -77,16 +79,17 @@ namespace aXon
 
 		static void _TaskQueue_OnReceivedMessage (object sender, TaskMessage args)
 		{
-			_ProgressQueue.Publish (new TaskProgressMessage () {
-				CurrentTime = DateTime.Now,
-				PercentComplete = 0,
-				StartTime = DateTime.Now,
-				Status = TaskStatus.Arrived,
-				TaskId = args.TaskId,
-				MessageId = Guid.NewGuid (),
-				TransmisionDateTime = DateTime.Now
-			});
 
+            _ProgressQueue.Publish(new TaskProgressMessage()
+            {
+                CurrentTime = DateTime.Now,
+                PercentComplete = 0,
+                StartTime = DateTime.Now,
+                Status = TaskStatus.Arrived,
+                TaskId = args.TaskId,
+                MessageId = Guid.NewGuid(),
+                TransmisionDateTime = DateTime.Now
+            });
             //test.Execute (args.TaskId, _client);
             //test.Progress -= TaskProgress;
             //test.ErrorOccured -= TaskErrorOccured;
@@ -97,14 +100,61 @@ namespace aXon
 			test.ErrorOccured += TaskErrorOccured;
 			test.Complete += TaskComplete;
             test.Execute(args.TaskId,_client);
-			//switch (args.ScriptType) {
-			//case TaskScriptType.CSharp:
-			//    break;
-			//case TaskScriptType.Python:
-			//    break;
-			//case TaskScriptType.Shell:
-			//    break;
-			//}
+            switch (args.ScriptType)
+            {
+                case TaskScriptType.LoadWorker:
+                    System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
+                    bool good = false;
+                    if (asm != null)
+                    {
+                        IEnumerable<Type> types = from x in asm.GetTypes()
+                                                  where typeof (ITaskWorker).IsAssignableFrom(x)
+                                                  select x;
+                        foreach (Type type in types)
+                        {
+                            if (type.Name == args.TaskScript)
+                            {
+                                var instance = Activator.CreateInstance(type) as ITaskWorker;
+                                if (instance != null)
+                                {
+                                    instance.Execute(args.TaskId, _client);
+                                    good = true;
+                                    _ProgressQueue.Publish(new TaskProgressMessage()
+                                    {
+                                        CurrentTime = DateTime.Now,
+                                        PercentComplete = 0,
+                                        StartTime = DateTime.Now,
+                                        Status = TaskStatus.Starting,
+                                        TaskId = args.TaskId,
+                                        MessageId = Guid.NewGuid(),
+                                        TransmisionDateTime = DateTime.Now
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    if (!good)
+                    {
+                        _ProgressQueue.Publish(new TaskProgressMessage()
+                        {
+                            CurrentTime = DateTime.Now,
+                            PercentComplete = 0,
+                            StartTime = DateTime.Now,
+                            Status = TaskStatus.Failed,
+                            TaskId = args.TaskId,
+                            MessageId = Guid.NewGuid(),
+                            TransmisionDateTime = DateTime.Now,
+                            Details = "Could not find task: " + args.TaskScript
+                        });
+                    }
+                    break;
+                case TaskScriptType.CSharp:
+                    break;
+                case TaskScriptType.Python:
+                    break;
+                case TaskScriptType.Shell:
+                    break;
+            }
 		}
 
 		static void TaskComplete (object sender, Worker.EventArgs.OnCompletionArgs args)

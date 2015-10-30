@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TestCanvas
+namespace aXon.Warehouse.Desktop
 {
     /// <summary>
     ///     Interaction logic for App.xaml
