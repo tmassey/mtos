@@ -10,9 +10,7 @@ namespace aXon.Rover
         {
             var pilot = new NeuralRobot((BasicNetwork)network, false, RobotContol.SourceLocation, RobotContol.DestLocation);
             int score = pilot.ScorePilot();
-            RobotContol.Scores.Add(score);
-            double best = RobotContol.GetitterationBest();
-            double average = RobotContol.GetitterationAverage();            
+            RobotContol.Scores.Add(score);                    
             return score;
         }
 

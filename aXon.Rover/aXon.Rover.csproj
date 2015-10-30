@@ -40,6 +40,9 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>D:\Development\Sc2\lib\mongo-csharp-driver\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\aXon\bin\Debug\RabbitMQ.Client.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

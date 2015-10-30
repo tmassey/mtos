@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Linq;
+using MongoDB.Driver.Builders;
+using aXon.Rover;
+using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
+using aXon.TaskTransport;
 using aXon.Worker.Interfaces;
 using MongoDB.Driver;
 using aXon.Worker.Delegates;
@@ -12,14 +17,30 @@ namespace aXon.Worker
 	{
 		#region ITaskWorker implementation
 
-		
-
+        public MongoDataService Mds { get; set; }
+	    private DateTime _starttime;
 		public void Execute (Guid taskId, MongoClient client)
 		{
+		    _starttime = DateTime.Now;
 		    try
 		    {
-		        var db = client.GetDatabase("aXon");
-		        var col = db.GetCollection<Warehouse>("Warehouse");
+		        Mds = new MongoDataService();
+		        var task = Mds.GetCollectionQueryModel<RoverTask>(Query.EQ("_id", taskId)).FirstOrDefault();
+		        if (task != null)
+		            switch (task.TaskType)
+		            {
+		                case RoverTaskType.Execute:
+		                    break;
+		                case RoverTaskType.Train:
+		                    RoverTrainProperties trainprops = task.TrainingProperties;
+                            RobotContol c = new RobotContol();
+                            c.BuildNetwork(trainprops.StartPosition.X,trainprops.StartPosition.Y,trainprops.DestinationPosition.X,trainprops.DestinationPosition.Y);		                    
+		            }
+		        else
+		        {
+		            this.RaiseOnErrorOccured(new OnErrorArgs(){Error="Task Not Found!",TaskId=taskId});
+                    this.RaiseOnProgress(new OnProgressArgs(){CurrentTime=DateTime.Now,PercentComplete=0,Status=TaskStatus.Failed,TaskId=taskId,StartTime = _starttime});
+		        }
 		    }
 		    catch (Exception err)
 		    {

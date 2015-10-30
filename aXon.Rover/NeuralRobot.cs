@@ -58,12 +58,7 @@ namespace aXon.Rover
                 double f = output[0];
                 double l = output[1];
                 double r = output[2];
-                double rev = output[3];
-                double rest = output[4];
-                double fl = output[5];
-                double fr = output[6];
-                double bl = output[7];
-                double br = output[8];
+                double rev = output[3];              
 
                 var dirs = new Dictionary<CommandDirection, double>
                     {
