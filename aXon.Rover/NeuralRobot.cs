@@ -76,9 +76,10 @@ namespace aXon.Rover
                
                 lock (RobotContol.ConsoleLock)
                 {
-                    sim.Telemetry();
+                    
                     if (_track)
                     {
+                        sim.Telemetry();
                         switch (thrust)
                         {                           
                             default:

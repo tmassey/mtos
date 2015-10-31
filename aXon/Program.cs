@@ -148,6 +148,7 @@ namespace aXon
                 case TaskScriptType.Shell:
                     break;
             }
+            _ProgressQueue.ListenForNext();
         }
 
         private static void TaskComplete(object sender, OnCompletionArgs args)

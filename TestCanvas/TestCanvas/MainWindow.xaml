@@ -105,9 +105,10 @@
                             </dxn:NavBarItem>
                         </dxn:NavBarGroup>
 
-                        <dxn:NavBarGroup Header="Training Stats">
-                            <dxn:NavBarItem>
-                                <dxga:CircularGaugeControl x:Name="HeadingGuage" VerticalAlignment="Bottom"
+                        <dxn:NavBarGroup Header="Training Stats" >
+                            <dxn:NavBarItem >
+                                <TextBox VerticalScrollBarVisibility="Visible" Height="300" x:Name="Progresstxt"></TextBox>
+                                <!--<dxga:CircularGaugeControl x:Name="HeadingGuage" VerticalAlignment="Bottom"
                                                            HorizontalAlignment="Center" EnableAnimation="False">
                                     <dxga:CircularGaugeControl.Model>
                                         <dxga:CircularFlatDarkModel />
@@ -136,7 +137,7 @@
                                             </dxga:ArcScale.Needles>
                                         </dxga:ArcScale>
                                     </dxga:CircularGaugeControl.Scales>
-                                </dxga:CircularGaugeControl>
+                                </dxga:CircularGaugeControl>-->
                             </dxn:NavBarItem>
                         </dxn:NavBarGroup>
                     </dxn:NavBarControl>

@@ -132,8 +132,18 @@ namespace aXon.Warehouse.Desktop
             Canvas.SetLeft(pos, SourceData.Simulation.Position[1]*10);
             Canvas.SetTop(pos, SourceData.Simulation.Position[0]*10);
             Canvas.Children.Add(pos);
+          
         }
 
+        void _que_OnReceivedMessage(object sender, TaskProgressMessage args)
+        {
+            var task = Mds.GetCollectionQueryModel<RoverTask>(Query.EQ("_id", args.TaskId)).FirstOrDefault();
+            string newprg = "Start:" + task.TrainingProperties.StartPosition.X + "," + task.TrainingProperties.StartPosition.Y + " Dest: " + task.TrainingProperties.DestinationPosition.X + "," + task.TrainingProperties.DestinationPosition.Y + " %: " + args.PercentComplete + " Status: " + args.Status + " " + args.Details + "\n";
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => Progresstxt.Text = newprg + Progresstxt.Text));
+            _que.ListenForNext();
+        }
+
+        private MessageQueue<TaskProgressMessage> _que;
         private static void InitConnection()
         {
             var factory = new ConnectionFactory
@@ -165,6 +175,8 @@ namespace aXon.Warehouse.Desktop
                 DrawMap();
             DataContext = SourceData;
             ModeGrid.DataContext = SourceData;
+            _que = new MessageQueue<TaskProgressMessage>(true, _Connection);
+            _que.OnReceivedMessage += _que_OnReceivedMessage;
         }
 
         private void SetWindowTitle()
@@ -246,9 +258,11 @@ namespace aXon.Warehouse.Desktop
         private void Simulation_PositionChanged(object sender, Position position)
         {
             Rectangle pos = AddLocation(false);
-            pos.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 255));
-            Canvas.SetLeft(pos, position.Y*10);
-            Canvas.SetTop(pos, position.X*10);
+            pos.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            var w = Canvas.ActualWidth / SourceData.Warehouse.GridWidth;
+            var h = Canvas.ActualHeight / SourceData.Warehouse.GridLength;
+            Canvas.SetLeft(pos, position.Y*w);
+            Canvas.SetTop(pos, position.X*h);
             Canvas.Children.Add(pos);
             Canvas.UpdateLayout();
             DoEvents();

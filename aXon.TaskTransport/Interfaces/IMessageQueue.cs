@@ -41,6 +41,7 @@ namespace aXon.TaskTransport.Interfaces
 		/// <returns></returns>
 		bool Publish (T message);
 
+	    void ListenForNext();
 		/// <summary>
 		/// </summary>
 		event MessageReceived<T> OnReceivedMessage;

@@ -179,15 +179,15 @@ namespace aXon.Rover
         {
             get
             {
-                double startdist = CalculateDistance(StartPosition, Destination);
-                double lastdist = CalculateDistance();
-                double closeness = startdist - lastdist;
-                double traveled = startdist - closeness;
+                //double startdist = CalculateDistance(StartPosition, Destination);
+                //double lastdist = CalculateDistance();
+                ////double closeness = startdist - lastdist;
+                ////double traveled = startdist - closeness;
 
-                double perctraverced = (startdist/traveled);
-                if (Success > 0)
-                    perctraverced = 10;
-                return (int) ( Success + perctraverced + (Seconds*-1));
+                ////double perctraverced = (startdist/traveled);
+                //if (Success > 0)
+                //    perctraverced = 10;
+                return (int) ( Success + (Seconds*-1));
             }
         }
 
@@ -416,9 +416,17 @@ namespace aXon.Rover
                 Position[1] = 0;
 
             Position = new double[2]{Position[0],Position[1]};
-            Console.SetCursorPosition((int)Position[0],(int)Position[1]);
+            try
+            {
+                Console.SetCursorPosition((int)Position[0],(int)Position[1]);
             Console.Write('#');
 
+            }
+            catch 
+            {
+            }
+
+            
             UpdateHeading();
         }
 
@@ -434,7 +442,7 @@ namespace aXon.Rover
 
         public bool CanGoInDirection(CommandDirection newDirection)
         {
-            var pos = Position;
+            var pos = new double[2]{Position[0],Position[1]};
             switch (newDirection)
             {
                 case CommandDirection.MoveForward:
