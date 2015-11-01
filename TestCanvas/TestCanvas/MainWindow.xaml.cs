@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -139,8 +140,16 @@ namespace aXon.Warehouse.Desktop
         {
             var task = Mds.GetCollectionQueryModel<RoverTask>(Query.EQ("_id", args.TaskId)).FirstOrDefault();
             string newprg = "Start:" + task.TrainingProperties.StartPosition.X + "," + task.TrainingProperties.StartPosition.Y + " Dest: " + task.TrainingProperties.DestinationPosition.X + "," + task.TrainingProperties.DestinationPosition.Y + " %: " + args.PercentComplete + " Status: " + args.Status + " " + args.Details + "\n";
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => Progresstxt.Text = newprg + Progresstxt.Text));
+            
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => UpdatePrgtext(newprg)));
             _que.ListenForNext();
+        }
+
+        private void UpdatePrgtext(string newtxt)
+        {
+            if (Progresstxt.Text.Length >= 50000) Progresstxt.Text = "";
+            Progresstxt.Text = newtxt + Progresstxt.Text;
         }
 
         private MessageQueue<TaskProgressMessage> _que;
@@ -217,6 +226,13 @@ namespace aXon.Warehouse.Desktop
                     };
                 col.Save(task);
                 var q = new MessageQueue<TaskMessage>(false, _Connection);
+                var x = 0;
+                while (x != 300000)
+                {
+                    Thread.Sleep(100);
+                    DoEvents();
+                    x++;
+                }
                 q.Publish(t);                
                 DoEvents();
             }
@@ -261,8 +277,8 @@ namespace aXon.Warehouse.Desktop
             pos.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
             var w = Canvas.ActualWidth / SourceData.Warehouse.GridWidth;
             var h = Canvas.ActualHeight / SourceData.Warehouse.GridLength;
-            Canvas.SetLeft(pos, position.Y*w);
-            Canvas.SetTop(pos, position.X*h);
+            Canvas.SetLeft(pos, position.X*h);
+            Canvas.SetTop(pos, position.Y*w);
             Canvas.Children.Add(pos);
             Canvas.UpdateLayout();
             DoEvents();

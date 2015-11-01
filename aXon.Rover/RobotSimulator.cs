@@ -418,9 +418,11 @@ namespace aXon.Rover
             Position = new double[2]{Position[0],Position[1]};
             try
             {
-                Console.SetCursorPosition((int)Position[0],(int)Position[1]);
-            Console.Write('#');
-
+                lock (RobotContol.ConsoleLock)
+                {
+                    //Console.SetCursorPosition((int) Position[0], (int) Position[1]);
+                    //Console.Write('.');
+                }
             }
             catch 
             {

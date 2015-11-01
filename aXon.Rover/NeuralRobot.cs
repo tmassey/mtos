@@ -83,7 +83,7 @@ namespace aXon.Rover
                         switch (thrust)
                         {                           
                             default:
-                                Thread.Sleep(50);
+                                //Thread.Sleep(50);
                                 break;
                         }
                     }

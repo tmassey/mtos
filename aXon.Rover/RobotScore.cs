@@ -24,7 +24,7 @@ namespace aXon.Rover
         /// <inheritdoc />
         public bool RequireSingleThreaded
         {
-            get { return false; }
+            get { return true; }
         }
     }
 }

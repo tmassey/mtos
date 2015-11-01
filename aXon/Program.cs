@@ -51,21 +51,32 @@ namespace aXon
         public static void Main(string[] args)
         {
             InitConnection();
-            _TaskQueue = new MessageQueue<TaskMessage>(true, _Connection);
-            _LogQueue = new MessageQueue<TaskLogMessage>(false, _Connection);
-            _ProgressQueue = new MessageQueue<TaskProgressMessage>(false, _Connection);
-            _TaskQueue.OnReceivedMessage += _TaskQueue_OnReceivedMessage;
-            _LogQueue.Publish(new TaskLogMessage
+            while (true)
+            {
+                try
                 {
-                    MessageId = Guid.NewGuid(),
-                    TransmisionDateTime = DateTime.Now,
-                    TaskId = Guid.Empty,
-                    LogLevel = LogLevel.Info,
-                    LogMessage = "Node UP: " + Dns.GetHostName()
-                });
+                    
+                    _TaskQueue = new MessageQueue<TaskMessage>(true, _Connection);
+                    _LogQueue = new MessageQueue<TaskLogMessage>(false, _Connection);
+                    _ProgressQueue = new MessageQueue<TaskProgressMessage>(false, _Connection);
+                    _TaskQueue.OnReceivedMessage += _TaskQueue_OnReceivedMessage;
+                    _LogQueue.Publish(new TaskLogMessage
+                        {
+                            MessageId = Guid.NewGuid(),
+                            TransmisionDateTime = DateTime.Now,
+                            TaskId = Guid.Empty,
+                            LogLevel = LogLevel.Info,
+                            LogMessage = "Node UP: " + Dns.GetHostName()
+                        });
 
-
-            Console.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+                Console.ReadLine();
+            }
         }
 
         private static void InitConnection()
@@ -78,15 +89,19 @@ namespace aXon
 
         private static void _TaskQueue_OnReceivedMessage(object sender, TaskMessage args)
         {
-            _ProgressQueue.Publish(new TaskProgressMessage
+            try
                 {
+                    string hostname = Dns.GetHostName();
+                    _ProgressQueue.Publish(new TaskProgressMessage
+                        {
                     CurrentTime = DateTime.Now,
                     PercentComplete = 0,
                     StartTime = DateTime.Now,
                     Status = TaskStatus.Arrived,
                     TaskId = args.TaskId,
                     MessageId = Guid.NewGuid(),
-                    TransmisionDateTime = DateTime.Now
+                    TransmisionDateTime = DateTime.Now,
+                    Details = hostname
                 });
 
             switch (args.ScriptType)
@@ -120,7 +135,8 @@ namespace aXon
                                             Status = TaskStatus.Starting,
                                             TaskId = args.TaskId,
                                             MessageId = Guid.NewGuid(),
-                                            TransmisionDateTime = DateTime.Now
+                                            TransmisionDateTime = DateTime.Now,
+                                            Details = hostname
                                         });
                                 }
                             }
@@ -148,7 +164,15 @@ namespace aXon
                 case TaskScriptType.Shell:
                     break;
             }
+                    GC.Collect();
+                
             _ProgressQueue.ListenForNext();
+                }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                
+            }
         }
 
         private static void TaskComplete(object sender, OnCompletionArgs args)
