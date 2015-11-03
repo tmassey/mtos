@@ -139,10 +139,18 @@ namespace aXon.Warehouse.Desktop
         void _que_OnReceivedMessage(object sender, TaskProgressMessage args)
         {
             var task = Mds.GetCollectionQueryModel<RoverTask>(Query.EQ("_id", args.TaskId)).FirstOrDefault();
-            string newprg = "Start:" + task.TrainingProperties.StartPosition.X + "," + task.TrainingProperties.StartPosition.Y + " Dest: " + task.TrainingProperties.DestinationPosition.X + "," + task.TrainingProperties.DestinationPosition.Y + " %: " + args.PercentComplete + " Status: " + args.Status + " " + args.Details + "\n";
-            
+            if (task != null)
+            {
+                var newprg = "Start:" + task.TrainingProperties.StartPosition.X + "," +
+                             task.TrainingProperties.StartPosition.Y + " Dest: " +
+                             task.TrainingProperties.DestinationPosition.X + "," +
+                             task.TrainingProperties.DestinationPosition.Y + " %: " + args.PercentComplete + " Status: " +
+                             args.Status + " " + args.Details + "\n";
 
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => UpdatePrgtext(newprg)));
+
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                                           new Action(() => UpdatePrgtext(newprg)));
+            }
             _que.ListenForNext();
         }
 
@@ -199,7 +207,14 @@ namespace aXon.Warehouse.Desktop
         {
             BasicNetwork network = null;
             NeuralNetwork nn = Mds.GetCollectionQueryModel<NeuralNetwork>(Query.And(Query.EQ("StartPosition.X", slat),Query.EQ("StartPosition.Y", slon),Query.EQ("EndPosition.X", lat),Query.EQ("EndPosition.Y", lon))).FirstOrDefault();
-            if (nn == null)
+            var tsk =
+                Mds.GetCollectionQueryModel<RoverTask>(
+                    Query.And(Query.EQ("TrainingProperties.StartPosition.StartPosition.X", slat),
+                              Query.EQ("TrainingProperties.StartPosition.StartPosition.Y", slon),
+                              Query.EQ("TrainingProperties.StartPosition.EndPosition.X", lat),
+                              Query.EQ("TrainingProperties.StartPosition.EndPosition.Y", lon))).FirstOrDefault();
+            if (tsk != null && nn==null) return;
+            if (nn == null && tsk==null)
             {
                 var t = new TaskMessage
                     {
@@ -227,7 +242,7 @@ namespace aXon.Warehouse.Desktop
                 col.Save(task);
                 var q = new MessageQueue<TaskMessage>(false, _Connection);
                 var x = 0;
-                while (x != 300000)
+                while (x != 10)
                 {
                     Thread.Sleep(100);
                     DoEvents();
@@ -238,6 +253,7 @@ namespace aXon.Warehouse.Desktop
             }
             else
             {
+                
                 string fn = nn.Id.ToString();
                 lock (RobotContol.NetworkLock)
                 {
