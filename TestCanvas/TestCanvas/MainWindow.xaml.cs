@@ -289,13 +289,14 @@ namespace aXon.Warehouse.Desktop
 
         private void Simulation_PositionChanged(object sender, Position position)
         {
-            Rectangle pos = AddLocation(false);
-            pos.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            Ellipse p = AddELocation(false);
+            p.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            p.Stroke=new SolidColorBrush(Color.FromRgb(0,0,0));
             var w = Canvas.ActualWidth / SourceData.Warehouse.GridWidth;
             var h = Canvas.ActualHeight / SourceData.Warehouse.GridLength;
-            Canvas.SetLeft(pos, position.X*h);
-            Canvas.SetTop(pos, position.Y*w);
-            Canvas.Children.Add(pos);
+            Canvas.SetLeft(p, position.X  * ((int)(Canvas.ActualHeight / SourceData.Warehouse.GridWidth) - 1));
+            Canvas.SetTop(p, position.Y * ((int)(Canvas.ActualWidth / SourceData.Warehouse.GridLength) - 1));
+            Canvas.Children.Add(p);
             Canvas.UpdateLayout();
             DoEvents();
         }
@@ -374,6 +375,26 @@ namespace aXon.Warehouse.Desktop
             container.MouseRightButtonUp += container_MouseRightButtonUp;
             container.Width = Canvas.ActualWidth/SourceData.Warehouse.GridWidth;
             container.Height = Canvas.ActualHeight/SourceData.Warehouse.GridLength;
+            return container;
+        }
+        private Ellipse AddELocation(bool isDestination = false)
+        {
+            var container = new Ellipse();
+            if (!isDestination)
+            {
+                container.Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200));
+                container.StrokeThickness = 1;
+            }
+            else
+            {
+                container.Stroke = new SolidColorBrush(Color.FromRgb(255, 128, 128));
+                container.Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                container.StrokeThickness = 2;
+            }
+
+            container.MouseRightButtonUp += container_MouseRightButtonUp;
+            container.Width = Canvas.ActualWidth / SourceData.Warehouse.GridWidth;
+            container.Height = Canvas.ActualHeight / SourceData.Warehouse.GridLength;
             return container;
         }
 

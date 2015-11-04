@@ -75,7 +75,9 @@ namespace aXon
                     Console.WriteLine(ex.ToString());
                     continue;
                 }
-                Console.ReadLine();
+                while (true)
+                {
+                }
             }
         }
 
