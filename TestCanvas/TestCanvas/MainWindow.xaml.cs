@@ -244,7 +244,7 @@ namespace aXon.Warehouse.Desktop
                 var x = 0;
                 while (x != 10)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
                     DoEvents();
                     x++;
                 }
