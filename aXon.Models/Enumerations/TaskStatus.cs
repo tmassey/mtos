@@ -6,6 +6,7 @@
         Submited=1,
         Processing=2,
         Complete=3,
-        Errored=4
+        Errored=4,
+        Pending
     }
 }

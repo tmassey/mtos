@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
+
 using MongoDB.Driver.GridFS;
 
 namespace aXon.Rover
@@ -50,9 +50,9 @@ namespace aXon.Rover
             return r;
         }
 
-        public ObservableCollection<T> GetCollectionQueryModel<T>(QueryComplete query)
+        public ObservableCollection<T> GetCollectionQueryModel<T>(IMongoQuery query)
         {
-            MongoCollection<BsonDocument> collection = DataBase.GetCollection(typeof (T).Name);
+            MongoCollection<BsonDocument> collection = DataBase.GetCollection(typeof(T).Name);
             var r = new ObservableCollection<T>();
             MongoCursor<T> cursor = collection.FindAs<T>(query);
             foreach (T t in cursor)
@@ -62,22 +62,22 @@ namespace aXon.Rover
             return r;
         }
 
-        public ObservableCollection<TMapType> GetPartialModelCollection<TMapType, TDbType>(QueryComplete query)
-        {
-            MongoCollection<BsonDocument> collection = DataBase.GetCollection(typeof (TDbType).Name);
-            var r = new ObservableCollection<TMapType>();
-            MongoCursor<TMapType> cursor = collection.FindAs<TMapType>(query);
+        //public ObservableCollection<TMapType> GetPartialModelCollection<TMapType, TDbType>(QueryComplete query)
+        //{
+        //    MongoCollection<BsonDocument> collection = DataBase.GetCollection(typeof (TDbType).Name);
+        //    var r = new ObservableCollection<TMapType>();
+        //    MongoCursor<TMapType> cursor = collection.FindAs<TMapType>(query);
 
-            Type type = typeof (TMapType);
-            List<string> fields = type.GetProperties().Where(f => f.CanWrite).Select(f => f.Name).ToList();
+        //    Type type = typeof (TMapType);
+        //    List<string> fields = type.GetProperties().Where(f => f.CanWrite).Select(f => f.Name).ToList();
 
-            cursor.SetFields(fields.ToArray());
-            foreach (TMapType t in cursor)
-            {
-                r.Add(t);
-            }
-            return r;
-        }
+        //    cursor.SetFields(fields.ToArray());
+        //    foreach (TMapType t in cursor)
+        //    {
+        //        r.Add(t);
+        //    }
+        //    return r;
+        //}
 
         public ObservableCollection<TMapType> GetPartialModelCollection<TMapType, TDbType>()
         {
@@ -97,17 +97,17 @@ namespace aXon.Rover
             return r;
         }
 
-        public ObservableCollection<T> GetCollectionQueryModel<T>(string collectionName, QueryComplete query)
-        {
-            MongoCollection<BsonDocument> collection = DataBase.GetCollection(collectionName);
-            var r = new ObservableCollection<T>();
-            MongoCursor<T> cursor = collection.FindAs<T>(query);
-            foreach (T t in cursor)
-            {
-                r.Add(t);
-            }
-            return r;
-        }
+        //public ObservableCollection<T> GetCollectionQueryModel<T>(string collectionName, QueryComplete query)
+        //{
+        //    MongoCollection<BsonDocument> collection = DataBase.GetCollection(collectionName);
+        //    var r = new ObservableCollection<T>();
+        //    MongoCursor<T> cursor = collection.FindAs<T>(query);
+        //    foreach (T t in cursor)
+        //    {
+        //        r.Add(t);
+        //    }
+        //    return r;
+        //}
 
         public Stream OpenFileAsStream(Guid id, string databaseName = "")
         {

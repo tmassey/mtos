@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AD8D57
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXonService", "aXonService\aXonService.csproj", "{2E3136C1-CE1A-45CF-9D08-9648733C227E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aXon.Warehouse", "aXon.Warehouse\aXon.Warehouse.csproj", "{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,16 @@ Global
 		{2E3136C1-CE1A-45CF-9D08-9648733C227E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2E3136C1-CE1A-45CF-9D08-9648733C227E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2E3136C1-CE1A-45CF-9D08-9648733C227E}.Release|x86.ActiveCfg = Release|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

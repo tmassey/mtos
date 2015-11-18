@@ -6,14 +6,12 @@ using aXon.Rover.Enumerations;
 
 namespace aXon.Warehouse.Desktop
 {
-    public class DataSource: INotifyPropertyChanged
+    public class DataSource : INotifyPropertyChanged
     {
+        private MapMode _mapMode;
         private RobotSimulator _simulation;
         private Rover.Models.Warehouse _warehouse;
-       
-        private MapMode _mapMode;
-     
-        public event PropertyChangedEventHandler PropertyChanged;
+
         public RobotSimulator Simulation
         {
             get { return _simulation; }
@@ -36,7 +34,7 @@ namespace aXon.Warehouse.Desktop
             }
         }
 
-        
+
         public MapMode ModeMap
         {
             get { return _mapMode; }
@@ -48,12 +46,13 @@ namespace aXon.Warehouse.Desktop
             }
         }
 
-       
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
