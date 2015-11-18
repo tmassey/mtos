@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using aXon.Rover.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -10,7 +11,7 @@ using MongoDB.Driver.GridFS;
 
 namespace aXon.Rover
 {
-    public class MongoDataService
+    public class MongoDataService : IDataService
     {
         private MongoDatabase _db;
         private MongoServer _svr;

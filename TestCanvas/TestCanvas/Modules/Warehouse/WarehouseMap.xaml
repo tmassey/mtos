@@ -1,0 +1,25 @@
+﻿<baseClasses1:AxonScreen                      
+
+    x:Class="aXon.Warehouse.Desktop.Modules.Warehouse.WarehouseMap"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+          
+             xmlns:desktop="clr-namespace:aXon.Warehouse.Desktop"          
+             xmlns:baseClasses1="clr-namespace:aXon.Warehouse.BaseClasses;assembly=aXon.Warehouse"
+             mc:Ignorable="d" 
+             >
+    <Viewbox Stretch="Fill" HorizontalAlignment="Left"  VerticalAlignment="Top">
+        <Canvas x:Name="Canvas" Background="Transparent" Margin="0" Width="810"
+                        Height="810" HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
+
+            <Canvas.LayoutTransform>
+                <ScaleTransform ScaleY="1" />
+            </Canvas.LayoutTransform>
+
+
+        </Canvas>
+    </Viewbox>
+</baseClasses1:AxonScreen>

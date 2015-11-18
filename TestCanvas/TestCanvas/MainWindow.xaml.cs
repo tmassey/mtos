@@ -16,6 +16,8 @@ using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
 using aXon.TaskTransport;
 using aXon.TaskTransport.Messages;
+using aXon.Warehouse.BaseClasses;
+using aXon.Warehouse.Enumerations;
 using aXon.Worker;
 using Encog.Neural.Networks;
 using Encog.Persist;
@@ -198,8 +200,56 @@ namespace aXon.Warehouse.Desktop
             _que = new MessageQueue<TaskProgressMessage>(true, _Connection);
             _que.OnReceivedMessage += _que_OnReceivedMessage;
             //maptb.DataContext = this;
+
+            BuidMenu();
         }
 
+        private void BuidMenu()
+        {
+            var list=ReflectiveEnumerator.GetEnumerableOfType<AxonScreen>();
+            Screens = new ObservableCollection<AxonScreen>(list);
+            List<MenuItem> mods= new List<MenuItem>();
+            foreach (var s in list)
+            {
+                var mod=mods.FirstOrDefault(n => (string)n.Header == s.ModuleName);
+                if(mod==null)
+                    mods.Add(new MenuItem(){Header=s.ModuleName});
+            }
+            
+            foreach (var screen in list)
+            {
+                screen.DataService = (aXon.Rover.Interfaces.IDataService)Mds;
+                var mod = mods.FirstOrDefault(n => (string)n.Header == screen.ModuleName);
+                if (mod == null) continue;
+                var mi = new MenuItem
+                {
+                    Header = screen.ScreenName,
+                    Tag = screen.ScreenName
+                };
+                mi.Click += mi_Click;
+                mod.Items.Add(mi);
+            }
+            foreach (var m in mods)
+                Modules.Items.Add(m);
+        }
+
+        void mi_Click(object sender, RoutedEventArgs e)
+        {
+            var src=(MenuItem) e.Source;
+            LoadScreen((string)src.Tag);
+
+        }
+        public ObservableCollection<AxonScreen> Screens { get; set; }
+        public void LoadScreen(string name)
+        {
+            var screen = Screens.FirstOrDefault(s => s.ScreenName == name);
+            TabItem tab =   new TabItem();
+            tab.Header = name;
+            tab.IsSelected = true;
+            tab.Content = screen;
+            Tabs.Items.Add(tab);
+            DoEvents();
+        }
         private void SetWindowTitle()
         {
             var assembly = Assembly.GetExecutingAssembly();

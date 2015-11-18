@@ -5,15 +5,14 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{d907bd96-eafd-481a-ab3c-5751cbe20fa3}</ProjectGuid>
+    <ProjectGuid>{D907BD96-EAFD-481A-AB3C-5751CBE20FA3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>aXon.Warehouse</RootNamespace>
     <AssemblyName>aXon.Warehouse</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile4</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,15 +31,72 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <Folder Include="Interfaces\" />
+    <Folder Include="Modules\Communications\" />
+    <Folder Include="Modules\Configuration\" />
+    <Folder Include="Modules\Robotics\Robot\" />
+    <Folder Include="Modules\Security\" />
+    <Folder Include="Modules\Warehouse\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AspMvcActionAttribute.cs" />
+    <Compile Include="Attributes\AspMvcActionSelectorAttribute.cs" />
+    <Compile Include="Attributes\AspMvcAreaAttribute.cs" />
+    <Compile Include="Attributes\AspMvcControllerAttribute.cs" />
+    <Compile Include="Attributes\AspMvcDisplayTemplateAttribute.cs" />
+    <Compile Include="Attributes\AspMvcEditorTemplateAttribute.cs" />
+    <Compile Include="Attributes\AspMvcMasterAttribute.cs" />
+    <Compile Include="Attributes\AspMvcModelTypeAttribute.cs" />
+    <Compile Include="Attributes\AspMvcPartialViewAttribute.cs" />
+    <Compile Include="Attributes\AspMvcSupressViewErrorAttribute.cs" />
+    <Compile Include="Attributes\AspMvcViewAttribute.cs" />
+    <Compile Include="Attributes\BaseTypeRequiredAttribute.cs" />
+    <Compile Include="Attributes\CanBeNullAttribute.cs" />
+    <Compile Include="Attributes\CannotApplyEqualityOperatorAttribute.cs" />
+    <Compile Include="Attributes\ContractAnnotationAttribute.cs" />
+    <Compile Include="Enumerations\ImplicitUseKindFlags.cs" />
+    <Compile Include="Enumerations\ImplicitUseTargetFlags.cs" />
+    <Compile Include="Attributes\InstantHandleAttribute.cs" />
+    <Compile Include="Attributes\InvokerParameterNameAttribute.cs" />
+    <Compile Include="Attributes\LocalizationRequiredAttribute.cs" />
+    <Compile Include="Attributes\MeansImplicitUseAttribute.cs" />
+    <Compile Include="Attributes\NotifyPropertyChangedInvocatorAttribute.cs" />
+    <Compile Include="Attributes\NotNullAttribute.cs" />
+    <Compile Include="Attributes\PathReferenceAttribute.cs" />
+    <Compile Include="Attributes\PublicAPIAttribute.cs" />
+    <Compile Include="Attributes\PureAttribute.cs" />
+    <Compile Include="Attributes\RazorSectionAttribute.cs" />
+    <Compile Include="Attributes\StringFormatMethodAttribute.cs" />
+    <Compile Include="Attributes\UsedImplicitlyAttribute.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="BaseClasses\AxonScreen.cs" />
+    <Compile Include="Enumerations\IAxonScreen.cs" />
+    <Compile Include="Enumerations\IMainWindow.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\lib\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\aXon.Rover\aXon.Rover.csproj">
+      <Project>{750BF9CE-9F98-489C-BF9E-98854839CC1C}</Project>
+      <Name>aXon.Rover</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -47,5 +104,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>
