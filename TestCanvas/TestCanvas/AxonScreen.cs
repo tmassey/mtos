@@ -4,15 +4,14 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using aXon.Rover.Interfaces;
-using aXon.Warehouse.Attributes;
 using aXon.Warehouse.Enumerations;
 
-namespace aXon.Warehouse.BaseClasses
+namespace aXon.Warehouse.Desktop
 {
     public abstract class AxonScreen : UserControl,  IAxonScreen,INotifyPropertyChanged
     {
         private Guid _id;
-        private IMainWindow _shell;
+        private MainWindow _shell;
         private IDataService _dataService;
         private string _screenName;
         private string _moduleName;
@@ -62,7 +61,7 @@ namespace aXon.Warehouse.BaseClasses
             }
         }
 
-        public IMainWindow Shell
+        public MainWindow Shell
         {
             get { return _shell; }
             set
@@ -72,6 +71,8 @@ namespace aXon.Warehouse.BaseClasses
                 OnPropertyChanged();
             }
         }
+
+        public virtual DataSource SourceData { get; set; }
 
         public void DoEvents()
         {

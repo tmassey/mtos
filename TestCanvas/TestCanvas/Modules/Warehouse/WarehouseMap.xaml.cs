@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
-using aXon.Warehouse.BaseClasses;
 using MongoDB.Driver;
 
 namespace aXon.Warehouse.Desktop.Modules.Warehouse
@@ -32,6 +31,12 @@ namespace aXon.Warehouse.Desktop.Modules.Warehouse
             InitializeComponent();
             ScreenName = "Warehouse Map";
             ModuleName = "Warehouse";
+            Loaded += WarehouseMap_Loaded;
+        }
+
+        void WarehouseMap_Loaded(object sender, RoutedEventArgs e)
+        {
+            DrawMap();
         }
 
         public DataSource SourceData
@@ -95,6 +100,10 @@ namespace aXon.Warehouse.Desktop.Modules.Warehouse
                     Canvas.SetLeft(location, slon * x);
                     Canvas.SetTop(location, slat * y);
                     Canvas.Children.Add(location);
+                    TextBlock t = new TextBlock {Text = location.Tag.ToString()};
+                    Canvas.SetLeft(t, (slon * x) + 5);
+                    Canvas.SetTop(t, (slat * y) + 5);
+                    Canvas.Children.Add(t);
                 }
             }
             Canvas.UpdateLayout();

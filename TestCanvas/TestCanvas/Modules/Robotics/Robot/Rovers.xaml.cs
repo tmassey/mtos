@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using aXon.Warehouse.BaseClasses;
 using aXon.Warehouse.Enumerations;
 
 namespace aXon.Warehouse.Desktop.Modules.Robotics.Robot
@@ -26,7 +25,7 @@ namespace aXon.Warehouse.Desktop.Modules.Robotics.Robot
         {
             InitializeComponent();
             ScreenName = "Rovers";
-            ModuleName = "Robots;";
+            ModuleName = "Robots";
         }
 
         private void MainGrid_OnSelectionChanged_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -46,7 +45,8 @@ namespace aXon.Warehouse.Desktop.Modules.Robotics.Robot
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            var networks = DataService.GetCollectionQueryModel<aXon.Warehouse.Modules.Robotics.Robot.Models.Robot>();
+            MainGrid.ItemsSource = networks;
         }
 
        

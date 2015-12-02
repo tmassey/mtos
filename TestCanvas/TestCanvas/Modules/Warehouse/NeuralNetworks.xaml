@@ -1,0 +1,42 @@
+﻿<desktop:AxonScreen x:Class="aXon.Warehouse.Desktop.Modules.Warehouse.NeuralNetworks"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        xmlns:desktop="clr-namespace:aXon.Warehouse.Desktop"
+             mc:Ignorable="d" 
+             >
+    <UserControl.Resources>
+        <desktop:EnumToBooleanConverter x:Key="EnumConverter" />
+        <BooleanToVisibilityConverter x:Key="myBoolToVisibilityConverter" />
+        <desktop:EnumConverter x:Key="enumConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="35"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button HorizontalAlignment="Right" Margin="5" Grid.Row="0" Click="RefreshNetworks">Refresh</Button>
+        <DataGrid x:Name="Networks" SelectionChanged="Networks_OnSelectionChanged"  AutoGenerateColumns="False" Grid.Row="1">
+            <DataGrid.Columns>
+
+                <!--<DataGridTextColumn Header="Id" Binding="{Binding Id}" />-->
+                <DataGridTextColumn Header="Start X" Binding="{Binding StartPosition.X}" />
+                <DataGridTextColumn Header="Start Y" Binding="{Binding StartPosition.Y}" />
+                <DataGridTextColumn Header="Start Type" Binding="{Binding StartPosition.MapMode, Converter={StaticResource enumConverter}}" />
+                <DataGridTextColumn Header="Dest X" Binding="{Binding EndPosition.X}" />
+                <DataGridTextColumn Header="Dest Y" Binding="{Binding EndPosition.Y}" />
+                <DataGridTextColumn Header="Dest Type" Binding="{Binding EndPosition.MapMode, Converter={StaticResource enumConverter}}" />
+
+                <DataGridTemplateColumn Header="Actions" Width="200">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Tag="{Binding Id}" Click="RunNetwork" HorizontalAlignment="Right">Simulate</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</desktop:AxonScreen>

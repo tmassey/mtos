@@ -16,7 +16,6 @@ using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
 using aXon.TaskTransport;
 using aXon.TaskTransport.Messages;
-using aXon.Warehouse.BaseClasses;
 using aXon.Warehouse.Enumerations;
 using aXon.Worker;
 using Encog.Neural.Networks;
@@ -35,7 +34,7 @@ namespace aXon.Warehouse.Desktop
     {
         private static IConnection _Connection;
 
-        private MessageQueue<TaskProgressMessage> _que;
+        
 
         public MainWindow()
         {
@@ -106,12 +105,12 @@ namespace aXon.Warehouse.Desktop
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            MoveToPosition(e);
+           // MoveToPosition(e);
         }
 
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
         {
-            MoveToPosition(e);
+            //MoveToPosition(e);
         }
 
         private void MoveToPosition(KeyEventArgs e)
@@ -138,33 +137,7 @@ namespace aXon.Warehouse.Desktop
             Canvas.Children.Add(pos);
         }
 
-        private void _que_OnReceivedMessage(object sender, TaskProgressMessage args)
-        {
-            var task = Mds.GetCollectionQueryModel<RoverTask>(Query.EQ("_id", args.TaskId)).FirstOrDefault();
-            if (task != null)
-            {
-                var newprg = "Start:" + task.TrainingProperties.StartPosition.X + "," +
-                             task.TrainingProperties.StartPosition.Y + " Dest: " +
-                             task.TrainingProperties.DestinationPosition.X + "," +
-                             task.TrainingProperties.DestinationPosition.Y + " %: " + args.PercentComplete + " Status: " +
-                             args.Status + " " + args.Details + "\n";
-
-
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                    new Action(() => UpdatePrgtext(newprg)));
-            }
-            _que.ListenForNext();
-
-    
-
-
-        }
-
-        private void UpdatePrgtext(string newtxt)
-        {
-            if (Progresstxt.Text.Length >= 50000) Progresstxt.Text = "";
-            Progresstxt.Text = newtxt + Progresstxt.Text;
-        }
+        
 
         private static void InitConnection()
         {
@@ -197,8 +170,7 @@ namespace aXon.Warehouse.Desktop
                 DrawMap();
             DataContext = SourceData;
             //ModeGrid.DataContext = SourceData;
-            _que = new MessageQueue<TaskProgressMessage>(true, _Connection);
-            _que.OnReceivedMessage += _que_OnReceivedMessage;
+          
             //maptb.DataContext = this;
 
             BuidMenu();
@@ -219,6 +191,7 @@ namespace aXon.Warehouse.Desktop
             foreach (var screen in list)
             {
                 screen.DataService = (aXon.Rover.Interfaces.IDataService)Mds;
+                screen.Shell = this;
                 var mod = mods.FirstOrDefault(n => (string)n.Header == screen.ModuleName);
                 if (mod == null) continue;
                 var mi = new MenuItem
@@ -244,6 +217,7 @@ namespace aXon.Warehouse.Desktop
         {
             var screen = Screens.FirstOrDefault(s => s.ScreenName == name);
             TabItem tab =   new TabItem();
+            screen.SourceData = SourceData;
             tab.Header = name;
             tab.IsSelected = true;
             tab.Content = screen;
@@ -371,6 +345,7 @@ namespace aXon.Warehouse.Desktop
                     location.Tag = slon + "," + slat;
                     double x = (int) (Canvas.ActualHeight/SourceData.Warehouse.GridWidth) - 1;
                     double y = (int) (Canvas.ActualWidth/SourceData.Warehouse.GridLength) - 1;
+                   
 
                     var pos =
                         (from loc in SourceData.Warehouse.Positions where loc.X == slon && loc.Y == slat select loc)
@@ -407,6 +382,11 @@ namespace aXon.Warehouse.Desktop
                     Canvas.SetLeft(location, slon*x);
                     Canvas.SetTop(location, slat*y);
                     Canvas.Children.Add(location);
+                    TextBlock t = new TextBlock();
+                    t.Text = location.Tag.ToString();
+                    Canvas.SetLeft(t, (slon * x)+5);
+                    Canvas.SetTop(t, (slat * y)+5);
+                    Canvas.Children.Add(t);
                 }
             }
             Canvas.UpdateLayout();
@@ -461,7 +441,7 @@ namespace aXon.Warehouse.Desktop
             if (src.Tag != null) MessageBox.Show(src.Tag.ToString(), "Location Clicked");
         }
 
-        private void RunNetworks(object sender, RoutedEventArgs e)
+        public void RunNetworks()
         {
             var reclocs = from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.PickupMode select p;
             var shiplocs = from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.ShipMode select p;
@@ -545,17 +525,16 @@ namespace aXon.Warehouse.Desktop
 
         private void RefreshNetworks(object sender, RoutedEventArgs e)
         {
-            var networks = Mds.GetCollectionQueryModel<NeuralNetwork>();
-            Networks.ItemsSource = networks;
+           
             
         }
 
-        private void RunNetwork(object sender, RoutedEventArgs e)
+        public void RunNetwork(Guid id)
         {
             MapTab.IsSelected = true;
             DoEvents();
             BasicNetwork network = null;
-            var id = (Guid)((Button)e.Source).Tag;
+            
             var fn = id.ToString();
             var net = Mds.GetCollectionQueryModel<NeuralNetwork>(Query.EQ("_id",id)).FirstOrDefault();
             if (net != null)
@@ -579,7 +558,7 @@ namespace aXon.Warehouse.Desktop
                 File.Delete(fn);
 
             }
-            NeuralTab.IsSelected = true;
+           
             DoEvents();
         }
 

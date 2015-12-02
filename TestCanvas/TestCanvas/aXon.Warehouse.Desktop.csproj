@@ -89,11 +89,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AxonScreen.cs" />
     <Compile Include="DataSource.cs" />
     <Compile Include="EnumConverter.cs" />
     <Compile Include="EnumToBooleanConverter.cs" />
+    <Compile Include="IAxonScreen.cs" />
+    <Compile Include="Modules\Debug\aXonOSMessageLog.xaml.cs">
+      <DependentUpon>aXonOSMessageLog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Robotics\Robot\Rovers.xaml.cs">
       <DependentUpon>Rovers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Warehouse\NeuralNetworks.xaml.cs">
+      <DependentUpon>NeuralNetworks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Warehouse\WarehouseEdit.xaml.cs">
+      <DependentUpon>WarehouseEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Warehouse\WarehouseMap.xaml.cs">
       <DependentUpon>WarehouseMap.xaml</DependentUpon>
@@ -112,7 +123,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modules\Debug\aXonOSMessageLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Robotics\Robot\Rovers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Warehouse\NeuralNetworks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Warehouse\WarehouseEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,6 +294,7 @@
   <ItemGroup>
     <Folder Include="Modules\Communications\" />
     <Folder Include="Modules\Configuration\" />
+    <Folder Include="Modules\HR\" />
     <Folder Include="Modules\Security\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

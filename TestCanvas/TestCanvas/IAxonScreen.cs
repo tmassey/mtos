@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using aXon.Rover.Interfaces;
+using aXon.Warehouse.Desktop;
 
 namespace aXon.Warehouse.Enumerations
 {
@@ -10,6 +11,6 @@ namespace aXon.Warehouse.Enumerations
         string ScreenName { get; set; }
         string ModuleName { get; set; }
         IDataService DataService { get; set; }
-        IMainWindow Shell { get; set; }
+        MainWindow Shell { get; set; }
     }
 }

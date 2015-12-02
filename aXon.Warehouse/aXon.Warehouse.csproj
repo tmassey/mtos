@@ -35,11 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <Folder Include="BaseClasses\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Modules\Communications\" />
-    <Folder Include="Modules\Configuration\" />
-    <Folder Include="Modules\Robotics\Robot\" />
-    <Folder Include="Modules\Security\" />
     <Folder Include="Modules\Warehouse\" />
     <Folder Include="NewFolder1\" />
   </ItemGroup>
@@ -59,6 +57,7 @@
     <Compile Include="Attributes\CanBeNullAttribute.cs" />
     <Compile Include="Attributes\CannotApplyEqualityOperatorAttribute.cs" />
     <Compile Include="Attributes\ContractAnnotationAttribute.cs" />
+    <Compile Include="BaseDictionaryModel.cs" />
     <Compile Include="Enumerations\ImplicitUseKindFlags.cs" />
     <Compile Include="Enumerations\ImplicitUseTargetFlags.cs" />
     <Compile Include="Attributes\InstantHandleAttribute.cs" />
@@ -73,10 +72,20 @@
     <Compile Include="Attributes\RazorSectionAttribute.cs" />
     <Compile Include="Attributes\StringFormatMethodAttribute.cs" />
     <Compile Include="Attributes\UsedImplicitlyAttribute.cs" />
-    <Compile Include="Class1.cs" />
-    <Compile Include="BaseClasses\AxonScreen.cs" />
-    <Compile Include="Enumerations\IAxonScreen.cs" />
+    <Compile Include="BaseModel.cs" />
     <Compile Include="Enumerations\IMainWindow.cs" />
+    <Compile Include="Modules\HR\Enumerations\PayType.cs" />
+    <Compile Include="Modules\HR\Models\Benifit.cs" />
+    <Compile Include="Modules\HR\Models\Employee.cs" />
+    <Compile Include="Modules\Configuration\Models\Address.cs" />
+    <Compile Include="Modules\Configuration\Models\City.cs" />
+    <Compile Include="Modules\HR\Models\EmployeeType.cs" />
+    <Compile Include="Modules\HR\Models\Position.cs" />
+    <Compile Include="Modules\Robotics\Robot\Models\Robot.cs" />
+    <Compile Include="Modules\Security\Models\Person.cs" />
+    <Compile Include="Modules\Configuration\Models\Country.cs" />
+    <Compile Include="Modules\Security\Models\PersonAddress.cs" />
+    <Compile Include="Modules\Configuration\Models\State.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
