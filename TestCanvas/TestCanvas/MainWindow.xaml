@@ -16,6 +16,7 @@
             <RowDefinition MaxHeight="20"></RowDefinition>
             <RowDefinition MaxHeight="50"></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition MaxHeight="25"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
            
@@ -125,8 +126,15 @@
             
                 
         </TabControl>
-     
-        
+        <StatusBar HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Bottom" >
+            <UniformGrid Columns="3">
+                <TextBlock></TextBlock>
+                <TextBlock HorizontalAlignment="Center" x:Name="txtProgress"></TextBlock>
+                <ProgressBar x:Name="Progress"></ProgressBar>
+            </UniformGrid>
+        </StatusBar>
+
+
 
     </Grid>
     

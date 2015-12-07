@@ -218,7 +218,7 @@ namespace aXon.Warehouse.Desktop
             var screen = Screens.FirstOrDefault(s => s.ScreenName == name);
             TabItem tab =   new TabItem();
             screen.SourceData = SourceData;
-            tab.Header = name;
+            tab.Header = new TabHeader() { HeaderText = name, MyTab = tab, Tabs = Tabs };
             tab.IsSelected = true;
             tab.Content = screen;
             Tabs.Items.Add(tab);
@@ -443,10 +443,14 @@ namespace aXon.Warehouse.Desktop
 
         public void RunNetworks()
         {
-            var reclocs = from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.PickupMode select p;
-            var shiplocs = from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.ShipMode select p;
-            var storelocs = from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.StorageMode select p;
-            var chrlocs = from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.ChargeMode select p;
+            var reclocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.PickupMode select p).ToArray();
+            var shiplocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.ShipMode select p).ToArray();
+            var storelocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.StorageMode select p).ToArray();
+            var chrlocs = (from p in SourceData.Warehouse.Positions where p.MapMode == MapMode.ChargeMode select p).ToArray();
+            var total = ((chrlocs.Length*reclocs.Length)*2) + ((chrlocs.Length*shiplocs.Length)*2) +
+                        ((chrlocs.Length*storelocs.Length)*2) + (reclocs.Length*storelocs.Length) + (storelocs.Length*shiplocs.Length);
+            Progress.Maximum = total;
+            Progress.Value = 0;
             foreach (var cl in chrlocs)
             {
                 SourceLocation = new Position(cl.X, cl.Y);
@@ -454,16 +458,25 @@ namespace aXon.Warehouse.Desktop
                 {
                     DestLocation = new Position(l.X, l.Y);
                     BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                    Progress.Value += 1;
+                    txtProgress.Text = Progress.Value.ToString() + "/" + total.ToString();
+                    DoEvents();
                 }
                 foreach (var l in shiplocs.ToArray())
                 {
                     DestLocation = new Position(l.X, l.Y);
                     BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                    Progress.Value += 1;
+                    txtProgress.Text = Progress.Value.ToString() + "/" + total.ToString();
+                    DoEvents();
                 }
                 foreach (var l in storelocs.ToArray())
                 {
                     DestLocation = new Position(l.X, l.Y);
                     BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                    Progress.Value += 1;
+                    txtProgress.Text = Progress.Value.ToString() + "/" + total.ToString();
+                    DoEvents();
                 }
             }
             foreach (var cl in reclocs)
@@ -473,11 +486,17 @@ namespace aXon.Warehouse.Desktop
                 {
                     DestLocation = new Position(l.X, l.Y);
                     BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                    Progress.Value += 1;
+                    txtProgress.Text = Progress.Value.ToString() + "/" + total.ToString();
+                    DoEvents();
                 }
                 foreach (var l in storelocs.ToArray())
                 {
                     DestLocation = new Position(l.X, l.Y);
                     BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                    Progress.Value += 1;
+                    txtProgress.Text = Progress.Value.ToString() + "/" + total.ToString();
+                    DoEvents();
                 }
             }
             foreach (var cl in storelocs)
@@ -487,11 +506,17 @@ namespace aXon.Warehouse.Desktop
                 {
                     DestLocation = new Position(l.X, l.Y);
                     BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                    Progress.Value += 1;
+                    txtProgress.Text = Progress.Value.ToString() + "/" + total.ToString();
+                    DoEvents();
                 }
                 foreach (var l in shiplocs.ToArray())
                 {
                     DestLocation = new Position(l.X, l.Y);
                     BuildNetwork(cl.X, cl.Y, l.X, l.Y);
+                    Progress.Value += 1;
+                    txtProgress.Text = Progress.Value.ToString() + "/" + total.ToString();
+                    DoEvents();
                 }
             }
         }
