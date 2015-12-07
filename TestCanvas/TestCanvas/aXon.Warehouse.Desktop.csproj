@@ -94,14 +94,47 @@
     <Compile Include="EnumConverter.cs" />
     <Compile Include="EnumToBooleanConverter.cs" />
     <Compile Include="IAxonScreen.cs" />
+    <Compile Include="Modules\Configuration\Countries.xaml.cs">
+      <DependentUpon>Countries.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Debug\aXonOSMessageLog.xaml.cs">
       <DependentUpon>aXonOSMessageLog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\HR\Benifits.xaml.cs">
+      <DependentUpon>Benifits.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\HR\Employees.xaml.cs">
+      <DependentUpon>Employees.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\HR\EmployeeTypes.xaml.cs">
+      <DependentUpon>EmployeeTypes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\HR\Positions.xaml.cs">
+      <DependentUpon>Positions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Robotics\Robot\Rovers.xaml.cs">
       <DependentUpon>Rovers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Security\Groups.xaml.cs">
+      <DependentUpon>Groups.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Security\Roles.xaml.cs">
+      <DependentUpon>Roles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Security\Users.xaml.cs">
+      <DependentUpon>Users.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Warehouse\NeuralNetworks.xaml.cs">
       <DependentUpon>NeuralNetworks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Warehouse\PartsManagement\Parts.xaml.cs">
+      <DependentUpon>Parts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Warehouse\ReceiptManagement\Receipts.xaml.cs">
+      <DependentUpon>Receipts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Warehouse\SalesOrderManagement\SalesOrders.xaml.cs">
+      <DependentUpon>SalesOrders.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Warehouse\WarehouseEdit.xaml.cs">
       <DependentUpon>WarehouseEdit.xaml</DependentUpon>
@@ -126,7 +159,27 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modules\Configuration\Countries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Debug\aXonOSMessageLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\HR\Benifits.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\HR\Employees.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\HR\EmployeeTypes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\HR\Positions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,7 +187,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Security\Groups.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Security\Roles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Security\Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Warehouse\NeuralNetworks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Warehouse\PartsManagement\Parts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Warehouse\ReceiptManagement\Receipts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Warehouse\SalesOrderManagement\SalesOrders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -300,9 +377,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\Communications\" />
-    <Folder Include="Modules\Configuration\" />
-    <Folder Include="Modules\HR\" />
-    <Folder Include="Modules\Security\" />
+    <Folder Include="Modules\Warehouse\ShippingManagement\" />
+    <Folder Include="Modules\Warehouse\StorageManagement\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
