@@ -1,12 +1,26 @@
-﻿namespace aXon.Warehouse.Modules.Security.Models
+﻿using System;
+
+namespace aXon.Warehouse.Modules.Security.Models
 {
-    public class Person:BaseModel
+    public class Person:User
     {
-        private string _password;
-        private string _emailAddress;
+        
+        
         private string _lastName;
         private string _middleName;
         private string _firstName;
+        private Guid _companyId;
+
+        public Guid CompanyId
+        {
+            get { return _companyId; }
+            set
+            {
+                if (value.Equals(_companyId)) return;
+                _companyId = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string FirstName
         {
@@ -41,26 +55,8 @@
             }
         }
 
-        public string EmailAddress
-        {
-            get { return _emailAddress; }
-            set
-            {
-                if (value == _emailAddress) return;
-                _emailAddress = value;
-                OnPropertyChanged();
-            }
-        }
+       
 
-        public string Password
-        {
-            get { return _password; }
-            set
-            {
-                if (value == _password) return;
-                _password = value;
-                OnPropertyChanged();
-            }
-        }
+        
     }
 }

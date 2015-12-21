@@ -31,7 +31,13 @@
                 <DataGridTemplateColumn Header="Actions" Width="200">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Tag="{Binding Id}" Click="RunNetwork" HorizontalAlignment="Right">Simulate</Button>
+                            <UniformGrid Columns="3">
+                                <Button Tag="{Binding Id}" Click="RunNetwork" HorizontalAlignment="Right">Simulate</Button>
+                                <ComboBox>
+                                    <ComboBoxItem Content="000001"/>
+                                </ComboBox>
+                                <Button Tag="{Binding Id}" Click="ExecuteOnRobot" HorizontalAlignment="Right">Execute on Rover</Button>
+                            </UniformGrid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

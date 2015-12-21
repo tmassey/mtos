@@ -8,11 +8,22 @@ using aXon.Rover.Models;
 
 namespace aXon.Warehouse.Modules.Robotics.Robot.Models
 {
-    public class Robot:BaseModel
+    public class Robot:CompanyBaseModel
     {
-        public int SerialNumber { get;set; }
+        public string SerialNumber { get;set; }
         public Position CurrentLocation { get; set; }
         public RoverMode CurrentMode { get; set; }
 
+    }
+
+    public enum RobotJobType
+    {
+
+    }
+
+    public class RobotJob : CompanyBaseModel
+    {
+        public RobotJobType JobType { get; set; }
+        
     }
 }

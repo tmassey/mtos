@@ -55,5 +55,4 @@ namespace aXon.TaskTransport.Messages
 
 		public LogLevel LogReportingLevel { get; set; }
 	}
-	
 }

@@ -1,52 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
+using System.Text;
+using aXon.Rover;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace aXon.RX02.ControlServer
 {
     public class ControllerStartup
     {
-        private static TcpListener _listener;
-        public static string cLock="";
+        public static string CLock = "";
+        private static readonly MongoDataService ds = new MongoDataService();
+        public static MqttClient Client;
+        public static List<RobotManager> Robots { get; set; }
+
         public static void Main()
         {
-            StartServer();
-            while (true)
+            Console.WriteLine("aXon Robotics Server Version 1.0");
+            Console.WriteLine("Processing Startup");
+            bool connected = false;
+            while (connected == false)
             {
+                try
+                {
+                    Console.WriteLine("Connecting to MQTT Server!");
+                    Client = new MqttClient(IPAddress.Parse("192.168.1.19"));
+                    byte code = Client.Connect("aXon");
+                    Client.Subscribe(new[] {"/RXAUTH", "/testRX"},
+                                     new[] {MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE, MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE});
+                    Client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+                    connected = true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());                    
+                }
             }
+            Console.ReadLine();
         }
 
-        public static void StartServer()
+
+        private static void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            _listener = new TcpListener(IPAddress.Any,23);
-            _listener.Start();
-            WaitForClientConnect();
-        }
-        private static void WaitForClientConnect()
-        {
-            object obj = new object();
-            _listener.BeginAcceptTcpClient(new System.AsyncCallback(OnClientConnect), obj);
-        }
-        private static void OnClientConnect(IAsyncResult asyn)
-        {
-            try
+            if (e.Topic == "/RXAUTH")
             {
-                TcpClient clientSocket = default(TcpClient);
-                clientSocket = _listener.EndAcceptTcpClient(asyn);
-                HandleClientRequest clientReq = new HandleClientRequest(clientSocket);
-                clientReq.StartClient();
-            }
-            catch (Exception se)
-            {
-                throw;
+                string newSerial = Encoding.UTF8.GetString(e.Message);
+                var robot = new RobotManager(newSerial);
+                if (Robots == null)
+                    Robots = new List<RobotManager>();
+                Robots.Add(robot);
             }
 
-            WaitForClientConnect();
+            Console.WriteLine(e.Topic + " : " + Encoding.UTF8.GetString(e.Message));
         }
     }
 }

@@ -43,7 +43,8 @@ namespace aXon.TaskTransport
 		private IModel channel;
 		private Timer _t = new Timer (1000);
 		private string _channelName;
-	    private bool _getNext = true;
+	    public bool GetNext { get; set; }
+	
 		/// <summary>
 		/// 
 		/// </summary>
@@ -55,7 +56,9 @@ namespace aXon.TaskTransport
 			_channelName = typeof(T).Name;
 			channel.QueueDeclare (_channelName, false, false, false, null);
             channel.BasicQos(0, 1, false);
-			if (AllowReceive) {
+			if (AllowReceive)
+			{
+			    GetNext = true;
 				_t.Elapsed += _t_Elapsed;
 				_t.Enabled = true;
 				_t.Start ();
@@ -83,34 +86,28 @@ namespace aXon.TaskTransport
 			}
 		}
 
-	    public void ListenForNext()
-	    {
-	        _getNext = true;
-	    }
-
+	    
 	    private void _t_Elapsed (object sender, ElapsedEventArgs e)
 		{
 			_t.Stop ();
-            var consumer = new EventingBasicConsumer(channel);
+          
 			//channel.BasicConsume (_channelName, false, consumer);
 
             //while (true) {
-            //    if (_getNext)
-            //    {
-                    
-			        consumer.Received += (model, ea) =>
-			            {
-                            _getNext = false;
-                            var body = ea.Body;
-                            var s = Encoding.UTF8.GetString(body);
-                            T obj = JsonConvert.DeserializeObject<T>(s);
-                            InvokeReceivedMessage(obj);
-                            channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
-			            };
-                    channel.BasicConsume(_channelName, false, consumer);
-            //    }
-            //}
-			//t.Start();
+	        if (!GetNext) return;
+            var consumer = new EventingBasicConsumer(channel);
+	        consumer.Received += (model, ea) =>
+	                                 {
+	                                     var body = ea.Body;
+	                                     var s = Encoding.UTF8.GetString(body);
+	                                     T obj = JsonConvert.DeserializeObject<T>(s);
+	                                     InvokeReceivedMessage(obj);
+	                                     channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+	                                 };
+	        channel.BasicConsume(_channelName, false, consumer);
+	        
+	        //}
+	        //t.Start();
 		}
 
 		/// <summary>

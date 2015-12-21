@@ -168,7 +168,7 @@ namespace aXon
             }
                     GC.Collect();
                 
-            _ProgressQueue.ListenForNext();
+            
                 }
             catch (Exception ex)
             {

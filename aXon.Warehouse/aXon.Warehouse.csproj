@@ -38,7 +38,6 @@
     <Folder Include="BaseClasses\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Modules\Communications\" />
-    <Folder Include="Modules\Warehouse\" />
     <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +57,7 @@
     <Compile Include="Attributes\CannotApplyEqualityOperatorAttribute.cs" />
     <Compile Include="Attributes\ContractAnnotationAttribute.cs" />
     <Compile Include="BaseDictionaryModel.cs" />
+    <Compile Include="CompanyBaseModel.cs" />
     <Compile Include="Enumerations\ImplicitUseKindFlags.cs" />
     <Compile Include="Enumerations\ImplicitUseTargetFlags.cs" />
     <Compile Include="Attributes\InstantHandleAttribute.cs" />
@@ -86,6 +86,13 @@
     <Compile Include="Modules\Configuration\Models\Country.cs" />
     <Compile Include="Modules\Security\Models\PersonAddress.cs" />
     <Compile Include="Modules\Configuration\Models\State.cs" />
+    <Compile Include="Modules\Security\Models\User.cs" />
+    <Compile Include="Modules\Warehouse\PartsManagement\Carrier.cs" />
+    <Compile Include="Modules\Warehouse\PartsManagement\Company.cs" />
+    <Compile Include="Modules\Warehouse\PartsManagement\Customer.cs" />
+    <Compile Include="Modules\Warehouse\PartsManagement\Part.cs" />
+    <Compile Include="Modules\Warehouse\PartsManagement\Vendor.cs" />
+    <Compile Include="Modules\Warehouse\PartsManagement\Warehouse.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
