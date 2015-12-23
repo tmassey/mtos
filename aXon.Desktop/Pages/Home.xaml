@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="aXon.Desktop.Pages.Home"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:local="clr-namespace:aXon.Desktop" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <local:MainViewModel/>
+    </UserControl.DataContext>
+    <Grid Style="{StaticResource ContentRoot}">
+        <UniformGrid Columns="2">
+            <ScrollViewer>
+                <StackPanel MinWidth="200">
+                    <TextBlock Text="TODO: add content" />
+
+                </StackPanel>
+            </ScrollViewer>
+            <oxy:Plot Title="Parts In House"  Background="Transparent"  >
+            <oxy:Plot.Series >
+                    <oxy:LineSeries ItemsSource="{Binding Points}" Color="#FF1745A9" LineJoin="Miter" LineStyle="Solid" LineLegendPosition="Start"  />
+            </oxy:Plot.Series>
+        </oxy:Plot>
+            <oxy:Plot Title="Parts Inbound"  Background="Transparent"  >
+                <oxy:Plot.Series>
+                    <oxy:LineSeries ItemsSource="{Binding Points}" Color="#FF1745A9"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+            <oxy:Plot Title="Parts Outbound"  Background="Transparent"  >
+                <oxy:Plot.Series>
+                    <oxy:LineSeries ItemsSource="{Binding Points}" Color="#FF1745A9"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+
+        </UniformGrid>
+    </Grid>
+</UserControl>

@@ -104,6 +104,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutIgnite.xaml.cs">
+      <DependentUpon>AboutIgnite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AxonScreen.cs" />
     <Compile Include="DataSource.cs" />
     <Compile Include="EnumConverter.cs" />
@@ -162,6 +165,10 @@
     <Compile Include="TabHeader.xaml.cs">
       <DependentUpon>TabHeader.xaml</DependentUpon>
     </Compile>
+    <Page Include="AboutIgnite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

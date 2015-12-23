@@ -181,29 +181,72 @@ namespace aXon.Warehouse.Desktop
             var list=ReflectiveEnumerator.GetEnumerableOfType<AxonScreen>();
             Screens = new ObservableCollection<AxonScreen>(list);
             List<MenuItem> mods= new List<MenuItem>();
-            foreach (var s in list)
-            {
+            TreeViewItem root = new TreeViewItem() { Header = "Modules", IsExpanded = true, Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)) };
+            foreach (var s in list.ToArray())
+            {                
                 var mod=mods.FirstOrDefault(n => (string)n.Header == s.ModuleName);
+                var query = from TreeViewItem childs in root.Items where ((string)childs.Header) == s.ModuleName select childs;
+                var tmod = query.FirstOrDefault();
                 if(mod==null)
-                    mods.Add(new MenuItem(){Header=s.ModuleName});
+                {
+                    mods.Add(new MenuItem() { Header = s.ModuleName, Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)) });
+                }
+                if(tmod==null)
+                {
+                    var mti = new TreeViewItem()
+                                  {
+                                      Header = s.ModuleName,
+                                      Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                                      IsExpanded = true,
+                                      IsEnabled=true
+                                      
+                                  };
+                    foreach (var screen in list.ToArray())
+                    {
+                        screen.DataService = (aXon.Rover.Interfaces.IDataService)Mds;
+                        screen.Shell = this;
+                        if (screen.ModuleName != s.ModuleName) continue;                        
+                        var ti = new TreeViewItem()
+                        {
+                            Visibility = Visibility.Visible,
+                            Header = screen.ScreenName,
+                            Tag = screen.ScreenName,
+                            Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                            IsExpanded = true,
+                            IsEnabled = true
+                        };
+                        ti.MouseDoubleClick += ti_MouseDoubleClick;
+                        mti.Items.Add(ti);
+                    }
+                    root.Items.Add(mti);
+                }
             }
+            TreeMenu.Items.Add(root);
             
-            foreach (var screen in list)
+            foreach (var screen in list.ToArray())
             {
                 screen.DataService = (aXon.Rover.Interfaces.IDataService)Mds;
                 screen.Shell = this;
                 var mod = mods.FirstOrDefault(n => (string)n.Header == screen.ModuleName);
-                if (mod == null) continue;
+                
+                if (mod == null ) continue;               
                 var mi = new MenuItem
                 {
                     Header = screen.ScreenName,
-                    Tag = screen.ScreenName
+                    Tag = screen.ScreenName,
+                    Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0))
                 };
                 mi.Click += mi_Click;
                 mod.Items.Add(mi);
             }
             foreach (var m in mods)
-                Modules.Items.Add(m);
+                Modules.Items.Add(m);           
+        }
+
+        void ti_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var src = (TreeViewItem)e.Source;
+            LoadScreen((string)src.Tag);
         }
 
         void mi_Click(object sender, RoutedEventArgs e)
@@ -606,5 +649,55 @@ namespace aXon.Warehouse.Desktop
         {
 
         }
+
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown(0);
+        }
+
+        private void Maximize(object sender, RoutedEventArgs e)
+        {
+            this.WindowState=WindowState.Maximized;
+        }
+
+        private void Minimize(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void tabchanges(object sender, SelectionChangedEventArgs e)
+        {
+            var showtoolbar = false;
+            foreach(TabItem t in Tabs.Items)
+            {
+                try
+                {
+                    if ((string) t.Header == "Warehouse Map" && t.IsSelected)
+                        showtoolbar = true;
+                }
+                catch
+                {
+                }
+            }
+            if (showtoolbar)
+            {
+                mainToolBar.Visibility=Visibility.Visible;
+                mainToolBar.Height = 50;
+                toolbarRow.Height = new GridLength(50);
+            }
+            else
+            {
+                mainToolBar.Visibility = Visibility.Collapsed;
+                mainToolBar.Height = 0;
+                toolbarRow.Height = new GridLength(0);
+            }
+
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
     }
 }

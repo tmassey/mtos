@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
     xmlns:enumerations="clr-namespace:aXon.Rover.Enumerations;assembly=aXon.Rover"
-    xmlns:testCanvas="clr-namespace:aXon.Warehouse.Desktop">
+    xmlns:testCanvas="clr-namespace:aXon.Warehouse.Desktop" WindowStyle="None" WindowState="Maximized">
     <Window.Resources>
         <testCanvas:EnumToBooleanConverter x:Key="EnumConverter" />
         <BooleanToVisibilityConverter x:Key="myBoolToVisibilityConverter" />
@@ -13,25 +13,114 @@
     </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition MaxHeight="20"></RowDefinition>
             <RowDefinition MaxHeight="50"></RowDefinition>
+            <RowDefinition MaxHeight="25"></RowDefinition>
+            <RowDefinition x:Name="toolbarRow"  MinHeight="0" MaxHeight="50"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition MaxHeight="25"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-           
-            <ColumnDefinition></ColumnDefinition>            
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="141*"></ColumnDefinition>
+            <ColumnDefinition Width="419*"/>
         </Grid.ColumnDefinitions>
-        <Menu x:Name="MainMenu"  Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
-            
+        <Border Grid.Row="0" Grid.ColumnSpan="3">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF525561" Offset="0.5"/>
+                    <GradientStop Color="#FF1D1D1D" Offset="1"/>
+                    <GradientStop Color="#FF1D1D1D"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Border CornerRadius="0" Grid.Column="0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FF525561" Offset="0.5"/>
+                            <GradientStop Color="#FF1D1D1D" Offset="1"/>
+                            <GradientStop Color="#FF1D1D1D"/>
+                        </LinearGradientBrush>
+                       
+                    </Border.Background>
+                    <Border CornerRadius="0,0,45,0">
+                        <Border.Effect>
+                            <DropShadowEffect Direction="314" Opacity="1" RenderingBias="Quality" ShadowDepth="-5"/>
+                        </Border.Effect>
+                        <Border.Background>
+                            <SolidColorBrush Color="#FF1D1D1D"></SolidColorBrush>
+                        </Border.Background>
+                        <StackPanel  Grid.Column="1" Margin="15,3" >
+                            <TextBlock Grid.Column="0" Foreground="White" FontSize="22">Ignite Warehouseing</TextBlock>
+                            <TextBlock Grid.Column="0" HorizontalAlignment="Left" Foreground="White" FontSize="10">by aXon Electronics LLC</TextBlock>
+                        </StackPanel>
+                    </Border>
+                </Border>
+               
+                <Border CornerRadius="0" Grid.Column="3">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FF525561" Offset="0.5"/>
+                            <GradientStop Color="#FF1D1D1D" Offset="1"/>
+                            <GradientStop Color="#FF1D1D1D"/>
+                        </LinearGradientBrush>
+                        
+                    </Border.Background>
+                  
+                        <UniformGrid Columns="2" VerticalAlignment="Top" Height="25" HorizontalAlignment="right" >
+                            <Border MouseLeftButtonUp="Minimize">
+                                <TextBlock HorizontalAlignment="Center" FontWeight="ExtraBold" VerticalAlignment="Center"  FontSize="20" Margin="5" Foreground="White" Background="Transparent" >-</TextBlock>
+                            </Border>
+                            <Border MouseLeftButtonUp="Close">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="20" Margin="5" Foreground="White" Background="Transparent" >X</TextBlock>
+                            </Border>
+
+                        </UniformGrid>
+                    </Border>
+               
+               
+            </Grid>
+        </Border>
+        <Border Grid.Row="3" Grid.ColumnSpan="1" Grid.Column="0">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF1D1D1D"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid >
+                <TreeView x:Name="ModuleMenuTree" Background="Transparent" Foreground="White">
+
+                </TreeView>
+            </Grid>
+        </Border>
+        <Menu x:Name="MainMenu" Foreground="White" Grid.ColumnSpan="3" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
+            <Menu.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+
+                    <GradientStop Color="#FF525561"/>
+                </LinearGradientBrush>
+            </Menu.Background>
             <MenuItem Header="File" >
-                <MenuItem Header="Exit" Tag="Exit" Click="MenuItem_OnClick"  />
+                <MenuItem Header="Exit" Foreground="Black" Tag="Exit" Click="MenuItem_OnClick"  />
             </MenuItem>
             <MenuItem x:Name="Modules" Header="Modules" >
-                <MenuItem Header="Exit" Tag="Exit" Click="MenuItem_OnClick"  />
+            </MenuItem>
+            <MenuItem x:Name="Help" Header="Help" >
+                <MenuItem Header="About" Foreground="Black" Tag="About" Click="About_Click"  />
             </MenuItem>
         </Menu>
-        <ToolBar Grid.Row="1"  Grid.ColumnSpan="2" >
+        <ToolBar Grid.Row="2"  Grid.ColumnSpan="3" x:Name="mainToolBar" Visibility="Visible">
+            <ToolBar.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+
+                    <GradientStop Color="#FF1D1D1D"/>
+                </LinearGradientBrush>
+            </ToolBar.Background>
             <RadioButton GroupName="mode" Foreground="Blue"
                              IsChecked="{Binding Path=ModeMap,                                Converter={StaticResource EnumConverter},
                                  ConverterParameter={x:Static enumerations:MapMode.PathMode}}"
@@ -68,47 +157,13 @@
                              Content="Obstruction Location" />
 
         </ToolBar>
-         
-            <!--<UniformGrid Columns="2">
-            <TextBlock>Time:</TextBlock>
-            <TextBlock Text="{Binding Path=Seconds}" />
-       
-            <TextBlock>Fuel:</TextBlock>
-            <TextBlock Text="{Binding Path=Fuel}" />
-       
-            <TextBlock>Rest Factor:</TextBlock>
-            <TextBlock Text="{Binding Path=Fuel}" />
-        
-            <TextBlock>Distance to Destination:</TextBlock>
-            <TextBlock Text="{Binding Path=DistanceToDestination}" />
-       
-            <TextBlock>Last Move:</TextBlock>
-            <TextBlock Text="{Binding Path=CurrentDirection}" />
-        
-            <TextBlock>Postion:</TextBlock>
-            <UniformGrid Columns="2">
-                <TextBlock Text="{Binding Path=Position[0]}" />
-                <TextBlock Text="{Binding Path=Position[1]}" />
-            </UniformGrid>
-       
-            <TextBlock>Destination:</TextBlock>
-            <UniformGrid Columns="2">
-                <TextBlock Text="{Binding Path=Destination[0]}" />
-                <TextBlock Text="{Binding Path=Destination[1]}" />
-            </UniformGrid>
-      
-            <TextBlock># Rests Taken:</TextBlock>
-            <TextBlock Text="{Binding Path=Rests}" />
-        </UniformGrid>-->
+        <TreeView Grid.Row="3" Grid.Column="0" x:Name="TreeMenu" Background="White" />
+        <TabControl x:Name="Tabs" Grid.Row="3" Grid.Column="1" Margin="5" Grid.ColumnSpan="2"  SelectionChanged="tabchanges">
+            <TabItem Header="Welcome" x:Name="WelcomeTab">
 
+            </TabItem>
+            <TabItem Header="Warehouse Map" x:Name="MapTab">
 
-     
-
-
-        <TabControl x:Name="Tabs" Grid.Row="2" Grid.Column="1" Margin="5">
-
-          <TabItem Header="Warehouse Map" x:Name="MapTab">
-                
                 <Viewbox Stretch="Fill" HorizontalAlignment="Left"  VerticalAlignment="Top">
                     <Canvas x:Name="Canvas" Background="Transparent" Margin="0" Width="810"
                         Height="810" HorizontalAlignment="Left"
@@ -122,20 +177,52 @@
                     </Canvas>
                 </Viewbox>
             </TabItem>
-           
-            
-                
+
+
+
         </TabControl>
-        <StatusBar HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Bottom" >
-            <UniformGrid Columns="3">
-                <TextBlock></TextBlock>
-                <TextBlock HorizontalAlignment="Center" x:Name="txtProgress"></TextBlock>
-                <ProgressBar x:Name="Progress"></ProgressBar>
-            </UniformGrid>
+        <StatusBar HorizontalAlignment="Stretch" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Bottom"  Foreground="White">
+            <StatusBar.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">                    
+                    <GradientStop Color="#FF1D1D1D"/>
+                </LinearGradientBrush>
+            </StatusBar.Background>
+            <Grid  HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Left" Grid.Column="0" Margin="5" x:Name="txtProgress"></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Grid.Column="1" Margin="5" ></TextBlock>
+                <ProgressBar x:Name="Progress" Grid.Column="2" Margin="2" >
+                    <ProgressBar.Background>
+                        <SolidColorBrush Color="White"></SolidColorBrush>
+                    </ProgressBar.Background>
+                    <ProgressBar.BorderBrush>
+                        <SolidColorBrush Color="Black"></SolidColorBrush>
+                    </ProgressBar.BorderBrush>
+                    <ProgressBar.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <LinearGradientBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                    <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                    <RotateTransform Angle="90" CenterY="0.5" CenterX="0.5"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </LinearGradientBrush.RelativeTransform>
+                            <GradientStop Color="#FF525561" Offset="0.5"/>
+                            <GradientStop Color="#FF1D1D1D" Offset="1"/>
+                            <GradientStop Color="#FF1D1D1D"/>
+                        </LinearGradientBrush>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+            </Grid>
         </StatusBar>
 
 
 
     </Grid>
-    
+
 </Window>

@@ -1,0 +1,28 @@
+﻿<mui:ModernDialog x:Class="aXon.Desktop.Login"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  mc:Ignorable="d" 
+                  Height="125" Width="300"
+                  Icon="Assets/appbar.lock.png"
+                  Title="aXon OS Login" WindowStartupLocation="CenterScreen" WindowStyle="None">
+
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"></RowDefinition>
+            <RowDefinition MaxHeight="65"></RowDefinition>
+        
+        </Grid.RowDefinitions>
+        <TextBlock Foreground="Red" Style="{StaticResource Heading2}" HorizontalAlignment="Center" x:Name="Error" Visibility="Collapsed" Grid.Row="0">Invalid username or passwword</TextBlock>
+        <UniformGrid Columns="2" Grid.Row="1" Margin="5">
+            <TextBlock HorizontalAlignment="Right" Margin="0,2">User Name:</TextBlock>
+            <TextBox x:Name="UserName" Margin="2" Width="150"></TextBox>
+            <TextBlock HorizontalAlignment="Right" Margin="0,2">Password:</TextBlock>
+            <PasswordBox x:Name="Password" Margin="2" Width="150"></PasswordBox>
+        </UniformGrid>
+    </Grid>
+    
+</mui:ModernDialog>

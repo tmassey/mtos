@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using aXon.Warehouse.Enumerations;
+using aXon.Rover;
 
-namespace aXon.Warehouse.Desktop.Modules.Robotics.Robot
+namespace aXon.Desktop.Pages.Modules.Robotics.Robot
 {
     /// <summary>
     /// Interaction logic for Rovers.xaml
@@ -26,6 +15,7 @@ namespace aXon.Warehouse.Desktop.Modules.Robotics.Robot
             InitializeComponent();
             ScreenName = "Robots";
             ModuleName = "Robotics";
+            SourcePath = new Uri("/Pages/Modules/Robotics/Robot/Rovers.xaml", UriKind.Relative);
         }
 
         private void MainGrid_OnSelectionChanged_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -45,6 +35,10 @@ namespace aXon.Warehouse.Desktop.Modules.Robotics.Robot
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
+            if (DataService == null)
+            {
+                DataService = new MongoDataService();
+            }
             var networks = DataService.GetCollectionQueryModel<aXon.Warehouse.Modules.Robotics.Robot.Models.Robot>();
             MainGrid.ItemsSource = networks;
         }
