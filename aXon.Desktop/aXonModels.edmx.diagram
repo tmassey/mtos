@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="50f58252866f4145a4cb61b1eaf64d41" Name="Diagram1">
+        <EntityTypeShape EntityType="aXonModel.Address" Width="1.5" PointX="0.75" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.BaseDictionaryModel" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.BaseModel" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.BasePurchaseOrder" Width="1.5" PointX="7.5" PointY="33.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.BasePurchaseOrderItem" Width="1.5" PointX="12.75" PointY="38.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Carrier" Width="1.5" PointX="3" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.City" Width="1.5" PointX="7.5" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Company" Width="1.5" PointX="3" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.CompanyBaseModel" Width="1.5" PointX="5.25" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Country" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Customer" Width="1.5" PointX="5.25" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.CustomerContact" Width="1.5" PointX="7.5" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.CustomerPurchaseOrder" Width="1.5" PointX="13.5" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.CustomerPurchaseOrderItem" Width="1.5" PointX="15.75" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Employee" Width="1.5" PointX="5.25" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Part" Width="1.5" PointX="7.5" PointY="39.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.PartVendor" Width="1.5" PointX="10.5" PointY="33.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Person" Width="1.5" PointX="5.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.PersonAddress" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.State" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.User" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.Vendor" Width="1.5" PointX="8.25" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.VendorPurchaseOrder" Width="1.5" PointX="10.5" PointY="28.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.VendorPurchaseOrderItem" Width="1.5" PointX="13.5" PointY="33.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.WareHouse" Width="1.5" PointX="5.25" PointY="39.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="aXonModel.WarehouseBaseModel" Width="1.5" PointX="10.5" PointY="37.625" IsExpanded="true" />
+        <AssociationConnector Association="aXonModel.Carrier_HeadquartersAddressId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Customer_HeadquartersAddressId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.fk_HQAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Vendor_HeadquartersAddressId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BaseDictionaryModel_CreatedBy_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BaseDictionaryModel_ModifiedBy_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BasePurchaseOrder_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BasePurchaseOrder_WarehouseId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BasePurchaseOrderItem_PurchaseOrderId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BasePurchaseOrderItem_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BasePurchaseOrderItem_PartId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.BasePurchaseOrderItem_WarehouseId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.City_CountryId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.City_CreatedBy_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.City_ModifiedBy_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.City_StateId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Customer_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrder_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrderItem_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Employee_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.fk_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.fk_WarehoseCompany" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Vendor_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrder_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrderItem_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.WarehouseBaseModel_CompanyId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Country_CreatedBy_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Country_ModifiedBy_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.State_CountryId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerContact_CustomerId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrder_CustomerId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrderItem_CustomerId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrder_WarehouseId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrderItem_PurchaseOrderId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrderItem_PartId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.CustomerPurchaseOrderItem_WarehouseId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.Part_WarehouseId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.PartVendors_PartId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrderItem_PartId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.PartVendors_VendorId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.PersonAddress_PersonId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrder_VendorId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrderItem_VendorId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrder_WarehouseId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrderItem_PurchaseOrderId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.VendorPurchaseOrderItem_WarehouseId_fkey" ManuallyRouted="false" />
+        <AssociationConnector Association="aXonModel.WarehouseBaseModel_WarehouseId_fkey" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -12,12 +12,75 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ScrollViewer Margin="{StaticResource SplitLeft}">
-            .. left content ..
-        </ScrollViewer>
+
+        <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource SplitLeft}">
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <ToolBar Grid.Row="0"   >
+                <ToolBar.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+
+                        <GradientStop Color="#FF1D1D1D"/>
+                    </LinearGradientBrush>
+                </ToolBar.Background>
+                <Button Content="Add" Click="Add_Click" Foreground="White"/>
+                <Button Content="Refresh" Click="Refresh_Click" Foreground="White"/>
+            </ToolBar>
+            <DataGrid x:Name="MainGrid" ItemsSource="{Binding Path=MainData}" SelectionChanged="MainGrid_OnSelectionChanged_OnSelectionChanged" AutoGenerateColumns="False" Margin="{StaticResource SplitLeft}" Grid.Row="1" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Username" Width="*" Binding="{Binding UserName}" />
+                    <DataGridTextColumn Header="Email" Width="*" Binding="{Binding EmailAddress}" />
+                    <DataGridTextColumn Header="Create Date" Width="*" Binding="{Binding CreateDateTime}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
         <GridSplitter Grid.Column="1" />
-        <ScrollViewer Grid.Column="2 " Margin="{StaticResource SplitRight}">
-            .. right content ..
-        </ScrollViewer>
+        <Grid Grid.Row="1" Grid.Column="2" Margin="{StaticResource SplitRight}">
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <ToolBar Grid.Row="0"  Grid.ColumnSpan="2" >
+                <ToolBar.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+
+                        <GradientStop Color="#FF1D1D1D"/>
+                    </LinearGradientBrush>
+                </ToolBar.Background>
+                <Button Content="Save" Click="Save_Click" Foreground="White"/>
+                <Button Content="Delete" Click="Delete_Click" Foreground="White"/>
+            </ToolBar>
+            <StackPanel Grid.Row="1">
+                <GroupBox Header="General Information" >
+                    <Grid  Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="0">Username:</TextBlock>
+                        <TextBox Text="{Binding Path=SelectedRow.UserName}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="0"></TextBox>
+                        <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="1">Email Address:</TextBlock>
+                        <TextBox Text="{Binding Path=SelectedRow.EmailAddress}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="1"></TextBox>
+                        <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="2">Password:</TextBlock>
+                        <TextBox  Text="{Binding Path=SelectedRow.Password}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="2" ></TextBox>
+                        <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="4">Active:</TextBlock>
+                        <CheckBox IsChecked="{Binding Path=SelectedRow.IsActiveRecord}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="4"></CheckBox>
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </desktop:AxonScreen >

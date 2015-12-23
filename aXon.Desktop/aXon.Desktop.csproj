@@ -48,11 +48,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework6.Npgsql, Version=3.0.4.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework6.Npgsql.3.0.4\lib\net45\EntityFramework6.Npgsql.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FirstFloor.ModernUI">
       <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
@@ -63,14 +69,9 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>..\aXon.Worker\bin\Debug\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Security">
-      <HintPath>..\packages\Npgsql.2.2.7\lib\net45\Mono.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Npgsql">
-      <HintPath>..\packages\Npgsql.2.2.7\lib\net45\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="Npgsql.EntityFramework">
-      <HintPath>..\packages\Npgsql.EntityFramework.2.2.7\lib\net45\Npgsql.EntityFramework.dll</HintPath>
+    <Reference Include="Npgsql, Version=3.0.4.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.0.4\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="OxyPlot">
       <HintPath>..\packages\OxyPlot.Core.1.0.0-unstable1904\lib\net45\OxyPlot.dll</HintPath>
@@ -87,6 +88,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -104,17 +107,112 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Address.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aXonModels.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aXonModels.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="aXonModels.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="aXonModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="BaseDictionaryModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BaseModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BasePurchaseOrder.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BasePurchaseOrderItem.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Carrier.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="City.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyBaseModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Country.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerContact.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerPurchaseOrder.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerPurchaseOrderItem.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Part.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PartVendor.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Person.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PersonAddress.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="ReflectiveEnumerator.cs" />
     <Compile Include="Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="State.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vendor.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorPurchaseOrder.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorPurchaseOrderItem.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Security\UsersViewModel.cs" />
+    <Compile Include="WareHouse.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseBaseModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Page Include="Assets\Themes\ModernUI.aXon.xaml">
       <SubType>Designer</SubType>
@@ -286,6 +384,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="aXonModels.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>aXonModels.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="aXonModels.edmx.diagram">
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +437,21 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="aXonModels.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+      <LastGenOutput>aXonModels.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="aXonModels.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+      <LastGenOutput>aXonModels.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
