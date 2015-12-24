@@ -18,7 +18,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
         {
             InitializeComponent();
             ScreenName = "Neural Networks";
-            ModuleName = "Warehouse";
+            ModuleName = "Inventory";
             SourcePath = new Uri("/Pages/Modules/Warehouse/NeuralNetworks.xaml", UriKind.Relative);
             Loaded += NeuralNetworks_Loaded;
         }

@@ -13,7 +13,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse.PartsManagement
         {
             InitializeComponent();
             ScreenName = "Parts Management";
-            ModuleName = "Warehouse";
+            ModuleName = "Inventory";
             SourcePath = new Uri("/Pages/Modules/Warehouse/PartsManagement/Parts.xaml", UriKind.Relative);
             Loaded += Parts_Loaded;
         }

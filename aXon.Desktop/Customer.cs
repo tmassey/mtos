@@ -30,7 +30,7 @@ namespace aXon.Desktop
         public bool IsActiveRecord { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public System.Guid HeadquartersAddressId { get; set; }
+        public Nullable<System.Guid> HeadquartersAddressId { get; set; }
         public System.Guid CompanyId { get; set; }
     
         public virtual Address Address { get; set; }

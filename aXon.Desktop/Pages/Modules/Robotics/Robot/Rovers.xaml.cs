@@ -14,7 +14,7 @@ namespace aXon.Desktop.Pages.Modules.Robotics.Robot
         {
             InitializeComponent();
             ScreenName = "Robots";
-            ModuleName = "Robotics";
+            ModuleName = "Inventory";
             SourcePath = new Uri("/Pages/Modules/Robotics/Robot/Rovers.xaml", UriKind.Relative);
         }
 

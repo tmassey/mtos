@@ -175,6 +175,12 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Pages\Modules\Security\CompaniesView.xaml.cs">
+      <DependentUpon>CompaniesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Modules\Warehouse\Warehouses.xaml.cs">
+      <DependentUpon>Warehouses.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Part.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
@@ -207,7 +213,9 @@
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Security\CompaniesViewModel.cs" />
     <Compile Include="ViewModels\Modules\Security\UsersViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Warehouse\WarehousesViewModel.cs" />
     <Compile Include="WareHouse.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
@@ -243,25 +251,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Modules\HR\Benifits.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Modules\HR\Employees.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Modules\HR\EmployeeTypes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Modules\HR\Positions.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\Modules\Robotics\Robot\Rovers.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Modules\Security\CompaniesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Modules\Security\Groups.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -299,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\Modules\Warehouse\Warehouses.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Settings\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -308,18 +308,6 @@
     </Compile>
     <Compile Include="Pages\Modules\Debug\aXonOSMessageLog.xaml.cs">
       <DependentUpon>aXonOSMessageLog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Modules\HR\Benifits.xaml.cs">
-      <DependentUpon>Benifits.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Modules\HR\Employees.xaml.cs">
-      <DependentUpon>Employees.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Modules\HR\EmployeeTypes.xaml.cs">
-      <DependentUpon>EmployeeTypes.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Modules\HR\Positions.xaml.cs">
-      <DependentUpon>Positions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Modules\Robotics\Robot\Rovers.xaml.cs">
       <DependentUpon>Rovers.xaml</DependentUpon>
@@ -409,6 +397,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Modules\Communications\" />
+    <Folder Include="Pages\Modules\HR\" />
     <Folder Include="Pages\Modules\Warehouse\ShippingManagement\" />
     <Folder Include="Pages\Modules\Warehouse\StorageManagement\" />
   </ItemGroup>

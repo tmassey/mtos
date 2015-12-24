@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
-namespace aXon.Desktop.ViewModels.Modules.Security
+namespace aXon.Desktop.ViewModels.Modules.Warehouse
 {
-    public class UsersViewModel: BaseViewModel
+    public class WarehousesViewModel : BaseViewModel
     {
-        private ObservableCollection<User> _mainData;
-        private User _selectedRow;
+        private ObservableCollection<WareHouse> _mainData;
+        private WareHouse _selectedRow;
         private bool _editMode;
+        private ObservableCollection<Company> _companies;
 
-        public System.Collections.ObjectModel.ObservableCollection<User> MainData
+        public System.Collections.ObjectModel.ObservableCollection<WareHouse> MainData
         {
             get { return _mainData; }
             set
@@ -24,13 +20,25 @@ namespace aXon.Desktop.ViewModels.Modules.Security
             }
         }
 
-        public User SelectedRow
+        public ObservableCollection<Company> Companies
+        {
+            get { return _companies; }
+            set
+            {
+                if (Equals(value, _companies)) return;
+                _companies = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public WareHouse SelectedRow
         {
             get { return _selectedRow; }
             set
             {
                 if (Equals(value, _selectedRow)) return;
                 _selectedRow = value;
+                
                 OnPropertyChanged();
             }
         }
@@ -47,4 +55,3 @@ namespace aXon.Desktop.ViewModels.Modules.Security
         }
     }
 }
-

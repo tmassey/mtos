@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="aXonModel.Store" Provider="Npgsql" ProviderManifestToken="9.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="aXonModel.Store" Provider="Npgsql" ProviderManifestToken="9.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="Id" />
@@ -18,10 +18,10 @@
           <Property Name="Line1" Type="varchar" MaxLength="100" />
           <Property Name="Line2" Type="varchar" MaxLength="100" />
           <Property Name="Line3" Type="varchar" MaxLength="100" />
-          <Property Name="CountryId" Type="uuid" />
-          <Property Name="StateId" Type="uuid" />
-          <Property Name="CityId" Type="uuid" />
           <Property Name="PostalCode" Type="varchar" MaxLength="20" />
+          <Property Name="State" Type="varchar" MaxLength="100" />
+          <Property Name="City" Type="varchar" MaxLength="100" />
+          <Property Name="COuntry" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="BaseDictionaryModel">
           <Key>
@@ -91,7 +91,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="IsActiveRecord" Type="bool" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="512" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="uuid" Nullable="false" />
+          <Property Name="HeadquartersAddressId" Type="uuid" />
           <Property Name="ScacCode" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="City">
@@ -121,7 +121,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="IsActiveRecord" Type="bool" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="512" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="uuid" Nullable="false" />
+          <Property Name="HeadquartersAddressId" Type="uuid" />
         </EntityType>
         <EntityType Name="CompanyBaseModel">
           <Key>
@@ -161,7 +161,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="IsActiveRecord" Type="bool" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="512" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="uuid" Nullable="false" />
+          <Property Name="HeadquartersAddressId" Type="uuid" />
           <Property Name="CompanyId" Type="uuid" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomerContact">
@@ -305,12 +305,12 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="Line1" Type="varchar" MaxLength="100" />
           <Property Name="Line2" Type="varchar" MaxLength="100" />
           <Property Name="Line3" Type="varchar" MaxLength="100" />
-          <Property Name="CountryId" Type="uuid" />
-          <Property Name="StateId" Type="uuid" />
-          <Property Name="CityId" Type="uuid" />
           <Property Name="IsHomeAddress" Type="bool" Nullable="false" />
           <Property Name="PersonId" Type="uuid" Nullable="false" />
           <Property Name="PostalCode" Type="varchar" MaxLength="20" />
+          <Property Name="State" Type="varchar" MaxLength="100" />
+          <Property Name="City" Type="varchar" MaxLength="100" />
+          <Property Name="COuntry" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -353,7 +353,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="IsActiveRecord" Type="bool" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="512" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="uuid" Nullable="false" />
+          <Property Name="HeadquartersAddressId" Type="uuid" />
           <Property Name="CompanyId" Type="uuid" Nullable="false" />
         </EntityType>
         <EntityType Name="VendorPurchaseOrder">
@@ -527,7 +527,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Carrier_HeadquartersAddressId_fkey">
-          <End Role="Address" Type="Self.Address" Multiplicity="1">
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Carrier" Type="Self.Carrier" Multiplicity="*" />
@@ -639,7 +639,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Customer_HeadquartersAddressId_fkey">
-          <End Role="Address" Type="Self.Address" Multiplicity="1">
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
@@ -807,7 +807,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_HQAddress">
-          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
@@ -917,7 +917,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Vendor_HeadquartersAddressId_fkey">
-          <End Role="Address" Type="Self.Address" Multiplicity="1">
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Vendor" Type="Self.Vendor" Multiplicity="*" />
@@ -1286,55 +1286,270 @@ warning 6005: The data type 'money' is currently not supported for the target En
             <End Role="WarehouseBaseModel" EntitySet="WarehouseBaseModel" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="aXonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="aXonEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="aXonModel.Address" />
+          <EntitySet Name="BaseDictionaryModels" EntityType="aXonModel.BaseDictionaryModel" />
+          <EntitySet Name="BaseModels" EntityType="aXonModel.BaseModel" />
+          <EntitySet Name="BasePurchaseOrders" EntityType="aXonModel.BasePurchaseOrder" />
+          <EntitySet Name="BasePurchaseOrderItems" EntityType="aXonModel.BasePurchaseOrderItem" />
+          <EntitySet Name="Carriers" EntityType="aXonModel.Carrier" />
+          <EntitySet Name="Cities" EntityType="aXonModel.City" />
+          <EntitySet Name="Companies" EntityType="aXonModel.Company" />
+          <EntitySet Name="CompanyBaseModels" EntityType="aXonModel.CompanyBaseModel" />
+          <EntitySet Name="Countries" EntityType="aXonModel.Country" />
+          <EntitySet Name="Customers" EntityType="aXonModel.Customer" />
+          <EntitySet Name="CustomerContacts" EntityType="aXonModel.CustomerContact" />
+          <EntitySet Name="CustomerPurchaseOrders" EntityType="aXonModel.CustomerPurchaseOrder" />
+          <EntitySet Name="CustomerPurchaseOrderItems" EntityType="aXonModel.CustomerPurchaseOrderItem" />
+          <EntitySet Name="Employees" EntityType="aXonModel.Employee" />
+          <EntitySet Name="Parts" EntityType="aXonModel.Part" />
+          <EntitySet Name="PartVendors" EntityType="aXonModel.PartVendor" />
+          <EntitySet Name="People" EntityType="aXonModel.Person" />
+          <EntitySet Name="PersonAddresses" EntityType="aXonModel.PersonAddress" />
+          <EntitySet Name="States" EntityType="aXonModel.State" />
+          <EntitySet Name="Users" EntityType="aXonModel.User" />
+          <EntitySet Name="Vendors" EntityType="aXonModel.Vendor" />
+          <EntitySet Name="VendorPurchaseOrders" EntityType="aXonModel.VendorPurchaseOrder" />
+          <EntitySet Name="VendorPurchaseOrderItems" EntityType="aXonModel.VendorPurchaseOrderItem" />
+          <EntitySet Name="WareHouses" EntityType="aXonModel.WareHouse" />
+          <EntitySet Name="WarehouseBaseModels" EntityType="aXonModel.WarehouseBaseModel" />
+          <AssociationSet Name="Carrier_HeadquartersAddressId_fkey" Association="aXonModel.Carrier_HeadquartersAddressId_fkey">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Carrier" EntitySet="Carriers" />
+          </AssociationSet>
+          <AssociationSet Name="Customer_HeadquartersAddressId_fkey" Association="aXonModel.Customer_HeadquartersAddressId_fkey">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="fk_HQAddress" Association="aXonModel.fk_HQAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="Vendor_HeadquartersAddressId_fkey" Association="aXonModel.Vendor_HeadquartersAddressId_fkey">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Vendor" EntitySet="Vendors" />
+          </AssociationSet>
+          <AssociationSet Name="BaseDictionaryModel_CreatedBy_fkey" Association="aXonModel.BaseDictionaryModel_CreatedBy_fkey">
+            <End Role="User" EntitySet="Users" />
+            <End Role="BaseDictionaryModel" EntitySet="BaseDictionaryModels" />
+          </AssociationSet>
+          <AssociationSet Name="BaseDictionaryModel_ModifiedBy_fkey" Association="aXonModel.BaseDictionaryModel_ModifiedBy_fkey">
+            <End Role="User" EntitySet="Users" />
+            <End Role="BaseDictionaryModel" EntitySet="BaseDictionaryModels" />
+          </AssociationSet>
+          <AssociationSet Name="BasePurchaseOrder_CompanyId_fkey" Association="aXonModel.BasePurchaseOrder_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="BasePurchaseOrder" EntitySet="BasePurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="BasePurchaseOrder_WarehouseId_fkey" Association="aXonModel.BasePurchaseOrder_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="BasePurchaseOrder" EntitySet="BasePurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="BasePurchaseOrderItem_PurchaseOrderId_fkey" Association="aXonModel.BasePurchaseOrderItem_PurchaseOrderId_fkey">
+            <End Role="BasePurchaseOrder" EntitySet="BasePurchaseOrders" />
+            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="BasePurchaseOrderItem_CompanyId_fkey" Association="aXonModel.BasePurchaseOrderItem_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="BasePurchaseOrderItem_PartId_fkey" Association="aXonModel.BasePurchaseOrderItem_PartId_fkey">
+            <End Role="Part" EntitySet="Parts" />
+            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="BasePurchaseOrderItem_WarehouseId_fkey" Association="aXonModel.BasePurchaseOrderItem_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="City_CountryId_fkey" Association="aXonModel.City_CountryId_fkey">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="City_CreatedBy_fkey" Association="aXonModel.City_CreatedBy_fkey">
+            <End Role="User" EntitySet="Users" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="City_ModifiedBy_fkey" Association="aXonModel.City_ModifiedBy_fkey">
+            <End Role="User" EntitySet="Users" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="City_StateId_fkey" Association="aXonModel.City_StateId_fkey">
+            <End Role="State" EntitySet="States" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="Customer_CompanyId_fkey" Association="aXonModel.Customer_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrder_CompanyId_fkey" Association="aXonModel.CustomerPurchaseOrder_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrderItem_CompanyId_fkey" Association="aXonModel.CustomerPurchaseOrderItem_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="Employee_CompanyId_fkey" Association="aXonModel.Employee_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CompanyId" Association="aXonModel.fk_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CompanyBaseModel" EntitySet="CompanyBaseModels" />
+          </AssociationSet>
+          <AssociationSet Name="fk_WarehoseCompany" Association="aXonModel.fk_WarehoseCompany">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="WareHouse" EntitySet="WareHouses" />
+          </AssociationSet>
+          <AssociationSet Name="Vendor_CompanyId_fkey" Association="aXonModel.Vendor_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Vendor" EntitySet="Vendors" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrder_CompanyId_fkey" Association="aXonModel.VendorPurchaseOrder_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrderItem_CompanyId_fkey" Association="aXonModel.VendorPurchaseOrderItem_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="WarehouseBaseModel_CompanyId_fkey" Association="aXonModel.WarehouseBaseModel_CompanyId_fkey">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="WarehouseBaseModel" EntitySet="WarehouseBaseModels" />
+          </AssociationSet>
+          <AssociationSet Name="Country_CreatedBy_fkey" Association="aXonModel.Country_CreatedBy_fkey">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Country" EntitySet="Countries" />
+          </AssociationSet>
+          <AssociationSet Name="Country_ModifiedBy_fkey" Association="aXonModel.Country_ModifiedBy_fkey">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Country" EntitySet="Countries" />
+          </AssociationSet>
+          <AssociationSet Name="State_CountryId_fkey" Association="aXonModel.State_CountryId_fkey">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="State" EntitySet="States" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerContact_CustomerId_fkey" Association="aXonModel.CustomerContact_CustomerId_fkey">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerContact" EntitySet="CustomerContacts" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrder_CustomerId_fkey" Association="aXonModel.CustomerPurchaseOrder_CustomerId_fkey">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrderItem_CustomerId_fkey" Association="aXonModel.CustomerPurchaseOrderItem_CustomerId_fkey">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrder_WarehouseId_fkey" Association="aXonModel.CustomerPurchaseOrder_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrderItem_PurchaseOrderId_fkey" Association="aXonModel.CustomerPurchaseOrderItem_PurchaseOrderId_fkey">
+            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
+            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrderItem_PartId_fkey" Association="aXonModel.CustomerPurchaseOrderItem_PartId_fkey">
+            <End Role="Part" EntitySet="Parts" />
+            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerPurchaseOrderItem_WarehouseId_fkey" Association="aXonModel.CustomerPurchaseOrderItem_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="Part_WarehouseId_fkey" Association="aXonModel.Part_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="Part" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="PartVendors_PartId_fkey" Association="aXonModel.PartVendors_PartId_fkey">
+            <End Role="Part" EntitySet="Parts" />
+            <End Role="PartVendor" EntitySet="PartVendors" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrderItem_PartId_fkey" Association="aXonModel.VendorPurchaseOrderItem_PartId_fkey">
+            <End Role="Part" EntitySet="Parts" />
+            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="PartVendors_VendorId_fkey" Association="aXonModel.PartVendors_VendorId_fkey">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="PartVendor" EntitySet="PartVendors" />
+          </AssociationSet>
+          <AssociationSet Name="PersonAddress_PersonId_fkey" Association="aXonModel.PersonAddress_PersonId_fkey">
+            <End Role="Person" EntitySet="People" />
+            <End Role="PersonAddress" EntitySet="PersonAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrder_VendorId_fkey" Association="aXonModel.VendorPurchaseOrder_VendorId_fkey">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrderItem_VendorId_fkey" Association="aXonModel.VendorPurchaseOrderItem_VendorId_fkey">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrder_WarehouseId_fkey" Association="aXonModel.VendorPurchaseOrder_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrderItem_PurchaseOrderId_fkey" Association="aXonModel.VendorPurchaseOrderItem_PurchaseOrderId_fkey">
+            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
+            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="VendorPurchaseOrderItem_WarehouseId_fkey" Association="aXonModel.VendorPurchaseOrderItem_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="WarehouseBaseModel_WarehouseId_fkey" Association="aXonModel.WarehouseBaseModel_WarehouseId_fkey">
+            <End Role="WareHouse" EntitySet="WareHouses" />
+            <End Role="WarehouseBaseModel" EntitySet="WarehouseBaseModels" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
           <Property Name="Line1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Line2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Line3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CountryId" Type="Guid" />
-          <Property Name="StateId" Type="Guid" />
-          <Property Name="CityId" Type="Guid" />
           <Property Name="PostalCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Carriers" Relationship="Self.Carrier_HeadquartersAddressId_fkey" FromRole="Address" ToRole="Carrier" />
-          <NavigationProperty Name="Customers" Relationship="Self.Customer_HeadquartersAddressId_fkey" FromRole="Address" ToRole="Customer" />
-          <NavigationProperty Name="Companies" Relationship="Self.fk_HQAddress" FromRole="Address" ToRole="Company" />
-          <NavigationProperty Name="Vendors" Relationship="Self.Vendor_HeadquartersAddressId_fkey" FromRole="Address" ToRole="Vendor" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COuntry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Carriers" Relationship="aXonModel.Carrier_HeadquartersAddressId_fkey" FromRole="Address" ToRole="Carrier" />
+          <NavigationProperty Name="Customers" Relationship="aXonModel.Customer_HeadquartersAddressId_fkey" FromRole="Address" ToRole="Customer" />
+          <NavigationProperty Name="Companies" Relationship="aXonModel.fk_HQAddress" FromRole="Address" ToRole="Company" />
+          <NavigationProperty Name="Vendors" Relationship="aXonModel.Vendor_HeadquartersAddressId_fkey" FromRole="Address" ToRole="Vendor" />
         </EntityType>
         <EntityType Name="BaseDictionaryModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="Self.BaseDictionaryModel_CreatedBy_fkey" FromRole="BaseDictionaryModel" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.BaseDictionaryModel_ModifiedBy_fkey" FromRole="BaseDictionaryModel" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="aXonModel.BaseDictionaryModel_CreatedBy_fkey" FromRole="BaseDictionaryModel" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="aXonModel.BaseDictionaryModel_ModifiedBy_fkey" FromRole="BaseDictionaryModel" ToRole="User" />
         </EntityType>
         <EntityType Name="BaseModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
@@ -1344,25 +1559,25 @@ warning 6005: The data type 'money' is currently not supported for the target En
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
           <Property Name="WarehouseId" Type="Guid" Nullable="false" />
           <Property Name="PONumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Company" Relationship="Self.BasePurchaseOrder_CompanyId_fkey" FromRole="BasePurchaseOrder" ToRole="Company" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.BasePurchaseOrder_WarehouseId_fkey" FromRole="BasePurchaseOrder" ToRole="WareHouse" />
-          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="Self.BasePurchaseOrderItem_PurchaseOrderId_fkey" FromRole="BasePurchaseOrder" ToRole="BasePurchaseOrderItem" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.BasePurchaseOrder_CompanyId_fkey" FromRole="BasePurchaseOrder" ToRole="Company" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.BasePurchaseOrder_WarehouseId_fkey" FromRole="BasePurchaseOrder" ToRole="WareHouse" />
+          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="aXonModel.BasePurchaseOrderItem_PurchaseOrderId_fkey" FromRole="BasePurchaseOrder" ToRole="BasePurchaseOrderItem" />
         </EntityType>
         <EntityType Name="BasePurchaseOrderItem">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
@@ -1371,153 +1586,153 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="PartId" Type="Guid" Nullable="false" />
           <Property Name="Qty" Type="Int32" Nullable="false" />
           <Property Name="PurchaseOrderId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="BasePurchaseOrder" Relationship="Self.BasePurchaseOrderItem_PurchaseOrderId_fkey" FromRole="BasePurchaseOrderItem" ToRole="BasePurchaseOrder" />
-          <NavigationProperty Name="Company" Relationship="Self.BasePurchaseOrderItem_CompanyId_fkey" FromRole="BasePurchaseOrderItem" ToRole="Company" />
-          <NavigationProperty Name="Part" Relationship="Self.BasePurchaseOrderItem_PartId_fkey" FromRole="BasePurchaseOrderItem" ToRole="Part" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.BasePurchaseOrderItem_WarehouseId_fkey" FromRole="BasePurchaseOrderItem" ToRole="WareHouse" />
+          <NavigationProperty Name="BasePurchaseOrder" Relationship="aXonModel.BasePurchaseOrderItem_PurchaseOrderId_fkey" FromRole="BasePurchaseOrderItem" ToRole="BasePurchaseOrder" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.BasePurchaseOrderItem_CompanyId_fkey" FromRole="BasePurchaseOrderItem" ToRole="Company" />
+          <NavigationProperty Name="Part" Relationship="aXonModel.BasePurchaseOrderItem_PartId_fkey" FromRole="BasePurchaseOrderItem" ToRole="Part" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.BasePurchaseOrderItem_WarehouseId_fkey" FromRole="BasePurchaseOrderItem" ToRole="WareHouse" />
         </EntityType>
         <EntityType Name="Carrier">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Code" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="HeadquartersAddressId" Type="Guid" />
           <Property Name="ScacCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Address" Relationship="Self.Carrier_HeadquartersAddressId_fkey" FromRole="Carrier" ToRole="Address" />
+          <NavigationProperty Name="Address" Relationship="aXonModel.Carrier_HeadquartersAddressId_fkey" FromRole="Carrier" ToRole="Address" />
         </EntityType>
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CountryId" Type="Guid" Nullable="false" />
           <Property Name="StateId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Country" Relationship="Self.City_CountryId_fkey" FromRole="City" ToRole="Country" />
-          <NavigationProperty Name="User" Relationship="Self.City_CreatedBy_fkey" FromRole="City" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.City_ModifiedBy_fkey" FromRole="City" ToRole="User" />
-          <NavigationProperty Name="State" Relationship="Self.City_StateId_fkey" FromRole="City" ToRole="State" />
+          <NavigationProperty Name="Country" Relationship="aXonModel.City_CountryId_fkey" FromRole="City" ToRole="Country" />
+          <NavigationProperty Name="User" Relationship="aXonModel.City_CreatedBy_fkey" FromRole="City" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="aXonModel.City_ModifiedBy_fkey" FromRole="City" ToRole="User" />
+          <NavigationProperty Name="State" Relationship="aXonModel.City_StateId_fkey" FromRole="City" ToRole="State" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Code" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.fk_HQAddress" FromRole="Company" ToRole="Address" />
-          <NavigationProperty Name="BasePurchaseOrders" Relationship="Self.BasePurchaseOrder_CompanyId_fkey" FromRole="Company" ToRole="BasePurchaseOrder" />
-          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="Self.BasePurchaseOrderItem_CompanyId_fkey" FromRole="Company" ToRole="BasePurchaseOrderItem" />
-          <NavigationProperty Name="Customers" Relationship="Self.Customer_CompanyId_fkey" FromRole="Company" ToRole="Customer" />
-          <NavigationProperty Name="CustomerPurchaseOrders" Relationship="Self.CustomerPurchaseOrder_CompanyId_fkey" FromRole="Company" ToRole="CustomerPurchaseOrder" />
-          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="Self.CustomerPurchaseOrderItem_CompanyId_fkey" FromRole="Company" ToRole="CustomerPurchaseOrderItem" />
-          <NavigationProperty Name="Employees" Relationship="Self.Employee_CompanyId_fkey" FromRole="Company" ToRole="Employee" />
-          <NavigationProperty Name="CompanyBaseModels" Relationship="Self.fk_CompanyId" FromRole="Company" ToRole="CompanyBaseModel" />
-          <NavigationProperty Name="WareHouses" Relationship="Self.fk_WarehoseCompany" FromRole="Company" ToRole="WareHouse" />
-          <NavigationProperty Name="Vendors" Relationship="Self.Vendor_CompanyId_fkey" FromRole="Company" ToRole="Vendor" />
-          <NavigationProperty Name="VendorPurchaseOrders" Relationship="Self.VendorPurchaseOrder_CompanyId_fkey" FromRole="Company" ToRole="VendorPurchaseOrder" />
-          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="Self.VendorPurchaseOrderItem_CompanyId_fkey" FromRole="Company" ToRole="VendorPurchaseOrderItem" />
-          <NavigationProperty Name="WarehouseBaseModels" Relationship="Self.WarehouseBaseModel_CompanyId_fkey" FromRole="Company" ToRole="WarehouseBaseModel" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="HeadquartersAddressId" Type="Guid" />
+          <NavigationProperty Name="Address" Relationship="aXonModel.fk_HQAddress" FromRole="Company" ToRole="Address" />
+          <NavigationProperty Name="BasePurchaseOrders" Relationship="aXonModel.BasePurchaseOrder_CompanyId_fkey" FromRole="Company" ToRole="BasePurchaseOrder" />
+          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="aXonModel.BasePurchaseOrderItem_CompanyId_fkey" FromRole="Company" ToRole="BasePurchaseOrderItem" />
+          <NavigationProperty Name="Customers" Relationship="aXonModel.Customer_CompanyId_fkey" FromRole="Company" ToRole="Customer" />
+          <NavigationProperty Name="CustomerPurchaseOrders" Relationship="aXonModel.CustomerPurchaseOrder_CompanyId_fkey" FromRole="Company" ToRole="CustomerPurchaseOrder" />
+          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="aXonModel.CustomerPurchaseOrderItem_CompanyId_fkey" FromRole="Company" ToRole="CustomerPurchaseOrderItem" />
+          <NavigationProperty Name="Employees" Relationship="aXonModel.Employee_CompanyId_fkey" FromRole="Company" ToRole="Employee" />
+          <NavigationProperty Name="CompanyBaseModels" Relationship="aXonModel.fk_CompanyId" FromRole="Company" ToRole="CompanyBaseModel" />
+          <NavigationProperty Name="WareHouses" Relationship="aXonModel.fk_WarehoseCompany" FromRole="Company" ToRole="WareHouse" />
+          <NavigationProperty Name="Vendors" Relationship="aXonModel.Vendor_CompanyId_fkey" FromRole="Company" ToRole="Vendor" />
+          <NavigationProperty Name="VendorPurchaseOrders" Relationship="aXonModel.VendorPurchaseOrder_CompanyId_fkey" FromRole="Company" ToRole="VendorPurchaseOrder" />
+          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="aXonModel.VendorPurchaseOrderItem_CompanyId_fkey" FromRole="Company" ToRole="VendorPurchaseOrderItem" />
+          <NavigationProperty Name="WarehouseBaseModels" Relationship="aXonModel.WarehouseBaseModel_CompanyId_fkey" FromRole="Company" ToRole="WarehouseBaseModel" />
         </EntityType>
         <EntityType Name="CompanyBaseModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.fk_CompanyId" FromRole="CompanyBaseModel" ToRole="Company" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.fk_CompanyId" FromRole="CompanyBaseModel" ToRole="Company" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Abreviation" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Cities" Relationship="Self.City_CountryId_fkey" FromRole="Country" ToRole="City" />
-          <NavigationProperty Name="User" Relationship="Self.Country_CreatedBy_fkey" FromRole="Country" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Country_ModifiedBy_fkey" FromRole="Country" ToRole="User" />
-          <NavigationProperty Name="States" Relationship="Self.State_CountryId_fkey" FromRole="Country" ToRole="State" />
+          <NavigationProperty Name="Cities" Relationship="aXonModel.City_CountryId_fkey" FromRole="Country" ToRole="City" />
+          <NavigationProperty Name="User" Relationship="aXonModel.Country_CreatedBy_fkey" FromRole="Country" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="aXonModel.Country_ModifiedBy_fkey" FromRole="Country" ToRole="User" />
+          <NavigationProperty Name="States" Relationship="aXonModel.State_CountryId_fkey" FromRole="Country" ToRole="State" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Code" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="HeadquartersAddressId" Type="Guid" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.Customer_HeadquartersAddressId_fkey" FromRole="Customer" ToRole="Address" />
-          <NavigationProperty Name="Company" Relationship="Self.Customer_CompanyId_fkey" FromRole="Customer" ToRole="Company" />
-          <NavigationProperty Name="CustomerContacts" Relationship="Self.CustomerContact_CustomerId_fkey" FromRole="Customer" ToRole="CustomerContact" />
-          <NavigationProperty Name="CustomerPurchaseOrders" Relationship="Self.CustomerPurchaseOrder_CustomerId_fkey" FromRole="Customer" ToRole="CustomerPurchaseOrder" />
-          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="Self.CustomerPurchaseOrderItem_CustomerId_fkey" FromRole="Customer" ToRole="CustomerPurchaseOrderItem" />
+          <NavigationProperty Name="Address" Relationship="aXonModel.Customer_HeadquartersAddressId_fkey" FromRole="Customer" ToRole="Address" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.Customer_CompanyId_fkey" FromRole="Customer" ToRole="Company" />
+          <NavigationProperty Name="CustomerContacts" Relationship="aXonModel.CustomerContact_CustomerId_fkey" FromRole="Customer" ToRole="CustomerContact" />
+          <NavigationProperty Name="CustomerPurchaseOrders" Relationship="aXonModel.CustomerPurchaseOrder_CustomerId_fkey" FromRole="Customer" ToRole="CustomerPurchaseOrder" />
+          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="aXonModel.CustomerPurchaseOrderItem_CustomerId_fkey" FromRole="Customer" ToRole="CustomerPurchaseOrderItem" />
         </EntityType>
         <EntityType Name="CustomerContact">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CustomerId" Type="Guid" Nullable="false" />
           <Property Name="OfficePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OfficeExtention" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="MobilePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Customer" Relationship="Self.CustomerContact_CustomerId_fkey" FromRole="CustomerContact" ToRole="Customer" />
+          <NavigationProperty Name="Customer" Relationship="aXonModel.CustomerContact_CustomerId_fkey" FromRole="CustomerContact" ToRole="Customer" />
         </EntityType>
         <EntityType Name="CustomerPurchaseOrder">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
@@ -1525,18 +1740,18 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="WarehouseId" Type="Guid" Nullable="false" />
           <Property Name="PONumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.CustomerPurchaseOrder_CompanyId_fkey" FromRole="CustomerPurchaseOrder" ToRole="Company" />
-          <NavigationProperty Name="Customer" Relationship="Self.CustomerPurchaseOrder_CustomerId_fkey" FromRole="CustomerPurchaseOrder" ToRole="Customer" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.CustomerPurchaseOrder_WarehouseId_fkey" FromRole="CustomerPurchaseOrder" ToRole="WareHouse" />
-          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="Self.CustomerPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="CustomerPurchaseOrder" ToRole="CustomerPurchaseOrderItem" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.CustomerPurchaseOrder_CompanyId_fkey" FromRole="CustomerPurchaseOrder" ToRole="Company" />
+          <NavigationProperty Name="Customer" Relationship="aXonModel.CustomerPurchaseOrder_CustomerId_fkey" FromRole="CustomerPurchaseOrder" ToRole="Customer" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.CustomerPurchaseOrder_WarehouseId_fkey" FromRole="CustomerPurchaseOrder" ToRole="WareHouse" />
+          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="aXonModel.CustomerPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="CustomerPurchaseOrder" ToRole="CustomerPurchaseOrderItem" />
         </EntityType>
         <EntityType Name="CustomerPurchaseOrderItem">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
@@ -1546,44 +1761,44 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="Qty" Type="Int32" Nullable="false" />
           <Property Name="PurchaseOrderId" Type="Guid" Nullable="false" />
           <Property Name="CustomerId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.CustomerPurchaseOrderItem_CompanyId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="Company" />
-          <NavigationProperty Name="Customer" Relationship="Self.CustomerPurchaseOrderItem_CustomerId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="Customer" />
-          <NavigationProperty Name="CustomerPurchaseOrder" Relationship="Self.CustomerPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="CustomerPurchaseOrder" />
-          <NavigationProperty Name="Part" Relationship="Self.CustomerPurchaseOrderItem_PartId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="Part" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.CustomerPurchaseOrderItem_WarehouseId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="WareHouse" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.CustomerPurchaseOrderItem_CompanyId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="Company" />
+          <NavigationProperty Name="Customer" Relationship="aXonModel.CustomerPurchaseOrderItem_CustomerId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="Customer" />
+          <NavigationProperty Name="CustomerPurchaseOrder" Relationship="aXonModel.CustomerPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="CustomerPurchaseOrder" />
+          <NavigationProperty Name="Part" Relationship="aXonModel.CustomerPurchaseOrderItem_PartId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="Part" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.CustomerPurchaseOrderItem_WarehouseId_fkey" FromRole="CustomerPurchaseOrderItem" ToRole="WareHouse" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="TaxId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.Employee_CompanyId_fkey" FromRole="Employee" ToRole="Company" />
+          <Property Name="TaxId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.Employee_CompanyId_fkey" FromRole="Employee" ToRole="Company" />
         </EntityType>
         <EntityType Name="Part">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
-          <Property Name="PartNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PartNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Revision" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Length" Type="Double" />
           <Property Name="Width" Type="Double" />
@@ -1591,19 +1806,19 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="Weight" Type="Double" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WarehouseId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="Self.BasePurchaseOrderItem_PartId_fkey" FromRole="Part" ToRole="BasePurchaseOrderItem" />
-          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="Self.CustomerPurchaseOrderItem_PartId_fkey" FromRole="Part" ToRole="CustomerPurchaseOrderItem" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.Part_WarehouseId_fkey" FromRole="Part" ToRole="WareHouse" />
-          <NavigationProperty Name="PartVendors" Relationship="Self.PartVendors_PartId_fkey" FromRole="Part" ToRole="PartVendor" />
-          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="Self.VendorPurchaseOrderItem_PartId_fkey" FromRole="Part" ToRole="VendorPurchaseOrderItem" />
+          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="aXonModel.BasePurchaseOrderItem_PartId_fkey" FromRole="Part" ToRole="BasePurchaseOrderItem" />
+          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="aXonModel.CustomerPurchaseOrderItem_PartId_fkey" FromRole="Part" ToRole="CustomerPurchaseOrderItem" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.Part_WarehouseId_fkey" FromRole="Part" ToRole="WareHouse" />
+          <NavigationProperty Name="PartVendors" Relationship="aXonModel.PartVendors_PartId_fkey" FromRole="Part" ToRole="PartVendor" />
+          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="aXonModel.VendorPurchaseOrderItem_PartId_fkey" FromRole="Part" ToRole="VendorPurchaseOrderItem" />
         </EntityType>
         <EntityType Name="PartVendor">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
@@ -1611,112 +1826,112 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="PartId" Type="Guid" Nullable="false" />
           <Property Name="VendorId" Type="Guid" Nullable="false" />
           <Property Name="PreferedVendor" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Part" Relationship="Self.PartVendors_PartId_fkey" FromRole="PartVendor" ToRole="Part" />
-          <NavigationProperty Name="Vendor" Relationship="Self.PartVendors_VendorId_fkey" FromRole="PartVendor" ToRole="Vendor" />
+          <NavigationProperty Name="Part" Relationship="aXonModel.PartVendors_PartId_fkey" FromRole="PartVendor" ToRole="Part" />
+          <NavigationProperty Name="Vendor" Relationship="aXonModel.PartVendors_VendorId_fkey" FromRole="PartVendor" ToRole="Vendor" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="PersonAddresses" Relationship="Self.PersonAddress_PersonId_fkey" FromRole="Person" ToRole="PersonAddress" />
+          <NavigationProperty Name="PersonAddresses" Relationship="aXonModel.PersonAddress_PersonId_fkey" FromRole="Person" ToRole="PersonAddress" />
         </EntityType>
         <EntityType Name="PersonAddress">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
           <Property Name="Line1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Line2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Line3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CountryId" Type="Guid" />
-          <Property Name="StateId" Type="Guid" />
-          <Property Name="CityId" Type="Guid" />
           <Property Name="IsHomeAddress" Type="Boolean" Nullable="false" />
           <Property Name="PersonId" Type="Guid" Nullable="false" />
           <Property Name="PostalCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Person" Relationship="Self.PersonAddress_PersonId_fkey" FromRole="PersonAddress" ToRole="Person" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COuntry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Person" Relationship="aXonModel.PersonAddress_PersonId_fkey" FromRole="PersonAddress" ToRole="Person" />
         </EntityType>
         <EntityType Name="State">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Abreviation" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
           <Property Name="CountryId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Cities" Relationship="Self.City_StateId_fkey" FromRole="State" ToRole="City" />
-          <NavigationProperty Name="Country" Relationship="Self.State_CountryId_fkey" FromRole="State" ToRole="Country" />
+          <NavigationProperty Name="Cities" Relationship="aXonModel.City_StateId_fkey" FromRole="State" ToRole="City" />
+          <NavigationProperty Name="Country" Relationship="aXonModel.State_CountryId_fkey" FromRole="State" ToRole="Country" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="BaseDictionaryModels" Relationship="Self.BaseDictionaryModel_CreatedBy_fkey" FromRole="User" ToRole="BaseDictionaryModel" />
-          <NavigationProperty Name="BaseDictionaryModels1" Relationship="Self.BaseDictionaryModel_ModifiedBy_fkey" FromRole="User" ToRole="BaseDictionaryModel" />
-          <NavigationProperty Name="Cities" Relationship="Self.City_CreatedBy_fkey" FromRole="User" ToRole="City" />
-          <NavigationProperty Name="Cities1" Relationship="Self.City_ModifiedBy_fkey" FromRole="User" ToRole="City" />
-          <NavigationProperty Name="Countries" Relationship="Self.Country_CreatedBy_fkey" FromRole="User" ToRole="Country" />
-          <NavigationProperty Name="Countries1" Relationship="Self.Country_ModifiedBy_fkey" FromRole="User" ToRole="Country" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BaseDictionaryModels" Relationship="aXonModel.BaseDictionaryModel_CreatedBy_fkey" FromRole="User" ToRole="BaseDictionaryModel" />
+          <NavigationProperty Name="BaseDictionaryModels1" Relationship="aXonModel.BaseDictionaryModel_ModifiedBy_fkey" FromRole="User" ToRole="BaseDictionaryModel" />
+          <NavigationProperty Name="Cities" Relationship="aXonModel.City_CreatedBy_fkey" FromRole="User" ToRole="City" />
+          <NavigationProperty Name="Cities1" Relationship="aXonModel.City_ModifiedBy_fkey" FromRole="User" ToRole="City" />
+          <NavigationProperty Name="Countries" Relationship="aXonModel.Country_CreatedBy_fkey" FromRole="User" ToRole="Country" />
+          <NavigationProperty Name="Countries1" Relationship="aXonModel.Country_ModifiedBy_fkey" FromRole="User" ToRole="Country" />
         </EntityType>
         <EntityType Name="Vendor">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Code" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="HeadquartersAddressId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="HeadquartersAddressId" Type="Guid" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.Vendor_HeadquartersAddressId_fkey" FromRole="Vendor" ToRole="Address" />
-          <NavigationProperty Name="Company" Relationship="Self.Vendor_CompanyId_fkey" FromRole="Vendor" ToRole="Company" />
-          <NavigationProperty Name="PartVendors" Relationship="Self.PartVendors_VendorId_fkey" FromRole="Vendor" ToRole="PartVendor" />
-          <NavigationProperty Name="VendorPurchaseOrders" Relationship="Self.VendorPurchaseOrder_VendorId_fkey" FromRole="Vendor" ToRole="VendorPurchaseOrder" />
-          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="Self.VendorPurchaseOrderItem_VendorId_fkey" FromRole="Vendor" ToRole="VendorPurchaseOrderItem" />
+          <NavigationProperty Name="Address" Relationship="aXonModel.Vendor_HeadquartersAddressId_fkey" FromRole="Vendor" ToRole="Address" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.Vendor_CompanyId_fkey" FromRole="Vendor" ToRole="Company" />
+          <NavigationProperty Name="PartVendors" Relationship="aXonModel.PartVendors_VendorId_fkey" FromRole="Vendor" ToRole="PartVendor" />
+          <NavigationProperty Name="VendorPurchaseOrders" Relationship="aXonModel.VendorPurchaseOrder_VendorId_fkey" FromRole="Vendor" ToRole="VendorPurchaseOrder" />
+          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="aXonModel.VendorPurchaseOrderItem_VendorId_fkey" FromRole="Vendor" ToRole="VendorPurchaseOrderItem" />
         </EntityType>
         <EntityType Name="VendorPurchaseOrder">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
@@ -1724,18 +1939,18 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="WarehouseId" Type="Guid" Nullable="false" />
           <Property Name="PONumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VendorId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.VendorPurchaseOrder_CompanyId_fkey" FromRole="VendorPurchaseOrder" ToRole="Company" />
-          <NavigationProperty Name="Vendor" Relationship="Self.VendorPurchaseOrder_VendorId_fkey" FromRole="VendorPurchaseOrder" ToRole="Vendor" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.VendorPurchaseOrder_WarehouseId_fkey" FromRole="VendorPurchaseOrder" ToRole="WareHouse" />
-          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="Self.VendorPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="VendorPurchaseOrder" ToRole="VendorPurchaseOrderItem" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.VendorPurchaseOrder_CompanyId_fkey" FromRole="VendorPurchaseOrder" ToRole="Company" />
+          <NavigationProperty Name="Vendor" Relationship="aXonModel.VendorPurchaseOrder_VendorId_fkey" FromRole="VendorPurchaseOrder" ToRole="Vendor" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.VendorPurchaseOrder_WarehouseId_fkey" FromRole="VendorPurchaseOrder" ToRole="WareHouse" />
+          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="aXonModel.VendorPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="VendorPurchaseOrder" ToRole="VendorPurchaseOrderItem" />
         </EntityType>
         <EntityType Name="VendorPurchaseOrderItem">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
@@ -1745,54 +1960,54 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <Property Name="Qty" Type="Int32" Nullable="false" />
           <Property Name="PurchaseOrderId" Type="Guid" Nullable="false" />
           <Property Name="VendorId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.VendorPurchaseOrderItem_CompanyId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="Company" />
-          <NavigationProperty Name="Part" Relationship="Self.VendorPurchaseOrderItem_PartId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="Part" />
-          <NavigationProperty Name="Vendor" Relationship="Self.VendorPurchaseOrderItem_VendorId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="Vendor" />
-          <NavigationProperty Name="VendorPurchaseOrder" Relationship="Self.VendorPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="VendorPurchaseOrder" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.VendorPurchaseOrderItem_WarehouseId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="WareHouse" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.VendorPurchaseOrderItem_CompanyId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="Company" />
+          <NavigationProperty Name="Part" Relationship="aXonModel.VendorPurchaseOrderItem_PartId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="Part" />
+          <NavigationProperty Name="Vendor" Relationship="aXonModel.VendorPurchaseOrderItem_VendorId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="Vendor" />
+          <NavigationProperty Name="VendorPurchaseOrder" Relationship="aXonModel.VendorPurchaseOrderItem_PurchaseOrderId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="VendorPurchaseOrder" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.VendorPurchaseOrderItem_WarehouseId_fkey" FromRole="VendorPurchaseOrderItem" ToRole="WareHouse" />
         </EntityType>
         <EntityType Name="WareHouse">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BasePurchaseOrders" Relationship="Self.BasePurchaseOrder_WarehouseId_fkey" FromRole="WareHouse" ToRole="BasePurchaseOrder" />
-          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="Self.BasePurchaseOrderItem_WarehouseId_fkey" FromRole="WareHouse" ToRole="BasePurchaseOrderItem" />
-          <NavigationProperty Name="Company" Relationship="Self.fk_WarehoseCompany" FromRole="WareHouse" ToRole="Company" />
-          <NavigationProperty Name="CustomerPurchaseOrders" Relationship="Self.CustomerPurchaseOrder_WarehouseId_fkey" FromRole="WareHouse" ToRole="CustomerPurchaseOrder" />
-          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="Self.CustomerPurchaseOrderItem_WarehouseId_fkey" FromRole="WareHouse" ToRole="CustomerPurchaseOrderItem" />
-          <NavigationProperty Name="Parts" Relationship="Self.Part_WarehouseId_fkey" FromRole="WareHouse" ToRole="Part" />
-          <NavigationProperty Name="VendorPurchaseOrders" Relationship="Self.VendorPurchaseOrder_WarehouseId_fkey" FromRole="WareHouse" ToRole="VendorPurchaseOrder" />
-          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="Self.VendorPurchaseOrderItem_WarehouseId_fkey" FromRole="WareHouse" ToRole="VendorPurchaseOrderItem" />
-          <NavigationProperty Name="WarehouseBaseModels" Relationship="Self.WarehouseBaseModel_WarehouseId_fkey" FromRole="WareHouse" ToRole="WarehouseBaseModel" />
+          <NavigationProperty Name="BasePurchaseOrders" Relationship="aXonModel.BasePurchaseOrder_WarehouseId_fkey" FromRole="WareHouse" ToRole="BasePurchaseOrder" />
+          <NavigationProperty Name="BasePurchaseOrderItems" Relationship="aXonModel.BasePurchaseOrderItem_WarehouseId_fkey" FromRole="WareHouse" ToRole="BasePurchaseOrderItem" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.fk_WarehoseCompany" FromRole="WareHouse" ToRole="Company" />
+          <NavigationProperty Name="CustomerPurchaseOrders" Relationship="aXonModel.CustomerPurchaseOrder_WarehouseId_fkey" FromRole="WareHouse" ToRole="CustomerPurchaseOrder" />
+          <NavigationProperty Name="CustomerPurchaseOrderItems" Relationship="aXonModel.CustomerPurchaseOrderItem_WarehouseId_fkey" FromRole="WareHouse" ToRole="CustomerPurchaseOrderItem" />
+          <NavigationProperty Name="Parts" Relationship="aXonModel.Part_WarehouseId_fkey" FromRole="WareHouse" ToRole="Part" />
+          <NavigationProperty Name="VendorPurchaseOrders" Relationship="aXonModel.VendorPurchaseOrder_WarehouseId_fkey" FromRole="WareHouse" ToRole="VendorPurchaseOrder" />
+          <NavigationProperty Name="VendorPurchaseOrderItems" Relationship="aXonModel.VendorPurchaseOrderItem_WarehouseId_fkey" FromRole="WareHouse" ToRole="VendorPurchaseOrderItem" />
+          <NavigationProperty Name="WarehouseBaseModels" Relationship="aXonModel.WarehouseBaseModel_WarehouseId_fkey" FromRole="WareHouse" ToRole="WarehouseBaseModel" />
         </EntityType>
         <EntityType Name="WarehouseBaseModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CreateDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
-          <Property Name="LastEditDateTime" Type="DateTimeOffset" Precision="7" Nullable="false" />
+          <Property Name="CreateDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="LastEditDateTime" Type="DateTimeOffset" Nullable="false" Precision="7" />
           <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
           <Property Name="CreatedBy" Type="Guid" Nullable="false" />
           <Property Name="IsActiveRecord" Type="Boolean" Nullable="false" />
           <Property Name="CompanyId" Type="Guid" Nullable="false" />
           <Property Name="WarehouseId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.WarehouseBaseModel_CompanyId_fkey" FromRole="WarehouseBaseModel" ToRole="Company" />
-          <NavigationProperty Name="WareHouse" Relationship="Self.WarehouseBaseModel_WarehouseId_fkey" FromRole="WarehouseBaseModel" ToRole="WareHouse" />
+          <NavigationProperty Name="Company" Relationship="aXonModel.WarehouseBaseModel_CompanyId_fkey" FromRole="WarehouseBaseModel" ToRole="Company" />
+          <NavigationProperty Name="WareHouse" Relationship="aXonModel.WarehouseBaseModel_WarehouseId_fkey" FromRole="WarehouseBaseModel" ToRole="WareHouse" />
         </EntityType>
         <Association Name="Carrier_HeadquartersAddressId_fkey">
-          <End Role="Address" Type="Self.Address" Multiplicity="1">
+          <End Type="aXonModel.Address" Role="Address" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Carrier" Type="Self.Carrier" Multiplicity="*" />
+          <End Type="aXonModel.Carrier" Role="Carrier" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
               <PropertyRef Name="Id" />
@@ -1803,10 +2018,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Customer_HeadquartersAddressId_fkey">
-          <End Role="Address" Type="Self.Address" Multiplicity="1">
+          <End Type="aXonModel.Address" Role="Address" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <End Type="aXonModel.Customer" Role="Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
               <PropertyRef Name="Id" />
@@ -1817,8 +2032,8 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_HQAddress">
-          <End Role="Address" Type="Self.Address" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Type="aXonModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
               <PropertyRef Name="Id" />
@@ -1829,10 +2044,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Vendor_HeadquartersAddressId_fkey">
-          <End Role="Address" Type="Self.Address" Multiplicity="1">
+          <End Type="aXonModel.Address" Role="Address" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Vendor" Type="Self.Vendor" Multiplicity="*" />
+          <End Type="aXonModel.Vendor" Role="Vendor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
               <PropertyRef Name="Id" />
@@ -1843,8 +2058,8 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BaseDictionaryModel_CreatedBy_fkey">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="BaseDictionaryModel" Type="Self.BaseDictionaryModel" Multiplicity="*" />
+          <End Type="aXonModel.User" Role="User" Multiplicity="1" />
+          <End Type="aXonModel.BaseDictionaryModel" Role="BaseDictionaryModel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -1855,10 +2070,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BaseDictionaryModel_ModifiedBy_fkey">
-          <End Role="User" Type="Self.User" Multiplicity="1">
+          <End Type="aXonModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BaseDictionaryModel" Type="Self.BaseDictionaryModel" Multiplicity="*" />
+          <End Type="aXonModel.BaseDictionaryModel" Role="BaseDictionaryModel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -1869,10 +2084,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BasePurchaseOrder_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BasePurchaseOrder" Type="Self.BasePurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.BasePurchaseOrder" Role="BasePurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -1883,10 +2098,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BasePurchaseOrder_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BasePurchaseOrder" Type="Self.BasePurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.BasePurchaseOrder" Role="BasePurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -1897,10 +2112,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BasePurchaseOrderItem_PurchaseOrderId_fkey">
-          <End Role="BasePurchaseOrder" Type="Self.BasePurchaseOrder" Multiplicity="1">
+          <End Type="aXonModel.BasePurchaseOrder" Role="BasePurchaseOrder" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BasePurchaseOrderItem" Type="Self.BasePurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.BasePurchaseOrderItem" Role="BasePurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BasePurchaseOrder">
               <PropertyRef Name="Id" />
@@ -1911,10 +2126,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BasePurchaseOrderItem_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BasePurchaseOrderItem" Type="Self.BasePurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.BasePurchaseOrderItem" Role="BasePurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -1925,10 +2140,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BasePurchaseOrderItem_PartId_fkey">
-          <End Role="Part" Type="Self.Part" Multiplicity="1">
+          <End Type="aXonModel.Part" Role="Part" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BasePurchaseOrderItem" Type="Self.BasePurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.BasePurchaseOrderItem" Role="BasePurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Part">
               <PropertyRef Name="Id" />
@@ -1939,10 +2154,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="BasePurchaseOrderItem_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BasePurchaseOrderItem" Type="Self.BasePurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.BasePurchaseOrderItem" Role="BasePurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -1953,10 +2168,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="City_CountryId_fkey">
-          <End Role="Country" Type="Self.Country" Multiplicity="1">
+          <End Type="aXonModel.Country" Role="Country" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <End Type="aXonModel.City" Role="City" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Country">
               <PropertyRef Name="Id" />
@@ -1967,10 +2182,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="City_CreatedBy_fkey">
-          <End Role="User" Type="Self.User" Multiplicity="1">
+          <End Type="aXonModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <End Type="aXonModel.City" Role="City" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -1981,10 +2196,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="City_ModifiedBy_fkey">
-          <End Role="User" Type="Self.User" Multiplicity="1">
+          <End Type="aXonModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <End Type="aXonModel.City" Role="City" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -1995,10 +2210,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="City_StateId_fkey">
-          <End Role="State" Type="Self.State" Multiplicity="1">
+          <End Type="aXonModel.State" Role="State" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <End Type="aXonModel.City" Role="City" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="State">
               <PropertyRef Name="Id" />
@@ -2009,10 +2224,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Customer_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <End Type="aXonModel.Customer" Role="Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2023,10 +2238,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrder_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrder" Type="Self.CustomerPurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrder" Role="CustomerPurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2037,10 +2252,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrderItem_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrderItem" Type="Self.CustomerPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrderItem" Role="CustomerPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2051,10 +2266,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Employee_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <End Type="aXonModel.Employee" Role="Employee" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2065,10 +2280,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_CompanyId">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CompanyBaseModel" Type="Self.CompanyBaseModel" Multiplicity="*" />
+          <End Type="aXonModel.CompanyBaseModel" Role="CompanyBaseModel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2079,10 +2294,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_WarehoseCompany">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="*" />
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2093,10 +2308,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Vendor_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Vendor" Type="Self.Vendor" Multiplicity="*" />
+          <End Type="aXonModel.Vendor" Role="Vendor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2107,10 +2322,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrder_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrder" Type="Self.VendorPurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrder" Role="VendorPurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2121,10 +2336,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrderItem_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrderItem" Type="Self.VendorPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrderItem" Role="VendorPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2135,10 +2350,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="WarehouseBaseModel_CompanyId_fkey">
-          <End Role="Company" Type="Self.Company" Multiplicity="1">
+          <End Type="aXonModel.Company" Role="Company" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="WarehouseBaseModel" Type="Self.WarehouseBaseModel" Multiplicity="*" />
+          <End Type="aXonModel.WarehouseBaseModel" Role="WarehouseBaseModel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
@@ -2149,10 +2364,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Country_CreatedBy_fkey">
-          <End Role="User" Type="Self.User" Multiplicity="1">
+          <End Type="aXonModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Country" Type="Self.Country" Multiplicity="*" />
+          <End Type="aXonModel.Country" Role="Country" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -2163,10 +2378,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Country_ModifiedBy_fkey">
-          <End Role="User" Type="Self.User" Multiplicity="1">
+          <End Type="aXonModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Country" Type="Self.Country" Multiplicity="*" />
+          <End Type="aXonModel.Country" Role="Country" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -2177,10 +2392,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="State_CountryId_fkey">
-          <End Role="Country" Type="Self.Country" Multiplicity="1">
+          <End Type="aXonModel.Country" Role="Country" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="State" Type="Self.State" Multiplicity="*" />
+          <End Type="aXonModel.State" Role="State" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Country">
               <PropertyRef Name="Id" />
@@ -2191,10 +2406,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerContact_CustomerId_fkey">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+          <End Type="aXonModel.Customer" Role="Customer" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerContact" Type="Self.CustomerContact" Multiplicity="*" />
+          <End Type="aXonModel.CustomerContact" Role="CustomerContact" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="Id" />
@@ -2205,10 +2420,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrder_CustomerId_fkey">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+          <End Type="aXonModel.Customer" Role="Customer" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrder" Type="Self.CustomerPurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrder" Role="CustomerPurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="Id" />
@@ -2219,10 +2434,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrderItem_CustomerId_fkey">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+          <End Type="aXonModel.Customer" Role="Customer" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrderItem" Type="Self.CustomerPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrderItem" Role="CustomerPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="Id" />
@@ -2233,10 +2448,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrder_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrder" Type="Self.CustomerPurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrder" Role="CustomerPurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -2247,10 +2462,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrderItem_PurchaseOrderId_fkey">
-          <End Role="CustomerPurchaseOrder" Type="Self.CustomerPurchaseOrder" Multiplicity="1">
+          <End Type="aXonModel.CustomerPurchaseOrder" Role="CustomerPurchaseOrder" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrderItem" Type="Self.CustomerPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrderItem" Role="CustomerPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CustomerPurchaseOrder">
               <PropertyRef Name="Id" />
@@ -2261,10 +2476,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrderItem_PartId_fkey">
-          <End Role="Part" Type="Self.Part" Multiplicity="1">
+          <End Type="aXonModel.Part" Role="Part" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrderItem" Type="Self.CustomerPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrderItem" Role="CustomerPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Part">
               <PropertyRef Name="Id" />
@@ -2275,10 +2490,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="CustomerPurchaseOrderItem_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerPurchaseOrderItem" Type="Self.CustomerPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.CustomerPurchaseOrderItem" Role="CustomerPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -2289,10 +2504,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="Part_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Part" Type="Self.Part" Multiplicity="*" />
+          <End Type="aXonModel.Part" Role="Part" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -2303,10 +2518,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="PartVendors_PartId_fkey">
-          <End Role="Part" Type="Self.Part" Multiplicity="1">
+          <End Type="aXonModel.Part" Role="Part" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="PartVendor" Type="Self.PartVendor" Multiplicity="*" />
+          <End Type="aXonModel.PartVendor" Role="PartVendor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Part">
               <PropertyRef Name="Id" />
@@ -2317,10 +2532,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrderItem_PartId_fkey">
-          <End Role="Part" Type="Self.Part" Multiplicity="1">
+          <End Type="aXonModel.Part" Role="Part" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrderItem" Type="Self.VendorPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrderItem" Role="VendorPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Part">
               <PropertyRef Name="Id" />
@@ -2331,10 +2546,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="PartVendors_VendorId_fkey">
-          <End Role="Vendor" Type="Self.Vendor" Multiplicity="1">
+          <End Type="aXonModel.Vendor" Role="Vendor" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="PartVendor" Type="Self.PartVendor" Multiplicity="*" />
+          <End Type="aXonModel.PartVendor" Role="PartVendor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vendor">
               <PropertyRef Name="Id" />
@@ -2345,10 +2560,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="PersonAddress_PersonId_fkey">
-          <End Role="Person" Type="Self.Person" Multiplicity="1">
+          <End Type="aXonModel.Person" Role="Person" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="PersonAddress" Type="Self.PersonAddress" Multiplicity="*" />
+          <End Type="aXonModel.PersonAddress" Role="PersonAddress" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Person">
               <PropertyRef Name="Id" />
@@ -2359,10 +2574,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrder_VendorId_fkey">
-          <End Role="Vendor" Type="Self.Vendor" Multiplicity="1">
+          <End Type="aXonModel.Vendor" Role="Vendor" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrder" Type="Self.VendorPurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrder" Role="VendorPurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vendor">
               <PropertyRef Name="Id" />
@@ -2373,10 +2588,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrderItem_VendorId_fkey">
-          <End Role="Vendor" Type="Self.Vendor" Multiplicity="1">
+          <End Type="aXonModel.Vendor" Role="Vendor" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrderItem" Type="Self.VendorPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrderItem" Role="VendorPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vendor">
               <PropertyRef Name="Id" />
@@ -2387,10 +2602,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrder_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrder" Type="Self.VendorPurchaseOrder" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrder" Role="VendorPurchaseOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -2401,10 +2616,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrderItem_PurchaseOrderId_fkey">
-          <End Role="VendorPurchaseOrder" Type="Self.VendorPurchaseOrder" Multiplicity="1">
+          <End Type="aXonModel.VendorPurchaseOrder" Role="VendorPurchaseOrder" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrderItem" Type="Self.VendorPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrderItem" Role="VendorPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VendorPurchaseOrder">
               <PropertyRef Name="Id" />
@@ -2415,10 +2630,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="VendorPurchaseOrderItem_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VendorPurchaseOrderItem" Type="Self.VendorPurchaseOrderItem" Multiplicity="*" />
+          <End Type="aXonModel.VendorPurchaseOrderItem" Role="VendorPurchaseOrderItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -2429,10 +2644,10 @@ warning 6005: The data type 'money' is currently not supported for the target En
           </ReferentialConstraint>
         </Association>
         <Association Name="WarehouseBaseModel_WarehouseId_fkey">
-          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1">
+          <End Type="aXonModel.WareHouse" Role="WareHouse" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="WarehouseBaseModel" Type="Self.WarehouseBaseModel" Multiplicity="*" />
+          <End Type="aXonModel.WarehouseBaseModel" Role="WarehouseBaseModel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="WareHouse">
               <PropertyRef Name="Id" />
@@ -2442,223 +2657,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="aXonEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Addresses" EntityType="Self.Address" />
-          <EntitySet Name="BaseDictionaryModels" EntityType="Self.BaseDictionaryModel" />
-          <EntitySet Name="BaseModels" EntityType="Self.BaseModel" />
-          <EntitySet Name="BasePurchaseOrders" EntityType="Self.BasePurchaseOrder" />
-          <EntitySet Name="BasePurchaseOrderItems" EntityType="Self.BasePurchaseOrderItem" />
-          <EntitySet Name="Carriers" EntityType="Self.Carrier" />
-          <EntitySet Name="Cities" EntityType="Self.City" />
-          <EntitySet Name="Companies" EntityType="Self.Company" />
-          <EntitySet Name="CompanyBaseModels" EntityType="Self.CompanyBaseModel" />
-          <EntitySet Name="Countries" EntityType="Self.Country" />
-          <EntitySet Name="Customers" EntityType="Self.Customer" />
-          <EntitySet Name="CustomerContacts" EntityType="Self.CustomerContact" />
-          <EntitySet Name="CustomerPurchaseOrders" EntityType="Self.CustomerPurchaseOrder" />
-          <EntitySet Name="CustomerPurchaseOrderItems" EntityType="Self.CustomerPurchaseOrderItem" />
-          <EntitySet Name="Employees" EntityType="Self.Employee" />
-          <EntitySet Name="Parts" EntityType="Self.Part" />
-          <EntitySet Name="PartVendors" EntityType="Self.PartVendor" />
-          <EntitySet Name="People" EntityType="Self.Person" />
-          <EntitySet Name="PersonAddresses" EntityType="Self.PersonAddress" />
-          <EntitySet Name="States" EntityType="Self.State" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="Vendors" EntityType="Self.Vendor" />
-          <EntitySet Name="VendorPurchaseOrders" EntityType="Self.VendorPurchaseOrder" />
-          <EntitySet Name="VendorPurchaseOrderItems" EntityType="Self.VendorPurchaseOrderItem" />
-          <EntitySet Name="WareHouses" EntityType="Self.WareHouse" />
-          <EntitySet Name="WarehouseBaseModels" EntityType="Self.WarehouseBaseModel" />
-          <AssociationSet Name="Carrier_HeadquartersAddressId_fkey" Association="Self.Carrier_HeadquartersAddressId_fkey">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="Carrier" EntitySet="Carriers" />
-          </AssociationSet>
-          <AssociationSet Name="Customer_HeadquartersAddressId_fkey" Association="Self.Customer_HeadquartersAddressId_fkey">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="fk_HQAddress" Association="Self.fk_HQAddress">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="Vendor_HeadquartersAddressId_fkey" Association="Self.Vendor_HeadquartersAddressId_fkey">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="Vendor" EntitySet="Vendors" />
-          </AssociationSet>
-          <AssociationSet Name="BaseDictionaryModel_CreatedBy_fkey" Association="Self.BaseDictionaryModel_CreatedBy_fkey">
-            <End Role="User" EntitySet="Users" />
-            <End Role="BaseDictionaryModel" EntitySet="BaseDictionaryModels" />
-          </AssociationSet>
-          <AssociationSet Name="BaseDictionaryModel_ModifiedBy_fkey" Association="Self.BaseDictionaryModel_ModifiedBy_fkey">
-            <End Role="User" EntitySet="Users" />
-            <End Role="BaseDictionaryModel" EntitySet="BaseDictionaryModels" />
-          </AssociationSet>
-          <AssociationSet Name="BasePurchaseOrder_CompanyId_fkey" Association="Self.BasePurchaseOrder_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="BasePurchaseOrder" EntitySet="BasePurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="BasePurchaseOrder_WarehouseId_fkey" Association="Self.BasePurchaseOrder_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="BasePurchaseOrder" EntitySet="BasePurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="BasePurchaseOrderItem_PurchaseOrderId_fkey" Association="Self.BasePurchaseOrderItem_PurchaseOrderId_fkey">
-            <End Role="BasePurchaseOrder" EntitySet="BasePurchaseOrders" />
-            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="BasePurchaseOrderItem_CompanyId_fkey" Association="Self.BasePurchaseOrderItem_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="BasePurchaseOrderItem_PartId_fkey" Association="Self.BasePurchaseOrderItem_PartId_fkey">
-            <End Role="Part" EntitySet="Parts" />
-            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="BasePurchaseOrderItem_WarehouseId_fkey" Association="Self.BasePurchaseOrderItem_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="BasePurchaseOrderItem" EntitySet="BasePurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="City_CountryId_fkey" Association="Self.City_CountryId_fkey">
-            <End Role="Country" EntitySet="Countries" />
-            <End Role="City" EntitySet="Cities" />
-          </AssociationSet>
-          <AssociationSet Name="City_CreatedBy_fkey" Association="Self.City_CreatedBy_fkey">
-            <End Role="User" EntitySet="Users" />
-            <End Role="City" EntitySet="Cities" />
-          </AssociationSet>
-          <AssociationSet Name="City_ModifiedBy_fkey" Association="Self.City_ModifiedBy_fkey">
-            <End Role="User" EntitySet="Users" />
-            <End Role="City" EntitySet="Cities" />
-          </AssociationSet>
-          <AssociationSet Name="City_StateId_fkey" Association="Self.City_StateId_fkey">
-            <End Role="State" EntitySet="States" />
-            <End Role="City" EntitySet="Cities" />
-          </AssociationSet>
-          <AssociationSet Name="Customer_CompanyId_fkey" Association="Self.Customer_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrder_CompanyId_fkey" Association="Self.CustomerPurchaseOrder_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrderItem_CompanyId_fkey" Association="Self.CustomerPurchaseOrderItem_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="Employee_CompanyId_fkey" Association="Self.Employee_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
-          <AssociationSet Name="fk_CompanyId" Association="Self.fk_CompanyId">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="CompanyBaseModel" EntitySet="CompanyBaseModels" />
-          </AssociationSet>
-          <AssociationSet Name="fk_WarehoseCompany" Association="Self.fk_WarehoseCompany">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="WareHouse" EntitySet="WareHouses" />
-          </AssociationSet>
-          <AssociationSet Name="Vendor_CompanyId_fkey" Association="Self.Vendor_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Vendor" EntitySet="Vendors" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrder_CompanyId_fkey" Association="Self.VendorPurchaseOrder_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrderItem_CompanyId_fkey" Association="Self.VendorPurchaseOrderItem_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="WarehouseBaseModel_CompanyId_fkey" Association="Self.WarehouseBaseModel_CompanyId_fkey">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="WarehouseBaseModel" EntitySet="WarehouseBaseModels" />
-          </AssociationSet>
-          <AssociationSet Name="Country_CreatedBy_fkey" Association="Self.Country_CreatedBy_fkey">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Country" EntitySet="Countries" />
-          </AssociationSet>
-          <AssociationSet Name="Country_ModifiedBy_fkey" Association="Self.Country_ModifiedBy_fkey">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Country" EntitySet="Countries" />
-          </AssociationSet>
-          <AssociationSet Name="State_CountryId_fkey" Association="Self.State_CountryId_fkey">
-            <End Role="Country" EntitySet="Countries" />
-            <End Role="State" EntitySet="States" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerContact_CustomerId_fkey" Association="Self.CustomerContact_CustomerId_fkey">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="CustomerContact" EntitySet="CustomerContacts" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrder_CustomerId_fkey" Association="Self.CustomerPurchaseOrder_CustomerId_fkey">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrderItem_CustomerId_fkey" Association="Self.CustomerPurchaseOrderItem_CustomerId_fkey">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrder_WarehouseId_fkey" Association="Self.CustomerPurchaseOrder_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrderItem_PurchaseOrderId_fkey" Association="Self.CustomerPurchaseOrderItem_PurchaseOrderId_fkey">
-            <End Role="CustomerPurchaseOrder" EntitySet="CustomerPurchaseOrders" />
-            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrderItem_PartId_fkey" Association="Self.CustomerPurchaseOrderItem_PartId_fkey">
-            <End Role="Part" EntitySet="Parts" />
-            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="CustomerPurchaseOrderItem_WarehouseId_fkey" Association="Self.CustomerPurchaseOrderItem_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="CustomerPurchaseOrderItem" EntitySet="CustomerPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="Part_WarehouseId_fkey" Association="Self.Part_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="Part" EntitySet="Parts" />
-          </AssociationSet>
-          <AssociationSet Name="PartVendors_PartId_fkey" Association="Self.PartVendors_PartId_fkey">
-            <End Role="Part" EntitySet="Parts" />
-            <End Role="PartVendor" EntitySet="PartVendors" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrderItem_PartId_fkey" Association="Self.VendorPurchaseOrderItem_PartId_fkey">
-            <End Role="Part" EntitySet="Parts" />
-            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="PartVendors_VendorId_fkey" Association="Self.PartVendors_VendorId_fkey">
-            <End Role="Vendor" EntitySet="Vendors" />
-            <End Role="PartVendor" EntitySet="PartVendors" />
-          </AssociationSet>
-          <AssociationSet Name="PersonAddress_PersonId_fkey" Association="Self.PersonAddress_PersonId_fkey">
-            <End Role="Person" EntitySet="People" />
-            <End Role="PersonAddress" EntitySet="PersonAddresses" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrder_VendorId_fkey" Association="Self.VendorPurchaseOrder_VendorId_fkey">
-            <End Role="Vendor" EntitySet="Vendors" />
-            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrderItem_VendorId_fkey" Association="Self.VendorPurchaseOrderItem_VendorId_fkey">
-            <End Role="Vendor" EntitySet="Vendors" />
-            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrder_WarehouseId_fkey" Association="Self.VendorPurchaseOrder_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrderItem_PurchaseOrderId_fkey" Association="Self.VendorPurchaseOrderItem_PurchaseOrderId_fkey">
-            <End Role="VendorPurchaseOrder" EntitySet="VendorPurchaseOrders" />
-            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="VendorPurchaseOrderItem_WarehouseId_fkey" Association="Self.VendorPurchaseOrderItem_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="VendorPurchaseOrderItem" EntitySet="VendorPurchaseOrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="WarehouseBaseModel_WarehouseId_fkey" Association="Self.WarehouseBaseModel_WarehouseId_fkey">
-            <End Role="WareHouse" EntitySet="WareHouses" />
-            <End Role="WarehouseBaseModel" EntitySet="WarehouseBaseModels" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2667,429 +2666,429 @@ warning 6005: The data type 'money' is currently not supported for the target En
           <EntitySetMapping Name="Addresses">
             <EntityTypeMapping TypeName="aXonModel.Address">
               <MappingFragment StoreEntitySet="Address">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Line1" ColumnName="Line1" />
-                <ScalarProperty Name="Line2" ColumnName="Line2" />
-                <ScalarProperty Name="Line3" ColumnName="Line3" />
-                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
-                <ScalarProperty Name="StateId" ColumnName="StateId" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="COuntry" ColumnName="COuntry" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Line3" ColumnName="Line3" />
+                <ScalarProperty Name="Line2" ColumnName="Line2" />
+                <ScalarProperty Name="Line1" ColumnName="Line1" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDictionaryModels">
             <EntityTypeMapping TypeName="aXonModel.BaseDictionaryModel">
               <MappingFragment StoreEntitySet="BaseDictionaryModel">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseModels">
             <EntityTypeMapping TypeName="aXonModel.BaseModel">
               <MappingFragment StoreEntitySet="BaseModel">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BasePurchaseOrders">
             <EntityTypeMapping TypeName="aXonModel.BasePurchaseOrder">
               <MappingFragment StoreEntitySet="BasePurchaseOrder">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
                 <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BasePurchaseOrderItems">
             <EntityTypeMapping TypeName="aXonModel.BasePurchaseOrderItem">
               <MappingFragment StoreEntitySet="BasePurchaseOrderItem">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
-                <ScalarProperty Name="PartId" ColumnName="PartId" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="PurchaseOrderId" ColumnName="PurchaseOrderId" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Carriers">
             <EntityTypeMapping TypeName="aXonModel.Carrier">
               <MappingFragment StoreEntitySet="Carrier">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="HeadquartersAddressId" ColumnName="HeadquartersAddressId" />
                 <ScalarProperty Name="ScacCode" ColumnName="ScacCode" />
+                <ScalarProperty Name="HeadquartersAddressId" ColumnName="HeadquartersAddressId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cities">
             <EntityTypeMapping TypeName="aXonModel.City">
               <MappingFragment StoreEntitySet="City">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="aXonModel.Company">
               <MappingFragment StoreEntitySet="Company">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="HeadquartersAddressId" ColumnName="HeadquartersAddressId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CompanyBaseModels">
             <EntityTypeMapping TypeName="aXonModel.CompanyBaseModel">
               <MappingFragment StoreEntitySet="CompanyBaseModel">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Countries">
             <EntityTypeMapping TypeName="aXonModel.Country">
               <MappingFragment StoreEntitySet="Country">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Abreviation" ColumnName="Abreviation" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="aXonModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="HeadquartersAddressId" ColumnName="HeadquartersAddressId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="HeadquartersAddressId" ColumnName="HeadquartersAddressId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomerContacts">
             <EntityTypeMapping TypeName="aXonModel.CustomerContact">
               <MappingFragment StoreEntitySet="CustomerContact">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="OfficePhone" ColumnName="OfficePhone" />
-                <ScalarProperty Name="OfficeExtention" ColumnName="OfficeExtention" />
                 <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="OfficeExtention" ColumnName="OfficeExtention" />
+                <ScalarProperty Name="OfficePhone" ColumnName="OfficePhone" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomerPurchaseOrders">
             <EntityTypeMapping TypeName="aXonModel.CustomerPurchaseOrder">
               <MappingFragment StoreEntitySet="CustomerPurchaseOrder">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
-                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomerPurchaseOrderItems">
             <EntityTypeMapping TypeName="aXonModel.CustomerPurchaseOrderItem">
               <MappingFragment StoreEntitySet="CustomerPurchaseOrderItem">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
-                <ScalarProperty Name="PartId" ColumnName="PartId" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="PurchaseOrderId" ColumnName="PurchaseOrderId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PurchaseOrderId" ColumnName="PurchaseOrderId" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="aXonModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Parts">
             <EntityTypeMapping TypeName="aXonModel.Part">
               <MappingFragment StoreEntitySet="Part">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
-                <ScalarProperty Name="Revision" ColumnName="Revision" />
-                <ScalarProperty Name="Length" ColumnName="Length" />
-                <ScalarProperty Name="Width" ColumnName="Width" />
-                <ScalarProperty Name="Height" ColumnName="Height" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Revision" ColumnName="Revision" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PartVendors">
             <EntityTypeMapping TypeName="aXonModel.PartVendor">
               <MappingFragment StoreEntitySet="PartVendor">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="PartId" ColumnName="PartId" />
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="PreferedVendor" ColumnName="PreferedVendor" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="aXonModel.Person">
               <MappingFragment StoreEntitySet="Person">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PersonAddresses">
             <EntityTypeMapping TypeName="aXonModel.PersonAddress">
               <MappingFragment StoreEntitySet="PersonAddress">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Line1" ColumnName="Line1" />
-                <ScalarProperty Name="Line2" ColumnName="Line2" />
-                <ScalarProperty Name="Line3" ColumnName="Line3" />
-                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
-                <ScalarProperty Name="StateId" ColumnName="StateId" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="IsHomeAddress" ColumnName="IsHomeAddress" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="COuntry" ColumnName="COuntry" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="IsHomeAddress" ColumnName="IsHomeAddress" />
+                <ScalarProperty Name="Line3" ColumnName="Line3" />
+                <ScalarProperty Name="Line2" ColumnName="Line2" />
+                <ScalarProperty Name="Line1" ColumnName="Line1" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="States">
             <EntityTypeMapping TypeName="aXonModel.State">
               <MappingFragment StoreEntitySet="State">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Abreviation" ColumnName="Abreviation" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Abreviation" ColumnName="Abreviation" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="aXonModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Vendors">
             <EntityTypeMapping TypeName="aXonModel.Vendor">
               <MappingFragment StoreEntitySet="Vendor">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="HeadquartersAddressId" ColumnName="HeadquartersAddressId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="HeadquartersAddressId" ColumnName="HeadquartersAddressId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VendorPurchaseOrders">
             <EntityTypeMapping TypeName="aXonModel.VendorPurchaseOrder">
               <MappingFragment StoreEntitySet="VendorPurchaseOrder">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
-                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VendorPurchaseOrderItems">
             <EntityTypeMapping TypeName="aXonModel.VendorPurchaseOrderItem">
               <MappingFragment StoreEntitySet="VendorPurchaseOrderItem">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
-                <ScalarProperty Name="PartId" ColumnName="PartId" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="PurchaseOrderId" ColumnName="PurchaseOrderId" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="PurchaseOrderId" ColumnName="PurchaseOrderId" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WareHouses">
             <EntityTypeMapping TypeName="aXonModel.WareHouse">
               <MappingFragment StoreEntitySet="WareHouse">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WarehouseBaseModels">
             <EntityTypeMapping TypeName="aXonModel.WarehouseBaseModel">
               <MappingFragment StoreEntitySet="WarehouseBaseModel">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
-                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActiveRecord" ColumnName="IsActiveRecord" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="LastEditDateTime" ColumnName="LastEditDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3111,6 +3110,7 @@ warning 6005: The data type 'money' is currently not supported for the target En
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="DDLGenerationTemplate" Value="$(VSEFTools)\DBGen\SSDLToPgSQL.tt" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

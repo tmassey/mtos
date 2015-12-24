@@ -39,7 +39,7 @@ namespace aXon.Desktop
         public bool IsActiveRecord { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public System.Guid HeadquartersAddressId { get; set; }
+        public Nullable<System.Guid> HeadquartersAddressId { get; set; }
     
         public virtual Address Address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

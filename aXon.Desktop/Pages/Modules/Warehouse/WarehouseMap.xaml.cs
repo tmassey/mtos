@@ -23,7 +23,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
         {
             InitializeComponent();
             ScreenName = "Warehouse Map";
-            ModuleName = "Warehouse";
+            ModuleName = "Inventory";
             SourcePath = new Uri("/Pages/Modules/Warehouse/WarehouseMap.xaml", UriKind.Relative);
             Loaded += WarehouseMap_Loaded;
         }

@@ -15,7 +15,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
         {
             InitializeComponent();
             ScreenName = "Warehouse Details";
-            ModuleName = "Warehouse";
+            ModuleName = "Inventory";
             SourcePath = new Uri("/Pages/Modules/Warehouse/WarehouseEdit.xaml", UriKind.Relative);
             
         }

@@ -23,12 +23,12 @@ namespace aXon.Desktop
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string Line3 { get; set; }
-        public Nullable<System.Guid> CountryId { get; set; }
-        public Nullable<System.Guid> StateId { get; set; }
-        public Nullable<System.Guid> CityId { get; set; }
         public bool IsHomeAddress { get; set; }
         public System.Guid PersonId { get; set; }
         public string PostalCode { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string COuntry { get; set; }
     
         public virtual Person Person { get; set; }
     }
