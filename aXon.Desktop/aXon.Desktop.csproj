@@ -98,6 +98,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="ToastinetWPF, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ToastinetWP.1.4.2\lib\net45\ToastinetWPF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -171,10 +175,14 @@
     <Compile Include="Employee.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Globals.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Pages\Modules\HR\EmployeesView.xaml.cs">
+      <DependentUpon>EmployeesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Modules\Security\CompaniesView.xaml.cs">
       <DependentUpon>CompaniesView.xaml</DependentUpon>
     </Compile>
@@ -213,6 +221,7 @@
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Modules\HR\EmployeesViewModel.cs" />
     <Compile Include="ViewModels\Modules\Security\CompaniesViewModel.cs" />
     <Compile Include="ViewModels\Modules\Security\UsersViewModel.cs" />
     <Compile Include="ViewModels\Modules\Warehouse\WarehousesViewModel.cs" />
@@ -250,6 +259,10 @@
     <Page Include="Pages\Modules\Debug\aXonOSMessageLog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Modules\HR\EmployeesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Modules\Robotics\Robot\Rovers.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -397,7 +410,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Modules\Communications\" />
-    <Folder Include="Pages\Modules\HR\" />
     <Folder Include="Pages\Modules\Warehouse\ShippingManagement\" />
     <Folder Include="Pages\Modules\Warehouse\StorageManagement\" />
   </ItemGroup>

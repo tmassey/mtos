@@ -1,6 +1,7 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,16 +22,22 @@ namespace aXon.Desktop
     /// </summary>
     public partial class Login : ModernDialog
     {
+        public aXonEntities Entities { get; set; }
         public Login()
         {
             InitializeComponent();
 
             // define the dialog buttons
             this.Buttons = new Button[] { this.OkButton, this.CancelButton };
-            
+            Loaded += Login_Loaded;
             OkButton.Click += OkButton_Click;
             CancelButton.Click += CancelButton_Click;
             Closing += Login_Closing;
+        }
+
+        private void Login_Loaded(object sender, RoutedEventArgs e)
+        {
+            Entities = new aXonEntities();
         }
 
         void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -48,12 +55,23 @@ namespace aXon.Desktop
         void OkButton_Click(object sender, RoutedEventArgs e)
         {
             if (UserName.Text.ToUpper() == "ADMIN" && Password.Password.ToUpper() == "ADMIN")
+            {
                 _authenticated = true;
-            else
+                Globals.CurrentUser= new Employee() {Id=Guid.NewGuid(),FirstName="aXon",LastName = "Administrator"};
+                return;
+            }
+            var user = Entities.Employees.FirstOrDefault(u=>u.UserName.ToUpper() == UserName.Text.ToUpper() && u.Password.ToUpper() == Password.Password.ToUpper());
+            if (user == null)
             {
                 _authenticated = false;
-                Error.Visibility=Visibility.Visible;
+                Error.Visibility = Visibility.Visible;
             }
+            else
+            {
+                _authenticated = true;
+                Globals.CurrentUser = user;
+            }
+
 
 
         }

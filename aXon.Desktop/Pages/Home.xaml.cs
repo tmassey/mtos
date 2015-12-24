@@ -30,9 +30,13 @@ namespace aXon.Desktop.Pages
         public Home()
         {
             InitializeComponent();
-            
+            Loaded += Home_Loaded;
            
         }
-        
+
+        private void Home_Loaded(object sender, RoutedEventArgs e)
+        {
+            EmployeeName.Text = Globals.CurrentUser.FirstName + " " + Globals.CurrentUser.LastName;
+        }
     }
 }
