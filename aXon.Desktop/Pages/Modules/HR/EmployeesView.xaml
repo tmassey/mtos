@@ -14,10 +14,7 @@
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <toastinetWpf:Toastinet x:Name="Toast" Title="aXon Notification"     FontSize="25" AnimationType="RightToLeft" TextWrapping="Wrap" Canvas.ZIndex="1" VerticalAlignment="Top"  
-                      Background="#FF1745A9"       Foreground="Black" >
-           
-        </toastinetWpf:Toastinet>
+       
         <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource SplitLeft}">
             <Grid.RowDefinitions>
                 <RowDefinition MaxHeight="50"></RowDefinition>
@@ -59,6 +56,7 @@
                 <Button Content="Delete" Click="Delete_Click" Foreground="White"/>
             </ToolBar>
             <StackPanel Grid.Row="1">
+                
                 <GroupBox Header="General Information" >
                     <Grid  Margin="5">
                         <Grid.ColumnDefinitions>
@@ -84,7 +82,7 @@
                             <TextBox  Text="{Binding Path=SelectedRow.LastName}" HorizontalAlignment="Stretch" Margin="5"  ></TextBox>
                         </UniformGrid>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="1">Hire Date:</TextBlock>
-                        <DatePicker Text="{Binding Path=SelectedRow.HireDate}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="1"></DatePicker>
+                        <DatePicker  DisplayDate="{Binding Path=SelectedRow.HireDate}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="1"></DatePicker>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="2">SSN:</TextBlock>
                         <TextBox Text="{Binding Path=SelectedRow.TaxId}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="2"></TextBox>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="3">Company:</TextBlock>

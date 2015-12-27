@@ -12,14 +12,8 @@ namespace aXon.Desktop
     using System;
     using System.Collections.Generic;
     
-    public partial class BasePurchaseOrderItem
+    public partial class NetworkFile
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BasePurchaseOrderItem()
-        {
-            this.ReceiptItems = new HashSet<ReceiptItem>();
-        }
-    
         public System.Guid Id { get; set; }
         public System.DateTimeOffset CreateDateTime { get; set; }
         public System.DateTimeOffset LastEditDateTime { get; set; }
@@ -28,15 +22,9 @@ namespace aXon.Desktop
         public bool IsActiveRecord { get; set; }
         public System.Guid CompanyId { get; set; }
         public System.Guid WarehouseId { get; set; }
-        public System.Guid PartId { get; set; }
-        public int Qty { get; set; }
-        public System.Guid PurchaseOrderId { get; set; }
+        public string FileData { get; set; }
     
-        public virtual BasePurchaseOrder BasePurchaseOrder { get; set; }
         public virtual Company Company { get; set; }
-        public virtual Part Part { get; set; }
         public virtual WareHouse WareHouse { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReceiptItem> ReceiptItems { get; set; }
     }
 }

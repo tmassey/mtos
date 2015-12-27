@@ -12,7 +12,7 @@
                 <mui:Link DisplayName="appearance" Source="/Pages/Settings/Appearance.xaml" />
 
                 <mui:Link DisplayName="aXon OS Debug" Source="/Pages/Modules/Debug/aXonOSMessageLog.xaml" />
-                <mui:Link DisplayName="Neural Networks" Source="/Pages/Modules/Warehouse/NeuralNetworks.xaml" />
+                <mui:Link DisplayName="Neural Networks" Source="/Pages/Modules/Settings/NeuralNetworks.xaml" />
                 <mui:Link DisplayName="Neural Warehouse" Source="/Pages/Modules/Warehouse/WarehouseEdit.xaml" />
                 <mui:Link DisplayName="about" Source="/Pages/Settings/About.xaml" />
             </mui:ModernTab.Links>

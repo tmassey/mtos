@@ -12,12 +12,12 @@ namespace aXon.Desktop
     using System;
     using System.Collections.Generic;
     
-    public partial class BasePurchaseOrderItem
+    public partial class BaseAccount
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BasePurchaseOrderItem()
+        public BaseAccount()
         {
-            this.ReceiptItems = new HashSet<ReceiptItem>();
+            this.GeneralLedgers = new HashSet<GeneralLedger>();
         }
     
         public System.Guid Id { get; set; }
@@ -27,16 +27,11 @@ namespace aXon.Desktop
         public System.Guid CreatedBy { get; set; }
         public bool IsActiveRecord { get; set; }
         public System.Guid CompanyId { get; set; }
-        public System.Guid WarehouseId { get; set; }
-        public System.Guid PartId { get; set; }
-        public int Qty { get; set; }
-        public System.Guid PurchaseOrderId { get; set; }
+        public int AccountType { get; set; }
+        public string AccountNumber { get; set; }
     
-        public virtual BasePurchaseOrder BasePurchaseOrder { get; set; }
         public virtual Company Company { get; set; }
-        public virtual Part Part { get; set; }
-        public virtual WareHouse WareHouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReceiptItem> ReceiptItems { get; set; }
+        public virtual ICollection<GeneralLedger> GeneralLedgers { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace aXon.Desktop
             this.BasePurchaseOrderItems = new HashSet<BasePurchaseOrderItem>();
             this.CustomerPurchaseOrderItems = new HashSet<CustomerPurchaseOrderItem>();
             this.PartVendors = new HashSet<PartVendor>();
+            this.ReceiptItems = new HashSet<ReceiptItem>();
             this.VendorPurchaseOrderItems = new HashSet<VendorPurchaseOrderItem>();
         }
     
@@ -46,6 +47,8 @@ namespace aXon.Desktop
         public virtual WareHouse WareHouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PartVendor> PartVendors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReceiptItem> ReceiptItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VendorPurchaseOrderItem> VendorPurchaseOrderItems { get; set; }
     }

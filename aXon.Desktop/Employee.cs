@@ -23,11 +23,14 @@ namespace aXon.Desktop
         public string Password { get; set; }
         public string EmailAddress { get; set; }
         public string UserName { get; set; }
-        public System.Guid CompanyId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public Nullable<System.DateTimeOffset> BirthDate { get; set; }
+        public Nullable<int> UserType { get; set; }
+        public System.Guid CompanyId { get; set; }
         public string TaxId { get; set; }
+        public Nullable<System.DateTime> HireDate { get; set; }
     
         public virtual Company Company { get; set; }
     }

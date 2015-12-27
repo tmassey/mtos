@@ -26,6 +26,7 @@ namespace aXon.Desktop
         }
     
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<BaseAccount> BaseAccounts { get; set; }
         public virtual DbSet<BaseDictionaryModel> BaseDictionaryModels { get; set; }
         public virtual DbSet<BaseModel> BaseModels { get; set; }
         public virtual DbSet<BasePurchaseOrder> BasePurchaseOrders { get; set; }
@@ -40,10 +41,14 @@ namespace aXon.Desktop
         public virtual DbSet<CustomerPurchaseOrder> CustomerPurchaseOrders { get; set; }
         public virtual DbSet<CustomerPurchaseOrderItem> CustomerPurchaseOrderItems { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<GeneralLedger> GeneralLedgers { get; set; }
+        public virtual DbSet<NetworkFile> NetworkFiles { get; set; }
         public virtual DbSet<Part> Parts { get; set; }
         public virtual DbSet<PartVendor> PartVendors { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonAddress> PersonAddresses { get; set; }
+        public virtual DbSet<Receipt> Receipts { get; set; }
+        public virtual DbSet<ReceiptItem> ReceiptItems { get; set; }
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
@@ -51,5 +56,8 @@ namespace aXon.Desktop
         public virtual DbSet<VendorPurchaseOrderItem> VendorPurchaseOrderItems { get; set; }
         public virtual DbSet<WareHouse> WareHouses { get; set; }
         public virtual DbSet<WarehouseBaseModel> WarehouseBaseModels { get; set; }
+        public virtual DbSet<WarehouseNeuralNetwork> WarehouseNeuralNetworks { get; set; }
+        public virtual DbSet<WarehousePosition> WarehousePositions { get; set; }
+        public virtual DbSet<WarehouseRobot> WarehouseRobots { get; set; }
     }
 }

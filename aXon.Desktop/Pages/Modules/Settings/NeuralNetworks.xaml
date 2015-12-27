@@ -1,8 +1,9 @@
-﻿<desktop:AxonScreen x:Class="aXon.Desktop.Pages.Modules.Warehouse.NeuralNetworks"
+﻿<desktop:AxonScreen x:Class="aXon.Desktop.Pages.Modules.Settings.NeuralNetworks"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:desktop="clr-namespace:aXon.Desktop"
+                    xmlns:warehouse="clr-namespace:aXon.Desktop.Pages.Modules.Warehouse"
                     mc:Ignorable="d" 
              >
     <UserControl.Resources>
@@ -11,12 +12,34 @@
         <desktop:EnumConverter x:Key="enumConverter"/>
     </UserControl.Resources>
     <Grid Style="{StaticResource ContentRoot}">
-        <Grid.RowDefinitions>
-            <RowDefinition MaxHeight="35"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Button HorizontalAlignment="Right" Margin="5" Grid.Row="0" Click="RefreshNetworks">Refresh</Button>
-        <DataGrid x:Name="Networks" SelectionChanged="Networks_OnSelectionChanged"  AutoGenerateColumns="False" Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid Grid.Row="0" Grid.Column="0" Margin="{StaticResource SplitLeft}">
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <ToolBar Grid.Row="0"   >
+                <ToolBar.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF1D1D1D"/>
+                    </LinearGradientBrush>
+                </ToolBar.Background>
+                <Button  Click="RunNetwork" HorizontalAlignment="Right">Simulate</Button>
+                <ToolBarPanel >
+                    <ComboBox>
+                        <ComboBoxItem Content="000001"/>
+                    </ComboBox>
+                    <Button Tag="{Binding Id}" Click="ExecuteOnRobot" HorizontalAlignment="Right">Execute on Rover</Button>
+                </ToolBarPanel>
+                <Button Content="Refresh" Click="Refresh_Click" Foreground="White"/>
+            </ToolBar>
+            <DataGrid x:Name="Networks" ItemsSource="{Binding Path=MainData}" SelectionChanged="MainGrid_OnSelectionChanged_OnSelectionChanged"  AutoGenerateColumns="False" Grid.Row="1">
             <DataGrid.Columns>
 
                 <!--<DataGridTextColumn Header="Id" Binding="{Binding Id}" />-->
@@ -44,4 +67,9 @@
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
+        <GridSplitter Grid.Column="1" />
+        <Grid Grid.Row="0" x:Name="Details" Grid.Column="2" Margin="{StaticResource SplitRight}">
+            <warehouse:WarehouseMap VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="Map"  />
+        </Grid>
+        </Grid>
 </desktop:AxonScreen>

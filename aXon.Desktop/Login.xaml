@@ -7,7 +7,7 @@
                   mc:Ignorable="d" 
                   Height="125" Width="300"
                   Icon="Assets/appbar.lock.png"
-                  Title="aXon OS Login" WindowStartupLocation="CenterScreen" WindowStyle="None">
+                  Title="aXon OS Login" WindowStartupLocation="CenterScreen" WindowStyle="None" FocusManager.FocusedElement="{Binding ElementName=UserName}">
 
     
     <Grid>

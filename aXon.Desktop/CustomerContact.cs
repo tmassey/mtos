@@ -30,6 +30,8 @@ namespace aXon.Desktop
         public string OfficePhone { get; set; }
         public string OfficeExtention { get; set; }
         public string MobilePhone { get; set; }
+        public Nullable<System.DateTimeOffset> BirthDate { get; set; }
+        public Nullable<int> UserType { get; set; }
     
         public virtual Customer Customer { get; set; }
     }

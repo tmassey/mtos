@@ -44,6 +44,13 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             SourcePath = new Uri("/Pages/Modules/Warehouse/Warehouses.xaml", UriKind.Relative);
             ViewModel = new WarehousesViewModel();
             Loaded += Warehouses_Loaded;
+            Details.SizeChanged += Details_SizeChanged;
+        }
+
+        private void Details_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Map.Width = Details.ActualWidth;
+            Map.Height = 500;
         }
 
         private void Warehouses_Loaded(object sender, RoutedEventArgs e)
@@ -52,6 +59,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             ViewModel.MainData = new ObservableCollection<WareHouse>(Entities.WareHouses.Where(u => u.IsActiveRecord == true));
             ViewModel.Companies = new ObservableCollection<Company>(Entities.Companies.Where(u => u.IsActiveRecord == true));
             DataContext = ViewModel;
+            //Map.DrawMap();
         }
 
         private void MainGrid_OnSelectionChanged_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

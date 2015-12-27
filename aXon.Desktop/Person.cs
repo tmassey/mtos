@@ -32,6 +32,8 @@ namespace aXon.Desktop
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public Nullable<System.DateTimeOffset> BirthDate { get; set; }
+        public Nullable<int> UserType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonAddress> PersonAddresses { get; set; }

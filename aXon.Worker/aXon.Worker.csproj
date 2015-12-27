@@ -50,8 +50,6 @@
     <Compile Include="EventArgs\OnProgressArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\ITaskWorker.cs" />
-    <Compile Include="Workers\Benchmark\BenchmarkResult.cs" />
-    <Compile Include="Workers\Benchmark\BenchmarkWorker.cs" />
     <Compile Include="Workers\Rover\RoverWorker.cs" />
     <Compile Include="Workers\Rover\Models\RoverSensorReadings.cs" />
     <Compile Include="Workers\Rover\Models\RoverResults.cs" />
@@ -74,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Workers\Rover\Neural Network\" />
-    <Folder Include="Workers\TickTakToe\network\" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

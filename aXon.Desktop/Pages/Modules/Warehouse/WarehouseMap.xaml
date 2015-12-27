@@ -1,4 +1,4 @@
-﻿<desktop:AxonScreen                      
+﻿<UserControl                     
 
     x:Class="aXon.Desktop.Pages.Modules.Warehouse.WarehouseMap"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,16 +7,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:desktop="clr-namespace:aXon.Desktop"
     mc:Ignorable="d" 
              >
-    <Viewbox Stretch="Fill" HorizontalAlignment="Left"  VerticalAlignment="Top" Style="{StaticResource ContentRoot}">
-        <Canvas x:Name="Canvas" Background="Transparent" Margin="0" Width="810"
-                        Height="810" HorizontalAlignment="Left"
-                        VerticalAlignment="Top">
-
+    <Viewbox x:Name="Viewbox" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding Path=Width }" Height="{Binding Path=Height }" >
+        <Canvas x:Name="Canvas" Background="Transparent" Margin="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding Path=Width }" Height="{Binding Path=Height }">
             <Canvas.LayoutTransform>
                 <ScaleTransform ScaleY="1" />
             </Canvas.LayoutTransform>
-
-
         </Canvas>
     </Viewbox>
-</desktop:AxonScreen>
+</UserControl>

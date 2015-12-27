@@ -61,9 +61,13 @@ namespace aXon.Desktop
             return null;
         }
         public DataSource SourceData { get; set; }
+        public ToastinetWPF.Toastinet Toast { get; set; }
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.Title = "aXon OS (Code Named: Spark) Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString();
+            WarehouseName.DisplayName="Company: " + Globals.CurrentUser.Company.Name;
+            Toast= new ToastinetWPF.Toastinet();
+            Globals.Toast = Toast;
         }
 
         public ObservableCollection<AxonScreen> Screens { get; set; }

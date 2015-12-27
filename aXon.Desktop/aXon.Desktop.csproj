@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -48,6 +48,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="encog-core-cs, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e882172b12155d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\encog-dotnet-core.3.3.0\lib\net35\encog-core-cs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -133,6 +137,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>aXonModels.edmx</DependentUpon>
     </Compile>
+    <Compile Include="BaseAccount.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="BaseDictionaryModel.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
@@ -175,11 +182,20 @@
     <Compile Include="Employee.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Enumerations\AccountType.cs" />
+    <Compile Include="Enumerations\ReceiptStatus.cs" />
+    <Compile Include="Enumerations\StorageLocationType.cs" />
+    <Compile Include="GeneralLedger.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="NetworkFile.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Modules\HR\EmployeesView.xaml.cs">
       <DependentUpon>EmployeesView.xaml</DependentUpon>
     </Compile>
@@ -199,6 +215,17 @@
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Compile Include="PersonAddress.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Receipt.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReceiptItem.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Compile Include="ReflectiveEnumerator.cs" />
@@ -221,14 +248,26 @@
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Modules\HR\EmployeesViewModel.cs" />
     <Compile Include="ViewModels\Modules\Security\CompaniesViewModel.cs" />
     <Compile Include="ViewModels\Modules\Security\UsersViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Settings\NeuralNetworksViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Warehouse\PartsViewModel.cs" />
     <Compile Include="ViewModels\Modules\Warehouse\WarehousesViewModel.cs" />
     <Compile Include="WareHouse.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Compile Include="WarehouseBaseModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseNeuralNetwork.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehousePosition.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseRobot.cs">
       <DependentUpon>aXonModels.tt</DependentUpon>
     </Compile>
     <Page Include="Assets\Themes\ModernUI.aXon.xaml">
@@ -284,7 +323,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Modules\Warehouse\NeuralNetworks.xaml">
+    <Page Include="Pages\Modules\Settings\NeuralNetworks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -334,7 +373,7 @@
     <Compile Include="Pages\Modules\Security\Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Modules\Warehouse\NeuralNetworks.xaml.cs">
+    <Compile Include="Pages\Modules\Settings\NeuralNetworks.xaml.cs">
       <DependentUpon>NeuralNetworks.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Modules\Warehouse\PartsManagement\Parts.xaml.cs">
@@ -453,6 +492,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

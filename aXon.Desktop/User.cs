@@ -34,6 +34,7 @@ namespace aXon.Desktop
         public string Password { get; set; }
         public string EmailAddress { get; set; }
         public string UserName { get; set; }
+        public Nullable<int> UserType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BaseDictionaryModel> BaseDictionaryModels { get; set; }

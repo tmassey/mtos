@@ -73,14 +73,14 @@ namespace aXon.Desktop.Pages.Modules.HR
             ViewModel.SelectedRow = new Employee() { Id = Guid.NewGuid()};
             DataContext = ViewModel;
             ViewModel.EditMode = false;
-            Toast.Message = "Ready to Add New Employee!";
+            Globals.Toast.Message = "Ready to Add New Record!";
         }
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             Entities = new aXonEntities();
             ViewModel.MainData = new ObservableCollection<Employee>(Entities.Employees.Where(u => u.IsActiveRecord == true));
-            Toast.Message = "Employees Refreshed";
+            Globals.Toast.Message = "Data Refreshed!";
             
         }
 
@@ -109,7 +109,7 @@ namespace aXon.Desktop.Pages.Modules.HR
             Entities = new aXonEntities();
             ViewModel.MainData = new ObservableCollection<Employee>(Entities.Employees.Where(u => u.IsActiveRecord == true));
             DataContext = ViewModel;
-            Toast.Message = "Record Saved";
+            Globals.Toast.Message = "Record Saved";
         }
 
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -12,10 +12,10 @@ namespace aXon.Desktop
     using System;
     using System.Collections.Generic;
     
-    public partial class BasePurchaseOrderItem
+    public partial class Receipt
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BasePurchaseOrderItem()
+        public Receipt()
         {
             this.ReceiptItems = new HashSet<ReceiptItem>();
         }
@@ -28,13 +28,16 @@ namespace aXon.Desktop
         public bool IsActiveRecord { get; set; }
         public System.Guid CompanyId { get; set; }
         public System.Guid WarehouseId { get; set; }
-        public System.Guid PartId { get; set; }
-        public int Qty { get; set; }
-        public System.Guid PurchaseOrderId { get; set; }
+        public Nullable<System.DateTimeOffset> ReceiptDate { get; set; }
+        public System.DateTimeOffset ExpectedArrivalDate { get; set; }
+        public Nullable<System.Guid> PurchaseOrderId { get; set; }
+        public Nullable<System.Guid> CustomerId { get; set; }
+        public Nullable<System.Guid> VendorId { get; set; }
+        public int Status { get; set; }
     
-        public virtual BasePurchaseOrder BasePurchaseOrder { get; set; }
         public virtual Company Company { get; set; }
-        public virtual Part Part { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual Vendor Vendor { get; set; }
         public virtual WareHouse WareHouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceiptItem> ReceiptItems { get; set; }

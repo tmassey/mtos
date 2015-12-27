@@ -20,6 +20,7 @@ namespace aXon.Desktop
             this.CustomerContacts = new HashSet<CustomerContact>();
             this.CustomerPurchaseOrders = new HashSet<CustomerPurchaseOrder>();
             this.CustomerPurchaseOrderItems = new HashSet<CustomerPurchaseOrderItem>();
+            this.Receipts = new HashSet<Receipt>();
         }
     
         public System.Guid Id { get; set; }
@@ -41,5 +42,7 @@ namespace aXon.Desktop
         public virtual ICollection<CustomerPurchaseOrder> CustomerPurchaseOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerPurchaseOrderItem> CustomerPurchaseOrderItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receipt> Receipts { get; set; }
     }
 }

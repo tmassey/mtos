@@ -21,9 +21,14 @@ namespace aXon.Desktop
             this.BasePurchaseOrderItems = new HashSet<BasePurchaseOrderItem>();
             this.CustomerPurchaseOrders = new HashSet<CustomerPurchaseOrder>();
             this.CustomerPurchaseOrderItems = new HashSet<CustomerPurchaseOrderItem>();
+            this.NetworkFiles = new HashSet<NetworkFile>();
             this.Parts = new HashSet<Part>();
+            this.Receipts = new HashSet<Receipt>();
             this.VendorPurchaseOrders = new HashSet<VendorPurchaseOrder>();
             this.VendorPurchaseOrderItems = new HashSet<VendorPurchaseOrderItem>();
+            this.WarehouseNeuralNetworks = new HashSet<WarehouseNeuralNetwork>();
+            this.WarehousePositions = new HashSet<WarehousePosition>();
+            this.WarehouseRobots = new HashSet<WarehouseRobot>();
             this.WarehouseBaseModels = new HashSet<WarehouseBaseModel>();
         }
     
@@ -35,6 +40,10 @@ namespace aXon.Desktop
         public bool IsActiveRecord { get; set; }
         public System.Guid CompanyId { get; set; }
         public string Name { get; set; }
+        public Nullable<double> Length { get; set; }
+        public Nullable<double> Width { get; set; }
+        public Nullable<double> Height { get; set; }
+        public int WarehouseType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasePurchaseOrder> BasePurchaseOrders { get; set; }
@@ -46,11 +55,21 @@ namespace aXon.Desktop
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerPurchaseOrderItem> CustomerPurchaseOrderItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NetworkFile> NetworkFiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Part> Parts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receipt> Receipts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VendorPurchaseOrder> VendorPurchaseOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VendorPurchaseOrderItem> VendorPurchaseOrderItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WarehouseNeuralNetwork> WarehouseNeuralNetworks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WarehousePosition> WarehousePositions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WarehouseRobot> WarehouseRobots { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WarehouseBaseModel> WarehouseBaseModels { get; set; }
     }
