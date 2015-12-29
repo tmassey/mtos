@@ -5,7 +5,7 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                   xmlns:mui="http://firstfloorsoftware.com/ModernUI"
                   mc:Ignorable="d" 
-                  Height="125" Width="300"
+                  Height="170" Width="400"
                   Icon="Assets/appbar.lock.png"
                   Title="aXon OS Login" WindowStartupLocation="CenterScreen" WindowStyle="None" FocusManager.FocusedElement="{Binding ElementName=UserName}">
 
@@ -13,16 +13,16 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="24"></RowDefinition>
-            <RowDefinition MaxHeight="65"></RowDefinition>
+            <RowDefinition ></RowDefinition>
         
         </Grid.RowDefinitions>
         <TextBlock Foreground="Red" Style="{StaticResource Heading2}" HorizontalAlignment="Center" x:Name="Error" Visibility="Collapsed" Grid.Row="0">Invalid username or passwword</TextBlock>
-        <UniformGrid Columns="2" Grid.Row="1" Margin="5">
-            <TextBlock HorizontalAlignment="Right" Margin="0,2">User Name:</TextBlock>
-            <TextBox x:Name="UserName" Margin="2" Width="150"></TextBox>
-            <TextBlock HorizontalAlignment="Right" Margin="0,2">Password:</TextBlock>
-            <PasswordBox x:Name="Password" Margin="2" Width="150"></PasswordBox>
-        </UniformGrid>
+        <StackPanel  Grid.Row="1" Margin="0">
+            <TextBlock HorizontalAlignment="Center" Margin="0">User Name:</TextBlock>
+            <TextBox x:Name="UserName" FontSize="24" HorizontalContentAlignment="Center"  FontWeight="Bold" Margin="0" Width="200"></TextBox>
+            <TextBlock HorizontalAlignment="Center" Margin="0">Password:</TextBlock>
+            <PasswordBox x:Name="Password" FontSize="24" HorizontalContentAlignment="Center"  FontWeight="Bold" Margin="0" Width="200"></PasswordBox>
+        </StackPanel>
     </Grid>
     
 </mui:ModernDialog>

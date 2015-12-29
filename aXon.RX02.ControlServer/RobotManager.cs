@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using aXon.Data;
 using Automatonymous;
 using Encog.ML.Data;
 using Encog.ML.Data.Basic;
@@ -17,7 +18,6 @@ using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
 using aXon.TaskTransport;
 using aXon.TaskTransport.Messages;
-using aXon.Warehouse.Modules.Robotics.Robot.Models;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
@@ -25,10 +25,10 @@ namespace aXon.RX02.ControlServer
 {
     public class RobotManager
     {
-        private readonly Robot _robot;
+        private readonly WarehouseRobot _robot;
         private RobotState _state;
         private RobotStateMachine _machine;
-        private readonly MongoDataService ds = new MongoDataService();
+        private readonly aXonEntities ds = new aXonEntities();
         public MqttClient Client;
         private static IConnection _Connection;
         private MessageQueue<RobotJobMessage> _messageQueue;
@@ -36,6 +36,8 @@ namespace aXon.RX02.ControlServer
         private BasicNetwork _NeuralNet;
         public RobotManager(string serial)
         {
+            //TODO: Need Warehouse ID
+
             Client  = new MqttClient(IPAddress.Parse("192.168.1.19"));
             byte code = Client.Connect("aXon" + serial);
             var ques = BuildQueues(serial);
@@ -47,22 +49,24 @@ namespace aXon.RX02.ControlServer
             Client.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
             Client.Subscribe(ques, qos);
             
-            _robot = ds.GetCollectionQueryModel<Robot>(Query.EQ("SerialNumber", serial)).FirstOrDefault();
+            _robot = ds.WarehouseRobots.FirstOrDefault(r=>r.SerialNumber==serial);
             if (_robot == null)
             {
-                _robot = new Robot
-                             {
+                var pos=ds.WarehousePositions.FirstOrDefault();
+                _robot = new WarehouseRobot
+                {
                                  Id = Guid.NewGuid(),
                                  SerialNumber = serial,
                                  IsActiveRecord = true,
                                  LastEditDateTime = DateTime.Now,
                                  CreateDateTime = DateTime.Now,
-                                 CurrentMode = RoverMode.WaitingForJob,
-                                 CurrentLocation = new Position(0, 0)
+                                 CurrentMode = (int)RoverMode.WaitingForJob,
+                                 CurrentPostionId = pos.Id
+                                 
                              };
-                MongoCollection<Robot> col = ds.DataBase.GetCollection<Robot>("Robot");
-                col.Save(_robot);             
+                ds.WarehouseRobots.Add(_robot);                
             }
+            ds.SaveChanges();
             _state = new RobotState() { Name = _robot.SerialNumber };
             InitConnection();
             _messageQueue = new MessageQueue<RobotJobMessage>(true,_Connection){GetNext=false};
@@ -105,27 +109,30 @@ namespace aXon.RX02.ControlServer
         {
             Console.WriteLine("Job Arrive: " + args.RobotSerial + " NetId: " + args.NetworkId.ToString());
             _machine.RaiseEvent(_state, _machine.JobArrivesEvent);            
-            var network = ds.GetCollectionQueryModel<NeuralNetwork>(Query.EQ("_id",args.NetworkId)).FirstOrDefault();
+            var network = ds.WarehouseNeuralNetworks.FirstOrDefault(n=>n.Id==args.NetworkId);
             var fn = network.Id.ToString();
             _NeuralNet = GetNeuralNetwork(network, fn);
             ProcessMovement();
         }
 
-        private BasicNetwork GetNeuralNetwork(NeuralNetwork network, string fn)
+        private BasicNetwork GetNeuralNetwork(WarehouseNeuralNetwork network, string fn)
         {
             BasicNetwork nn;
             if(RobotContol.NetworkLock==null)
                 RobotContol.NetworkLock="t";
             lock (RobotContol.NetworkLock)
             {
-                var rawbytes = ds.OpenFile(network.Id);
+                var netFile=ds.NetworkFiles.FirstOrDefault(nf => nf.Id == network.Id);
+
+                var rawbytes = Convert.FromBase64String(netFile.FileData);
 
                 File.WriteAllBytes(fn, rawbytes);
                 nn = (BasicNetwork) EncogDirectoryPersistence.LoadObject(new FileInfo(fn));
                 File.Delete(fn);
             }
-            _neural = new NeuralRobot(new BasicNetwork(), true, network.StartPosition, network.EndPosition);
-            RobotContol.Warehouse = ds.GetCollectionQueryModel<aXon.Rover.Models.Warehouse>().FirstOrDefault();
+
+            _neural = new NeuralRobot(new BasicNetwork(), true, new Position(network.StartPosition.X, network.StartPosition.Y), new Position(network.EndPosition.X, network.EndPosition.Y));
+            RobotContol.Warehouse = network.WareHouse;
             return nn;
         }
 
@@ -176,8 +183,7 @@ namespace aXon.RX02.ControlServer
                 case "ACK":
                     break;
                 case "AUTH":
-                    _machine.RaiseEvent(_state, _machine.ReadyForWorkEvent);
-                    //TODO: Need to add Code to Subscribe to RobotJobs on RabbitMq
+                    _machine.RaiseEvent(_state, _machine.ReadyForWorkEvent);                    
                     _messageQueue.GetNext = true;
                     break;
                 case "FD":

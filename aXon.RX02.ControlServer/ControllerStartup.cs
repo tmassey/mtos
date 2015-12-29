@@ -11,7 +11,7 @@ namespace aXon.RX02.ControlServer
     public class ControllerStartup
     {
         public static string CLock = "";
-        private static readonly MongoDataService ds = new MongoDataService();
+        //private static readonly MongoDataService ds = new MongoDataService();
         public static MqttClient Client;
         public static List<RobotManager> Robots { get; set; }
 

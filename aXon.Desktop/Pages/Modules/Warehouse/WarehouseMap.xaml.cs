@@ -11,15 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using aXon.Data;
 using aXon.Rover;
 using aXon.Rover.Annotations;
-using MongoDB.Driver;
 using aXon.Rover.Enumerations;
 using aXon.Rover.Interfaces;
 using aXon.Rover.Models;
 using Encog.Neural.Networks;
 using Encog.Persist;
-using MongoDB.Driver.Builders;
 using Path = System.Windows.Shapes.Path;
 
 namespace aXon.Desktop.Pages.Modules.Warehouse
@@ -30,7 +29,18 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
     public partial class WarehouseMap : UserControl,INotifyPropertyChanged
     {
         private DataSource _sourceData;
-        private IDataService _dataService;
+        private aXonEntities _dataService;
+
+        public Guid WarehouseId
+        {
+            get { return _warehouseId; }
+            set
+            {
+                if (value.Equals(_warehouseId)) return;
+                _warehouseId = value;
+                OnPropertyChanged();
+            }
+        }
 
         public WarehouseMap()
         {
@@ -38,7 +48,10 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
            
             Loaded += WarehouseMap_Loaded;
             SizeChanged += WarehouseMap_SizeChanged;
-        }
+        }        
+        int GridLength = 0;
+        int GridWidth = 0;
+        private Guid _warehouseId;
 
         private void WarehouseMap_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -52,13 +65,20 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             RobotContol.NetworkLock = "lock";
             RobotContol.ConsoleLock = "lock";
             SourceData = new DataSource();
-            DataService = new MongoDataService();
-            SourceData.Warehouse = DataService.GetCollectionQueryModel<Rover.Models.Warehouse>().FirstOrDefault();
-            RobotContol.Warehouse = SourceData.Warehouse;        
-            
+            DataService = new aXonEntities();
+            SourceData.Warehouse = DataService.WareHouses.FirstOrDefault(w => w.Id == WarehouseId);
+            RobotContol.Warehouse = SourceData.Warehouse;
+            try
+            {
+                GridWidth = (int) SourceData.Warehouse.Width/4;
+                GridLength = (int) SourceData.Warehouse.Length/4;
+            }
+            catch
+            {
+            }
         }
 
-        public IDataService DataService
+        public aXonEntities DataService
         {
             get { return _dataService; }
             set
@@ -96,28 +116,39 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
 
         public void DrawMap()
         {
+           
+            try
+            {
+                SourceData.Warehouse = DataService.WareHouses.FirstOrDefault(w => w.Id == WarehouseId);
+                RobotContol.Warehouse = SourceData.Warehouse;
+                GridWidth = (int)SourceData.Warehouse.Width / 4;
+                GridLength = (int)SourceData.Warehouse.Length / 4;
+            }
+            catch
+            {
+            }
             if (SourceData != null && SourceData.Warehouse != null)
             {
-                Canvas.Children.Clear();
-                for (double slat = 0; slat <= SourceData.Warehouse.GridLength; slat++)
+                Canvas.Children.Clear();              
+                for (int slat = 0; slat < GridLength; slat++)
                 {
-                    for (double slon = 0; slon <= SourceData.Warehouse.GridWidth; slon++)
+                    for (int slon = 0; slon < GridWidth; slon++)
                     {
                         //var isDest = SourceData.Simulation.Destination[1] == slon &&
                         //             SourceData.Simulation.Destination[0] == slat;
                         var location = AddLocation(false);
 
                         location.Tag = slon + "," + slat;
-                        double x = (int) (Canvas.ActualHeight/SourceData.Warehouse.GridWidth) - 1;
-                        double y = (int) (Canvas.ActualWidth/SourceData.Warehouse.GridLength) - 1;
+                        int x = (int) (Canvas.ActualWidth/GridWidth) - 1;
+                        int y = (int) (Canvas.ActualHeight/GridLength) - 1;
 
                         var pos =
-                            (from loc in SourceData.Warehouse.Positions where loc.X == slon && loc.Y == slat select loc)
+                            (from loc in SourceData.Warehouse.WarehousePositions where loc.X == slon && loc.Y == slat select loc)
                                 .FirstOrDefault();
 
                         if (pos != null)
                         {
-                            switch (pos.MapMode)
+                            switch ((MapMode)pos.MapMode)
                             {
                                 case MapMode.ChargeMode:
                                     location.Fill = new SolidColorBrush(Color.FromRgb(220, 20, 60));
@@ -158,9 +189,10 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
         }
         private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            
             var pos = e.GetPosition(Canvas);
-            var x = (int)pos.X / ((int)(Canvas.ActualHeight / SourceData.Warehouse.GridWidth) - 1);
-            var y = (int)pos.Y / ((int)(Canvas.ActualWidth / SourceData.Warehouse.GridLength) - 1);
+            var x = (int)pos.X / ((int)(Canvas.ActualWidth / GridWidth) - 1);
+            var y = (int)pos.Y / ((int)(Canvas.ActualHeight / GridLength) - 1);
             var p = AddLocation(false);
             switch (SourceData.ModeMap)
             {
@@ -186,23 +218,24 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
                     p.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 200));
                     break;
             }
-            if (SourceData.Warehouse.Positions == null)
-                SourceData.Warehouse.Positions = new ObservableCollection<Position>();
+            if (SourceData.Warehouse.WarehousePositions == null)
+                SourceData.Warehouse.WarehousePositions = new ObservableCollection<WarehousePosition>();
             var l =
-                (from loc in SourceData.Warehouse.Positions where loc.X == x && loc.Y == y select loc).FirstOrDefault();
+                (from loc in SourceData.Warehouse.WarehousePositions where loc.X == x && loc.Y == y select loc).FirstOrDefault();
             if (l != null)
             {
-                l.MapMode = SourceData.ModeMap;
+                l.MapMode = (int)SourceData.ModeMap;
             }
             else
             {
-                l = new Position(x, y) { MapMode = SourceData.ModeMap };
-                SourceData.Warehouse.Positions.Add(l);
+                //TODO: Fix this 
+               // l = new WarehousePosition()  { , MapMode = (MapMode)SourceData.ModeMap };
+                //SourceData.Warehouse.WarehousePositions.Add(l);
             }
-            var col = DataService.DataBase.GetCollection<Rover.Models.Warehouse>("Warehouse");
-            SafeModeResult safeModeResult = col.Save(SourceData.Warehouse);
-            Canvas.SetLeft(p, x * ((int)(Canvas.ActualHeight / SourceData.Warehouse.GridWidth) - 1));
-            Canvas.SetTop(p, y * ((int)(Canvas.ActualWidth / SourceData.Warehouse.GridLength) - 1));
+            //var col = DataService.DataBase.GetCollection<Rover.Models.Warehouse>("Warehouse");
+            //SafeModeResult safeModeResult = col.Save(SourceData.Warehouse);
+            Canvas.SetLeft(p, x * ((int)(Canvas.ActualWidth / GridWidth) - 1));
+            Canvas.SetTop(p, y * ((int)(Canvas.ActualHeight / GridLength) - 1));
             Canvas.Children.Add(p);
         }
         private Rectangle AddLocation(bool isDestination = false)
@@ -221,8 +254,8 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             }
 
             container.MouseRightButtonUp += container_MouseRightButtonUp;
-            container.Width = Canvas.ActualWidth / SourceData.Warehouse.GridWidth;
-            container.Height = Canvas.ActualHeight / SourceData.Warehouse.GridLength;
+            container.Width = Canvas.ActualWidth / GridWidth;
+            container.Height = Canvas.ActualHeight / GridLength;
             return container;
         }
         private void container_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -230,15 +263,16 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             var src = (Rectangle)e.Source;
             if (src.Tag != null) MessageBox.Show(src.Tag.ToString(), "Location Clicked");
         }
-        private Path AddELocation(bool isDestination = false)
+        private Ellipse AddELocation(bool isDestination = false)
         {
-            var container = new Path();
-      
-            container.Data = Geometry.Parse(Application.Current.Resources["RobotString"].ToString());            
+            var container = new Ellipse();
+                            
+            //container.Data = Geometry.Parse(Application.Current.Resources["RobotString"].ToString());            
             if (!isDestination)
             {
-                container.Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200));
-                container.StrokeThickness = 2;
+                container.Stroke = new SolidColorBrush(Color.FromArgb(0,255,255,255));
+                container.Fill = new SolidColorBrush(Color.FromArgb(10, 0, 0, 255));
+                container.StrokeThickness = 5;
             }
             else
             {
@@ -248,8 +282,8 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             }
 
             container.MouseRightButtonUp += container_MouseRightButtonUp;
-            container.Width = (Canvas.ActualWidth / SourceData.Warehouse.GridWidth);
-            container.Height = (Canvas.ActualHeight / SourceData.Warehouse.GridLength);
+            container.Width = ((Canvas.ActualWidth / GridWidth));
+            container.Height = ((Canvas.ActualHeight / GridLength));
             return container;
         }
         public  Position SourceLocation { get; set; }
@@ -259,21 +293,21 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             var p = AddELocation(false);
             p.Fill = new SolidColorBrush(Color.FromRgb(200, 200, 200));
             p.Stroke =new SolidColorBrush(Color.FromRgb(200, 200, 200));
-            var w = Canvas.ActualWidth / SourceData.Warehouse.GridWidth;
-            var h = Canvas.ActualHeight / SourceData.Warehouse.GridLength;
-            Canvas.SetLeft(p, position.X * ((int)(Canvas.ActualHeight / SourceData.Warehouse.GridWidth) - 1));
-            Canvas.SetTop(p, position.Y * ((int)(Canvas.ActualWidth / SourceData.Warehouse.GridLength) - 1));
+            //var w = Canvas.ActualWidth / GridWidth;
+            //var h = Canvas.ActualHeight / GridLength;
+            Canvas.SetLeft(p, position.X * ((int)(Canvas.ActualWidth / GridWidth) -1));
+            Canvas.SetTop(p, position.Y * ((int)(Canvas.ActualHeight / GridLength) -1));
             Canvas.Children.Add(p);
             Canvas.UpdateLayout();
             DoEvents();
         }
         public void RunNetwork(Guid id)
         {
-           
+
             BasicNetwork network = null;
 
             var fn = id.ToString();
-            var net = DataService.GetCollectionQueryModel<NeuralNetwork>(Query.EQ("_id", id)).FirstOrDefault();
+            var net = DataService.WarehouseNeuralNetworks.FirstOrDefault(n=>n.Id==id);
             if (net != null)
             {
                 SourceLocation = new Position(net.StartPosition.X, net.StartPosition.Y);
@@ -281,8 +315,8 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
 
                 lock (RobotContol.NetworkLock)
                 {
-                    var rawbytes = DataService.OpenFile(id);
-
+                    var nf = DataService.NetworkFiles.FirstOrDefault(n=>n.Id==id);
+                    var rawbytes = Convert.FromBase64String(nf.FileData);
                     File.WriteAllBytes(fn, rawbytes);
                     network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(new FileInfo(fn));
                 }

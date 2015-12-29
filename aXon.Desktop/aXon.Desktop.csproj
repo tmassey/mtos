@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>aXon.Desktop</RootNamespace>
     <AssemblyName>aXon.Desktop</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -29,6 +29,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,12 +68,6 @@
     <Reference Include="FirstFloor.ModernUI">
       <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\aXon.Worker\bin\Debug\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\aXon.Worker\bin\Debug\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="Npgsql, Version=3.0.4.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.3.0.4\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
@@ -87,7 +82,7 @@
       <HintPath>..\packages\OxyPlot.Wpf.1.0.0-unstable1904\lib\net45\OxyPlot.Xps.dll</HintPath>
     </Reference>
     <Reference Include="RabbitMQ.Client">
-      <HintPath>..\aXon.TaskTransport\bin\Debug\RabbitMQ.Client.dll</HintPath>
+      <HintPath>..\packages\RabbitMQ.Client.3.5.6\lib\net40\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -115,89 +110,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Address.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="aXonModels.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>aXonModels.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="aXonModels.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="aXonModels.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>aXonModels.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="BaseAccount.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BaseDictionaryModel.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BaseModel.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BasePurchaseOrder.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BasePurchaseOrderItem.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Carrier.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="City.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Company.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CompanyBaseModel.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Country.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Customer.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CustomerContact.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CustomerPurchaseOrder.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CustomerPurchaseOrderItem.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Employee.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Enumerations\AccountType.cs" />
     <Compile Include="Enumerations\ReceiptStatus.cs" />
     <Compile Include="Enumerations\StorageLocationType.cs" />
-    <Compile Include="GeneralLedger.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="NetworkFile.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Modules\HR\EmployeesView.xaml.cs">
       <DependentUpon>EmployeesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Modules\Robotics\Robot\AddWarehouseRobotView.xaml.cs">
+      <DependentUpon>AddWarehouseRobotView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Modules\Robotics\Robot\RobotsView.xaml.cs">
+      <DependentUpon>RobotsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Modules\Security\CompaniesView.xaml.cs">
       <DependentUpon>CompaniesView.xaml</DependentUpon>
@@ -205,71 +137,25 @@
     <Compile Include="Pages\Modules\Warehouse\Warehouses.xaml.cs">
       <DependentUpon>Warehouses.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Part.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PartVendor.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Person.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PersonAddress.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Receipt.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ReceiptItem.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="ReflectiveEnumerator.cs" />
     <Compile Include="Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
-    <Compile Include="State.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Vendor.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VendorPurchaseOrder.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VendorPurchaseOrderItem.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Modules\HR\EmployeesViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Robotics\AddWarehouseRobotViewModel.cs" />
+    <Compile Include="ViewModels\Modules\Robotics\RobotsViewModel.cs" />
     <Compile Include="ViewModels\Modules\Security\CompaniesViewModel.cs" />
     <Compile Include="ViewModels\Modules\Security\UsersViewModel.cs" />
     <Compile Include="ViewModels\Modules\Settings\NeuralNetworksViewModel.cs" />
     <Compile Include="ViewModels\Modules\Warehouse\PartsViewModel.cs" />
     <Compile Include="ViewModels\Modules\Warehouse\WarehousesViewModel.cs" />
-    <Compile Include="WareHouse.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseBaseModel.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseNeuralNetwork.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WarehousePosition.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseRobot.cs">
-      <DependentUpon>aXonModels.tt</DependentUpon>
-    </Compile>
     <Page Include="Assets\Themes\ModernUI.aXon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -300,6 +186,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Modules\HR\EmployeesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Modules\Robotics\Robot\AddWarehouseRobotView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Modules\Robotics\Robot\RobotsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -336,10 +230,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Modules\Warehouse\SalesOrderManagement\SalesOrders.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Modules\Warehouse\WarehouseEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -385,9 +275,6 @@
     <Compile Include="Pages\Modules\Warehouse\SalesOrderManagement\SalesOrders.xaml.cs">
       <DependentUpon>SalesOrders.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Modules\Warehouse\WarehouseEdit.xaml.cs">
-      <DependentUpon>WarehouseEdit.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Modules\Warehouse\WarehouseMap.xaml.cs">
       <DependentUpon>WarehouseMap.xaml</DependentUpon>
     </Compile>
@@ -424,16 +311,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="aXonModels.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>aXonModels.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="aXonModels.edmx.diagram">
-      <DependentUpon>aXonModels.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\aXon.Data\aXon.Data.csproj">
+      <Project>{ec850bf8-2d2c-4210-9788-693f252ba66e}</Project>
+      <Name>aXon.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\aXon.Rover\aXon.Rover.csproj">
       <Project>{750BF9CE-9F98-489C-BF9E-98854839CC1C}</Project>
       <Name>aXon.Rover</Name>
@@ -442,9 +326,9 @@
       <Project>{8CB651B0-1CE1-41AB-A1EA-B1B490FCA135}</Project>
       <Name>aXon.TaskTransport</Name>
     </ProjectReference>
-    <ProjectReference Include="..\aXon.Warehouse\aXon.Warehouse.csproj">
-      <Project>{d907bd96-eafd-481a-ab3c-5751cbe20fa3}</Project>
-      <Name>aXon.Warehouse</Name>
+    <ProjectReference Include="..\aXon.Worker\aXon.Worker.csproj">
+      <Project>{11267F83-8BA8-4157-B347-7BFDB28860F0}</Project>
+      <Name>aXon.Worker</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -477,18 +361,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="aXonModels.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>aXonModels.edmx</DependentUpon>
-      <LastGenOutput>aXonModels.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="aXonModels.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>aXonModels.edmx</DependentUpon>
-      <LastGenOutput>aXonModels.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

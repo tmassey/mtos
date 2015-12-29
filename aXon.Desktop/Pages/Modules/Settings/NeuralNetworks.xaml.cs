@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using aXon.Data;
 using aXon.Desktop.ViewModels.Modules.Settings;
 using aXon.Desktop.ViewModels.Modules.Warehouse;
 using aXon.Rover;
+using aXon.Rover.Enumerations;
 using aXon.Rover.Models;
 using aXon.TaskTransport;
 using aXon.TaskTransport.Messages;
+using aXon.Worker;
+using Encog.Neural.Networks;
+using Encog.Persist;
 using RabbitMQ.Client;
 
 namespace aXon.Desktop.Pages.Modules.Settings
@@ -52,11 +59,15 @@ namespace aXon.Desktop.Pages.Modules.Settings
         void NeuralNetworks_Loaded(object sender, RoutedEventArgs e)
         {
             Entities = new aXonEntities();
+            
             InitConnection();
             _messageQueue = new MessageQueue<RobotJobMessage>(false, _Connection) { GetNext = false };
             _messageQueue.OnReceivedMessage += _messageQueue_OnReceivedMessage;
             ViewModel.MainData= new ObservableCollection<WarehouseNeuralNetwork>(Entities.WarehouseNeuralNetworks.Where(u => u.IsActiveRecord == true));
-            DataContext = ViewModel;            
+            Map.WarehouseId = ViewModel.MainData.FirstOrDefault().WarehouseId;
+            ViewModel.Robots = new ObservableCollection<WarehouseRobot>(Entities.WarehouseRobots.Where(u => u.IsActiveRecord == true && u.WarehouseId==Map.WarehouseId));
+            DataContext = ViewModel;
+            Map.DrawMap();
         }
 
         private void _messageQueue_OnReceivedMessage(object sender, RobotJobMessage args)
@@ -73,6 +84,7 @@ namespace aXon.Desktop.Pages.Modules.Settings
                 ViewModel.SelectedRow = (WarehouseNeuralNetwork)e.AddedItems[0];
                 DataContext = ViewModel;
                 ViewModel.EditMode = true;
+                Map.DrawMap();
             }
             catch
             {
@@ -89,7 +101,8 @@ namespace aXon.Desktop.Pages.Modules.Settings
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             Entities = new aXonEntities();
-            ViewModel.MainData = new ObservableCollection<WarehouseNeuralNetwork>(Entities.WarehouseNeuralNetworks.Where(u => u.IsActiveRecord == true));           
+            ViewModel.MainData = new ObservableCollection<WarehouseNeuralNetwork>(Entities.WarehouseNeuralNetworks.Where(u => u.IsActiveRecord == true));
+            ViewModel.Robots = new ObservableCollection<WarehouseRobot>(Entities.WarehouseRobots.Where(u => u.IsActiveRecord == true && u.WarehouseId == Map.WarehouseId));
         }
 
         private void Save_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -133,25 +146,58 @@ namespace aXon.Desktop.Pages.Modules.Settings
             };
             _Connection = factory.CreateConnection();
         }
-        private void RefreshNetworks(object sender, RoutedEventArgs e)
-        {
-            if (DataService == null)
-            {
-                DataService = new MongoDataService();
-            }
-            var networks = DataService.GetCollectionQueryModel<NeuralNetwork>();
-                Networks.ItemsSource = networks;
-            
-        }
+      
 
         private void RunNetwork(object sender, RoutedEventArgs e)
         {
-            var id = ViewModel.SelectedRow.Id;
-            //TODO: Fix this
+            var id = ViewModel.SelectedRow.Id;            
             Map.RunNetwork(id);
             
         }
-
+        private void BuildNetwork(double slat, double slon, double lat, double lon)
+        {
+            BasicNetwork network = null;
+            //TODO: need warehouseId
+            var nn = Entities.WarehouseNeuralNetworks.FirstOrDefault(wn => wn.StartPosition.X == slat && wn.StartPosition.Y == slon && wn.EndPosition.X == lat && wn.EndPosition.Y == slon);
+            var tsk =Entities.TrainWarehouseNetworkTasks.FirstOrDefault(wn => wn.StartPosition.X == slat && wn.StartPosition.Y == slon && wn.StopPosition.X == lat && wn.StopPosition.Y == slon);
+                
+            if (tsk != null && nn == null) return;
+            if (nn == null && tsk == null)
+            {
+                var t = new TaskMessage
+                {
+                    LogReportingLevel = LogLevel.Verbatium,
+                    MessageId = Guid.NewGuid(),
+                    ScriptType = TaskScriptType.LoadWorker,
+                    TaskScript = new RoverWorker().GetType().ToString(),
+                    TransmisionDateTime = DateTime.Now,
+                    TaskId = Guid.NewGuid()
+                };
+                var sp = Entities.WarehousePositions.FirstOrDefault(p => p.X == slat && p.Y == slon);
+                var ep = Entities.WarehousePositions.FirstOrDefault(p => p.X == lat && p.Y == lon);
+                var task = new TrainWarehouseNetworkTask
+                {
+                    Status = (int)TaskStatus.Pending,                    
+                    Id = t.TaskId,
+                    StartPositionId = sp.Id,
+                    StopPositionId = ep.Id,
+                    //TODO: add standard fields and warehouseid
+                    
+                };
+                Entities.TrainWarehouseNetworkTasks.Add(task);
+                Entities.SaveChanges();
+                var q = new MessageQueue<TaskMessage>(false, _Connection);
+                var x = 0;
+                while (x != 10)
+                {
+                    Thread.Sleep(10);
+                    DoEvents();
+                    x++;
+                }
+                q.Publish(t);
+                DoEvents();
+            }           
+        }
         private void ExecuteOnRobot(object sender, RoutedEventArgs e)
         {
             var id = (Guid)((Button)e.Source).Tag;
@@ -162,6 +208,11 @@ namespace aXon.Desktop.Pages.Modules.Settings
             msg.RobotSerial = "000001";
             _messageQueue.Publish(msg);
             MessageBox.Show("Job Sent to Pallet Bot: " + msg.RobotSerial);
+        }
+
+        private void BuildNetworks_Click(object sender, RoutedEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

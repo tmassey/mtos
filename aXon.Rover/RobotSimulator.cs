@@ -466,10 +466,10 @@ namespace aXon.Rover
             if (pos[1] < 0)
                 pos[1] = 0;
 
-            var warpos =(from p in RobotContol.Warehouse.Positions where p.X == pos[0] && p.Y == pos[1] select p).FirstOrDefault();
+            var warpos =(from p in RobotContol.Warehouse.WarehousePositions where p.X == pos[0] && p.Y == pos[1] select p).FirstOrDefault();
             if (warpos == null)
                 return false;
-            switch (warpos.MapMode)
+            switch ((MapMode)warpos.MapMode)
             {
                 case MapMode.ObstructionMode:
                     return false;                    

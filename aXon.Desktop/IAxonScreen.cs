@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using aXon.Data;
 using aXon.Rover.Interfaces;
 
 namespace aXon.Desktop
@@ -9,7 +10,7 @@ namespace aXon.Desktop
         Guid Id { get; set; }
         string ScreenName { get; set; }
         string ModuleName { get; set; }
-        IDataService DataService { get; set; }
+        aXonEntities DataService { get; set; }
         MainWindow Shell { get; set; }
     }
 }

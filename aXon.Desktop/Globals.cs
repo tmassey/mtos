@@ -1,3 +1,5 @@
+using aXon.Data;
+
 namespace aXon.Desktop
 {
     public static class Globals

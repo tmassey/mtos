@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using aXon.Data;
 using aXon.Desktop.ViewModels.Modules.HR;
 using aXon.Desktop.ViewModels.Modules.Warehouse;
 
@@ -50,9 +53,9 @@ namespace aXon.Desktop.Pages.Modules.Warehouse.PartsManagement
             if (e.AddedItems == null || e.AddedItems.Count == 0) return;
             try
             {
-                ViewModel.SelectedRow = (Part)e.AddedItems[0];
-                DataContext = ViewModel;
+                ViewModel.SelectedRow = (Part)e.AddedItems[0];                
                 ViewModel.EditMode = true;
+                DataContext = ViewModel;
             }
             catch
             {
@@ -61,18 +64,18 @@ namespace aXon.Desktop.Pages.Modules.Warehouse.PartsManagement
 
         private void Add_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            //ViewModel.SelectedRowAddress = new Address() { Id = Guid.NewGuid() };
             ViewModel.SelectedRow = new Part() { Id = Guid.NewGuid() };
-            DataContext = ViewModel;
             ViewModel.EditMode = false;
             Globals.Toast.Message = "Ready to Add New Record!";
+            DataContext = ViewModel;
         }
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Entities = new aXonEntities();
+            var context = ((IObjectContextAdapter)Entities).ObjectContext;
+            context.Refresh(RefreshMode.StoreWins, Entities.Parts);
             ViewModel.MainData = new ObservableCollection<Part>(Entities.Parts);
-            Globals.Toast.Message = "List Refreshed!";
+            DataContext = ViewModel;
 
         }
 
@@ -82,7 +85,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse.PartsManagement
             ViewModel.SelectedRow.LastEditDateTime = DateTime.Now;
             if (ViewModel.EditMode)
             {
-                Entities.Parts.Attach(ViewModel.SelectedRow);
+                //Entities.Parts.Attach(ViewModel.SelectedRow);
             }
             else
             {
@@ -99,7 +102,8 @@ namespace aXon.Desktop.Pages.Modules.Warehouse.PartsManagement
                 Entities.Parts.Add(ViewModel.SelectedRow);
             }
             Entities.SaveChanges();
-            Entities = new aXonEntities();
+            var context = ((IObjectContextAdapter)Entities).ObjectContext;
+            context.Refresh(RefreshMode.StoreWins, Entities.Parts);
             ViewModel.MainData = new ObservableCollection<Part>(Entities.Parts);
             DataContext = ViewModel;
             Globals.Toast.Message = "Record Saved!";

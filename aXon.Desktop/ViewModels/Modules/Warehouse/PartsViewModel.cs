@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using aXon.Data;
 
 namespace aXon.Desktop.ViewModels.Modules.Warehouse
 {

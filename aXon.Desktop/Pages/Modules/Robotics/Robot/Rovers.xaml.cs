@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using aXon.Data;
 using aXon.Rover;
 
 namespace aXon.Desktop.Pages.Modules.Robotics.Robot
@@ -16,6 +19,13 @@ namespace aXon.Desktop.Pages.Modules.Robotics.Robot
             ScreenName = "Robots";
             ModuleName = "Inventory";
             SourcePath = new Uri("/Pages/Modules/Robotics/Robot/Rovers.xaml", UriKind.Relative);
+            DataService = new aXonEntities();
+            Loaded += Rovers_Loaded;
+        }
+
+        private void Rovers_Loaded(object sender, RoutedEventArgs e)
+        {
+            RefreshData();
         }
 
         private void MainGrid_OnSelectionChanged_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -25,7 +35,11 @@ namespace aXon.Desktop.Pages.Modules.Robotics.Robot
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-
+            AddWarehouseRobotView view = new AddWarehouseRobotView();
+            if (view.ShowDialog()==true)
+            {
+                
+            }
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
@@ -35,14 +49,15 @@ namespace aXon.Desktop.Pages.Modules.Robotics.Robot
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (DataService == null)
-            {
-                DataService = new MongoDataService();
-            }
-            var networks = DataService.GetCollectionQueryModel<aXon.Warehouse.Modules.Robotics.Robot.Models.Robot>();
-            MainGrid.ItemsSource = networks;
+            //TODO: need to know Current Warehouse
+            RefreshData();
         }
 
-       
+        private void RefreshData()
+        {
+            var networks =
+                new ObservableCollection<WarehouseRobot>(DataService.WarehouseRobots.Where(n => n.IsActiveRecord == true));
+            MainGrid.ItemsSource = networks;
+        }
     }
 }

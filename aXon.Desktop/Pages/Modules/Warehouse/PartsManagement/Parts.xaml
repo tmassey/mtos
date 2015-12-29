@@ -72,7 +72,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="0">Part #:</TextBlock>
-                        <TextBox HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="0" Text="{Binding Path=SelectedRow.PartNumber}"></TextBox>
+                        <TextBox HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="0" Text="{Binding Path=SelectedRow.PartNumber, Mode=TwoWay}"></TextBox>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="1">Revision:</TextBlock>
                         <TextBox HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="1" Text="{Binding Path=SelectedRow.Revision}"></TextBox>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="2">Description:</TextBlock>

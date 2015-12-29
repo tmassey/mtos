@@ -8,7 +8,7 @@
     mc:Ignorable="d" 
              >
     <Viewbox x:Name="Viewbox" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding Path=Width }" Height="{Binding Path=Height }" >
-        <Canvas x:Name="Canvas" Background="Transparent" Margin="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding Path=Width }" Height="{Binding Path=Height }">
+        <Canvas x:Name="Canvas" Background="Transparent" Margin="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding Path=Width }" Height="{Binding Path=Height }" MouseLeftButtonUp="Canvas_MouseLeftButtonUp">
             <Canvas.LayoutTransform>
                 <ScaleTransform ScaleY="1" />
             </Canvas.LayoutTransform>

@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using aXon.Data;
 using RabbitMQ.Client;
 using aXon.Rover;
 
@@ -44,7 +45,7 @@ namespace aXon.Desktop
             };
             _Connection = factory.CreateConnection();
         }
-        public MongoDataService Mds { get; set; }
+        public aXonEntities Mds { get; set; }
         private static IConnection _Connection;
         public void DoEvents()
         {

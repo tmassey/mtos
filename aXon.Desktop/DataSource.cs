@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using aXon.Data;
 using aXon.Rover;
 using aXon.Rover.Annotations;
 using aXon.Rover.Enumerations;
@@ -10,7 +11,7 @@ namespace aXon.Desktop
     {
         private MapMode _mapMode;
         private RobotSimulator _simulation;
-        private Rover.Models.Warehouse _warehouse;
+        private WareHouse _warehouse;
 
         public RobotSimulator Simulation
         {
@@ -23,7 +24,7 @@ namespace aXon.Desktop
             }
         }
 
-        public Rover.Models.Warehouse Warehouse
+        public WareHouse Warehouse
         {
             get { return _warehouse; }
             set

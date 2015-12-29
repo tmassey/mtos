@@ -30,14 +30,14 @@
                         <GradientStop Color="#FF1D1D1D"/>
                     </LinearGradientBrush>
                 </ToolBar.Background>
-                <Button  Click="RunNetwork" HorizontalAlignment="Right">Simulate</Button>
-                <ToolBarPanel >
-                    <ComboBox>
-                        <ComboBoxItem Content="000001"/>
-                    </ComboBox>
-                    <Button Tag="{Binding Id}" Click="ExecuteOnRobot" HorizontalAlignment="Right">Execute on Rover</Button>
-                </ToolBarPanel>
+                <Button  Click="RunNetwork" HorizontalAlignment="Right" Foreground="White">Simulate</Button>
+                <Separator></Separator>
+                <ComboBox MinWidth="50" SelectedValue="{Binding Path=CurrentRobotId}" ItemsSource="{Binding Path=Robots}" DisplayMemberPath="SerialNumber" SelectedValuePath="Id" ></ComboBox>
+                <Button Tag="{Binding Id}" Click="ExecuteOnRobot" Foreground="White">Execute on Rover</Button>
+                <Separator></Separator>
                 <Button Content="Refresh" Click="Refresh_Click" Foreground="White"/>
+                <Separator></Separator>
+                <Button  Click="BuildNetworks_Click" HorizontalAlignment="Right" Foreground="White">Build Networks</Button>
             </ToolBar>
             <DataGrid x:Name="Networks" ItemsSource="{Binding Path=MainData}" SelectionChanged="MainGrid_OnSelectionChanged_OnSelectionChanged"  AutoGenerateColumns="False" Grid.Row="1">
             <DataGrid.Columns>
@@ -50,19 +50,17 @@
                 <DataGridTextColumn Header="Dest Y" Binding="{Binding EndPosition.Y}" />
                 <DataGridTextColumn Header="Dest Type" Binding="{Binding EndPosition.MapMode, Converter={StaticResource enumConverter}}" />
 
-                <DataGridTemplateColumn Header="Actions" Width="200">
+                <!--<DataGridTemplateColumn Header="Actions" Width="200">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <UniformGrid Columns="3">
                                 <Button Tag="{Binding Id}" Click="RunNetwork" HorizontalAlignment="Right">Simulate</Button>
-                                <ComboBox>
-                                    <ComboBoxItem Content="000001"/>
-                                </ComboBox>
-                                <Button Tag="{Binding Id}" Click="ExecuteOnRobot" HorizontalAlignment="Right">Execute on Rover</Button>
+                                    <ComboBox SelectedValue="{Binding Path=CurrentRobotId}" ItemsSource="{Binding Path=Robots}" DisplayMemberPath="SerialNumber" SelectedValuePath="Id" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="9"></ComboBox>
+                                    <Button Tag="{Binding Id}" Click="ExecuteOnRobot" HorizontalAlignment="Right">Execute on Rover</Button>
                             </UniformGrid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
 
             </DataGrid.Columns>
         </DataGrid>

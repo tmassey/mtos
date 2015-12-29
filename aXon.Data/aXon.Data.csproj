@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>aXon.Data</RootNamespace>
     <AssemblyName>aXon.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +50,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,12 +60,159 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Address.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="aXonModels.Context.cs">
+      <DependentUpon>aXonModels.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="aXonModels.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="aXonModels.Designer.cs">
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="aXonRobot.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BaseAccount.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BaseDictionaryModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BaseModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BasePurchaseOrder.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BasePurchaseOrderItem.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BaseTask.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Carrier.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="City.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyBaseModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Country.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerContact.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerPurchaseOrder.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerPurchaseOrderItem.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NetworkFile.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Part.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PartVendor.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Person.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PersonAddress.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Receipt.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReceiptItem.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="State.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrainWarehouseNetworkTask.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vendor.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorPurchaseOrder.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorPurchaseOrderItem.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WareHouse.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseBaseModel.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseNeuralNetwork.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehousePosition.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseRobot.cs">
+      <DependentUpon>aXonModels.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="aXonModels.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>aXonModels.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="aXonModels.edmx.diagram">
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="aXonModels.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+      <LastGenOutput>aXonModels.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="aXonModels.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aXonModels.edmx</DependentUpon>
+      <LastGenOutput>aXonModels.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,11 +22,9 @@
 
                 <!--<DataGridTextColumn Header="Id" Binding="{Binding Id}" />-->
                 <DataGridTextColumn Header="Serial #" Width="*" Binding="{Binding SerialNumber}" />
-                <DataGridTextColumn Header="Current Mode" Width="*" Binding="{Binding CurrentMode}" />
-                <DataGridTextColumn Header="Battery Level" Binding="{Binding FuelRemaining}" />
-                <DataGridTextColumn Header="Position X" Binding="{Binding CurrentLocation.X}" />
-                <DataGridTextColumn Header="Position Y" Binding="{Binding CurrentLocation.Y}" />
-                <DataGridTextColumn Header="Current Heading" Binding="{Binding CurrentHeading}" />
+                <DataGridTextColumn Header="Serial #" Width="*" Binding="{Binding WareHouse.Name}" />
+                <DataGridTextColumn Header="Position X" Binding="{Binding WarehousePosition.X}" />
+                <DataGridTextColumn Header="Position Y" Binding="{Binding WarehousePosition.Y}" />
                 <!--<DataGridTemplateColumn Header="Actions" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

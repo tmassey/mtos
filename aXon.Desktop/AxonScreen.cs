@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using aXon.Data;
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Navigation;
 using aXon.Rover.Annotations;
@@ -14,7 +15,7 @@ namespace aXon.Desktop
     {
         private Guid _id;
         private MainWindow _shell;
-        private IDataService _dataService;
+        private aXonEntities _dataService;
         private string _screenName;
         private string _moduleName;
         private Uri _sourcePath;
@@ -66,7 +67,7 @@ namespace aXon.Desktop
             }
         }
 
-        public IDataService DataService
+        public aXonEntities DataService
         {
             get { return _dataService; }
             set

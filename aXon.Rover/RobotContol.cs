@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using aXon.Data;
 using Encog;
 using Encog.Engine.Network.Activation;
 using Encog.ML;
@@ -11,8 +12,6 @@ using Encog.ML.Train;
 using Encog.Neural.Networks;
 using Encog.Neural.Pattern;
 using Encog.Persist;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 using RabbitMQ.Client;
 using aXon.Rover.Models;
 using aXon.TaskTransport;
@@ -36,32 +35,36 @@ namespace aXon.Rover
             NetworkLock = "Lock";
             ConsoleLock = "Lock";
             InitConnection();
-            Mds = new MongoDataService();
+            Mds = new aXonEntities();
             _ProgressQueue = new MessageQueue<TaskProgressMessage>(false, _Connection);
-            Warehouse = Mds.GetCollectionQueryModel<Warehouse>().FirstOrDefault();
+            var task=Mds.TrainWarehouseNetworkTasks.FirstOrDefault(t => t.Id == taskId);
+            Warehouse = Mds.WareHouses.FirstOrDefault(w=>w.Id==task.WarehouseId);
         }
 
-        public MongoDataService Mds { get; set; }
-        public static Warehouse Warehouse { get; set; }
+        public aXonEntities Mds { get; set; }
+        public static WareHouse Warehouse { get; set; }
         public static Position SourceLocation { get; set; }
         public static Position DestLocation { get; set; }
         public static List<double> Scores { get; set; }
 
         private static void InitConnection()
         {
-            var factory = new ConnectionFactory {HostName = "192.169.164.138"};
-            factory.AutomaticRecoveryEnabled = true;
-            factory.NetworkRecoveryInterval = TimeSpan.FromSeconds(10);
+            var factory = new ConnectionFactory
+                          {
+                              HostName = "192.169.164.138",
+                              AutomaticRecoveryEnabled = true,
+                              NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
+                          };
             _Connection = factory.CreateConnection();
         }
 
 
-        public void BuildNetwork(double slat, double slon, double lat, double lon)
+        public void BuildNetwork(double slat, double slon, double lat, double lon,WareHouse warehouse)
         {
+            Warehouse = warehouse;
             string hostname = Dns.GetHostName();
             SourceLocation = new Position(slat, slon);
             DestLocation = new Position(lat, lon);
-            BasicNetwork network = CreateNetwork();
             string fn = @"Robot_From" + slat + "_" + slon + "_To_" + lat + "_" + lon + ".net";
             int chromosomes = 128;
             IMLTrain train;
@@ -73,7 +76,7 @@ namespace aXon.Rover
                 }, new RobotScore(), chromosomes);
             int epoch = 1;
             var scoresAverage = new List<double>();
-            double netavg = 0;
+            
 
             while (epoch <= chromosomes || train.Error <= 0)
             {
@@ -81,8 +84,7 @@ namespace aXon.Rover
                 Scores = new List<double>();
                 train.Iteration();
                 double average = GetitterationAverage();
-                scoresAverage.Add(average);
-                double avg = GetTrainAverage(scoresAverage);
+                scoresAverage.Add(average);            
                 //_ProgressQueue.Publish(new TaskProgressMessage
                 //    {
                 //        CurrentTime = DateTime.Now,
@@ -101,27 +103,7 @@ namespace aXon.Rover
                 {
                     if (train.Error > 0)
                     {
-                        NeuralNetwork net =
-                            Mds.GetCollectionQueryModel<NeuralNetwork>(Query.And(Query.EQ("StartPosition.X", slat),
-                                                                                 Query.EQ("StartPosition.Y", slon),
-                                                                                 Query.EQ("EndPosition.X", lat),
-                                                                                 Query.EQ("EndPosition.Y", lon)))
-                               .FirstOrDefault();
-                        if (net == null)
-                            net = new NeuralNetwork
-                                {
-                                    EndPosition = new Position(lat, lon),
-                                    Id = Guid.NewGuid(),
-                                    StartPosition = new Position(slat, slon)
-                                };
-
-                        FileStream fs = File.Create(fn);
-                        EncogDirectoryPersistence.SaveObject(fs, train.Method);
-                        fs.Close();
-                        MongoCollection<NeuralNetwork> col = Mds.DataBase.GetCollection<NeuralNetwork>("NeuralNetwork");
-                        col.Save(net);
-                        Mds.SaveFile(fn, net.Id);
-                        File.Delete(fn);
+                        SaveNetwork(slat, slon, lat, lon, fn, train);
                     }
                 }
                 epoch++;
@@ -140,7 +122,6 @@ namespace aXon.Rover
                     epoch = 1;
                 }
 
-                netavg = avg;
                 if (chromosomes == 4096)
                     break;
             }
@@ -157,6 +138,70 @@ namespace aXon.Rover
                 }
                 );
             EncogFramework.Instance.Shutdown();
+        }
+
+        private void SaveNetwork(double slat, double slon, double lat, double lon, string fn, IMLTrain train)
+        {
+            var net =
+                Mds.WarehouseNeuralNetworks.FirstOrDefault(
+                    n =>
+                        n.EndPosition.X == lat && n.EndPosition.Y == lon && n.StartPosition.X == slat &&
+                        n.StartPosition.Y == slon && n.WarehouseId == Warehouse.Id);
+            if (net == null)
+            {
+                var end =
+                    Mds.WarehousePositions.FirstOrDefault(
+                        p => p.X == lat && p.Y == lon && p.WarehouseId == Warehouse.Id);
+                var start =
+                    Mds.WarehousePositions.FirstOrDefault(
+                        p => p.X == slat && p.Y == slon && p.WarehouseId == Warehouse.Id);
+                net = new WarehouseNeuralNetwork
+                      {
+                          WarehouseId = Warehouse.Id,
+                          CreateDateTime = DateTime.Now,
+                          LastEditDateTime = DateTime.Now,
+                          CreatedBy = Warehouse.CreatedBy,
+                          ModifiedBy = Warehouse.ModifiedBy,
+                          CompanyId = Warehouse.CompanyId,
+                          EndPositionId = end.Id,
+                          Id = Guid.NewGuid(),
+                          StartPositionId = start.Id,
+                          IsActiveRecord = true
+                      };
+                Mds.WarehouseNeuralNetworks.Add(net);
+            }
+            else
+            {
+                net.LastEditDateTime = DateTime.Now;
+                Mds.WarehouseNeuralNetworks.Attach(net);
+            }
+            Mds.SaveChanges();
+            FileStream fs = File.Create(fn);
+            EncogDirectoryPersistence.SaveObject(fs, train.Method);
+            fs.Close();
+            var fb = File.ReadAllBytes(fn);
+            var nf = Mds.NetworkFiles.FirstOrDefault(n => n.Id == net.Id);
+            if (nf == null)
+            {
+                nf = new NetworkFile()
+                     {
+                         WarehouseId = Warehouse.Id,
+                         CreateDateTime = DateTime.Now,
+                         LastEditDateTime = DateTime.Now,
+                         CreatedBy = Warehouse.CreatedBy,
+                         ModifiedBy = Warehouse.ModifiedBy,
+                         CompanyId = Warehouse.CompanyId,
+                         Id = net.Id,
+                         IsActiveRecord = true,
+                         FileData = Convert.ToBase64String(fb)
+                     };
+            }
+            else
+            {
+                nf.FileData = Convert.ToBase64String(fb);
+                Mds.NetworkFiles.Attach(nf);
+            }
+            Mds.SaveChanges();
         }
 
         private static double GetTrainAverage(List<double> scoresAverage)

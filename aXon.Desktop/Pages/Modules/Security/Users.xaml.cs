@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
+using aXon.Data;
 using aXon.Desktop.ViewModels.Modules.Security;
 
 namespace aXon.Desktop.Pages.Modules.Security

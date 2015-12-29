@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using aXon.Data;
 using MongoDB.Driver.Builders;
 using aXon.Rover;
 using aXon.Rover.Enumerations;
@@ -17,30 +18,31 @@ namespace aXon.Worker
 	{
 		#region ITaskWorker implementation
 
-        public MongoDataService Mds { get; set; }
+        public aXonEntities Mds { get; set; }
 	    private DateTime _starttime;
 		public void Execute (Guid taskId)
 		{
 		    _starttime = DateTime.Now;
 		    try
 		    {
-		        Mds = new MongoDataService();
-		        var task = Mds.GetCollectionQueryModel<RoverTask>(Query.EQ("_id", taskId)).FirstOrDefault();
+		        Mds = new aXonEntities();
+		        var task = Mds.TrainWarehouseNetworkTasks.FirstOrDefault(t=>t.Id== taskId);
 		        if (task != null)
-		            switch (task.TaskType)
-		            {
-		                case RoverTaskType.Execute:
-		                    break;
-		                case RoverTaskType.Train:
-		                    RoverTrainProperties trainprops = task.TrainingProperties;
-                            RobotContol c = new RobotContol(_starttime,taskId);
-                            c.BuildNetwork(trainprops.StartPosition.X,trainprops.StartPosition.Y,trainprops.DestinationPosition.X,trainprops.DestinationPosition.Y);
-		                    break;
-		            }
+		        {		            
+		            RobotContol c = new RobotContol(_starttime, taskId);
+		            c.BuildNetwork(task.StartPosition.X, task.StartPosition.Y, task.StopPosition.X, task.StopPosition.Y,task.WareHouse);		         
+		        }
 		        else
 		        {
-		            this.RaiseOnErrorOccured(new OnErrorArgs(){Error="Task Not Found!",TaskId=taskId});
-                    this.RaiseOnProgress(new OnProgressArgs(){CurrentTime=DateTime.Now,PercentComplete=0,Status=TaskStatus.Failed,TaskId=taskId,StartTime = _starttime});
+		            this.RaiseOnErrorOccured(new OnErrorArgs() {Error = "Task Not Found!", TaskId = taskId});
+		            this.RaiseOnProgress(new OnProgressArgs()
+		                                 {
+		                                     CurrentTime = DateTime.Now,
+		                                     PercentComplete = 0,
+		                                     Status = TaskStatus.Failed,
+		                                     TaskId = taskId,
+		                                     StartTime = _starttime
+		                                 });
 		        }
 		    }
 		    catch (Exception err)

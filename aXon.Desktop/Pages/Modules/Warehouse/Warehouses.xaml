@@ -43,7 +43,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition MaxHeight="50"></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                
             </Grid.RowDefinitions>
             <ToolBar Grid.Row="0"  Grid.ColumnSpan="2" >
                 <ToolBar.Background>
@@ -71,26 +71,27 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="0">Company:</TextBlock>
-                        <ComboBox SelectedValue="{Binding Path=SelectedRow.CompanyId}" ItemsSource="{Binding Path=Companies}" DisplayMemberPath="Name" SelectedValuePath="Id" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="0"></ComboBox>
+                        <ComboBox SelectedValue="{Binding Path=SelectedRow.CompanyId, Mode=TwoWay}" ItemsSource="{Binding Path=Companies}" DisplayMemberPath="Name" SelectedValuePath="Id" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="0"></ComboBox>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="1">Name:</TextBlock>
-                        <TextBox Text="{Binding Path=SelectedRow.Name}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="1"></TextBox>
+                        <TextBox Text="{Binding Path=SelectedRow.Name, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="1"></TextBox>
 
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="2">Length:</TextBlock>
-                        <TextBox Text="{Binding Path=SelectedRow.Length}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="2"></TextBox>
+                        <TextBox Text="{Binding Path=SelectedRow.Length, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="2"></TextBox>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="3">Width:</TextBlock>
-                        <TextBox Text="{Binding Path=SelectedRow.Width}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="3"></TextBox>
+                        <TextBox Text="{Binding Path=SelectedRow.Width, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="3"></TextBox>
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="4">Height:</TextBlock>
-                        <TextBox Text="{Binding Path=SelectedRow.Height}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="4"></TextBox>
+                        <TextBox Text="{Binding Path=SelectedRow.Height, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="4"></TextBox>
 
 
                         <TextBlock HorizontalAlignment="Right" Margin="5" Grid.Column="0" Grid.Row="5">Active:</TextBlock>
-                        <CheckBox IsChecked="{Binding Path=SelectedRow.IsActiveRecord}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="5"></CheckBox>
+                        <CheckBox IsChecked="{Binding Path=SelectedRow.IsActiveRecord, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Grid.Row="5"></CheckBox>
                         
                     </Grid>
                 </GroupBox>
                 <TextBlock>Map:</TextBlock>
+                <Warehouse:WarehouseMap VerticalAlignment="Top" HorizontalAlignment="Left"  Grid.Column="0" Grid.Row="2" x:Name="Map" />
             </StackPanel>
-            <Warehouse:WarehouseMap VerticalAlignment="Top" HorizontalAlignment="Left"  Grid.Column="0" Grid.Row="2" x:Name="Map" />
+        
 
         </Grid>
     </Grid>

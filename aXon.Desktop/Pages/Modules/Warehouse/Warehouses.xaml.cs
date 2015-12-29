@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using aXon.Data;
 using aXon.Desktop.ViewModels.Modules.Security;
 using aXon.Desktop.ViewModels.Modules.Warehouse;
 
@@ -59,6 +62,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             ViewModel.MainData = new ObservableCollection<WareHouse>(Entities.WareHouses.Where(u => u.IsActiveRecord == true));
             ViewModel.Companies = new ObservableCollection<Company>(Entities.Companies.Where(u => u.IsActiveRecord == true));
             DataContext = ViewModel;
+            Map.WarehouseId = ViewModel.MainData.FirstOrDefault().Id;
             //Map.DrawMap();
         }
 
@@ -69,7 +73,9 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             {
                 ViewModel.SelectedRow = (WareHouse)e.AddedItems[0];
                 DataContext = ViewModel;
+                Map.WarehouseId = ViewModel.SelectedRow.Id;
                 ViewModel.EditMode = true;
+                Map.DrawMap();
             }
             catch
             {
@@ -85,7 +91,14 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
 
         private void Refresh_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Entities = new aXonEntities();
+            RefreshData();
+        }
+
+        private void RefreshData()
+        {
+            var context = ((IObjectContextAdapter) Entities).ObjectContext;
+            context.Refresh(RefreshMode.StoreWins, Entities.WareHouses);
+            context.Refresh(RefreshMode.StoreWins, Entities.Companies);
             ViewModel.MainData = new ObservableCollection<WareHouse>(Entities.WareHouses.Where(u => u.IsActiveRecord == true));
             ViewModel.Companies = new ObservableCollection<Company>(Entities.Companies.Where(u => u.IsActiveRecord == true));
         }
@@ -96,7 +109,7 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
             ViewModel.SelectedRow.LastEditDateTime = DateTime.Now;
             if (ViewModel.EditMode)
             {
-                Entities.WareHouses.Attach(ViewModel.SelectedRow);
+               // Entities.WareHouses.Attach(ViewModel.SelectedRow);
             }
             else
             {
@@ -112,14 +125,16 @@ namespace aXon.Desktop.Pages.Modules.Warehouse
                 Entities.WareHouses.Add(ViewModel.SelectedRow);
             }
             Entities.SaveChanges();
-            Entities = new aXonEntities();
-            ViewModel.MainData = new ObservableCollection<WareHouse>(Entities.WareHouses.Where(u => u.IsActiveRecord == true));
+            RefreshData();
             DataContext = ViewModel;
         }
 
         private void Delete_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            Entities.WareHouses.Remove(ViewModel.SelectedRow);
+            Entities.SaveChanges();
+            RefreshData();
+            DataContext = ViewModel;
         }
     }
 }
