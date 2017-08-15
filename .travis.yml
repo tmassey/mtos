@@ -1,4 +1,4 @@
 language: csharp
 solution: aXon.sln
 install:
-  - nuget restore solution-name.sln
+  - nuget restore aXon.sln
